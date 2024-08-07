@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: Cooperating Centers
-Plugin URI: https://github.com/bireme/centers-wp-plugin/
-Description: VHL Cooperating Centers Directory WordPress plugin
+Plugin Name: Fichas IDB
+Plugin URI: https://github.com/bireme/fichas-idb-wp-plugin/
+Description: VHL Fichas IDB Directory WordPress plugin
 Author: BIREME/OPAS/OMS
 Version: 2.0
 Author URI: http://reddes.bvsalud.org/

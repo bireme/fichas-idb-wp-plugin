@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: Fichas IDB
-Plugin URI: https://github.com/bireme/fichas-idb-wp-plugin/
-Description: VHL Fichas IDB Directory WordPress plugin
+Plugin Name: Fichas de Qualificação do Indicador (FQI)
+Plugin URI: https://github.com/bireme/centers-wp-plugin/
+Description: FQI RIPSA WordPress plugin
 Author: BIREME/OPAS/OMS
 Version: 2.0
-Author URI: http://reddes.bvsalud.org/
+Author URI: http://ripsa.bvsalud.org/
 */
 
 define('CC_VERSION', '2.0' );
@@ -95,43 +95,41 @@ if(!class_exists('CC_Plugin')) {
 
 		}
 
-		function theme_redirect() {
-		    global $wp, $cc_service_url, $cc_plugin_slug;
-		    $pagename = '';
-
-            // check if request contains plugin slug string
+        function theme_redirect() {
+            global $wp, $cc_service_url, $cc_plugin_slug;
+            $pagename = '';
+            
+            // Check if request contains plugin slug string
             $pos_slug = strpos($wp->request, $this->plugin_slug);
-            if ( $pos_slug !== false ){
+            if ($pos_slug !== false) {
                 $pagename = substr($wp->request, $pos_slug);
             }
-
-            if ( is_404() && $pos_slug !== false ){
-
+            
+            if (is_404() && $pos_slug !== false) {
                 $cc_service_url = $this->service_url;
                 $cc_plugin_slug = $this->plugin_slug;
-                $similar_docs_url = $this->similar_docs_url;
-
-                add_action( 'wp_enqueue_scripts', array(&$this, 'page_template_styles_scripts'));
-
-                if ( $this->startsWith($pagename, $this->plugin_slug) ){
-
-    		        if ($pagename == $this->plugin_slug){
-    		            #$template = CC_PLUGIN_PATH . '/template/home.php';
-    		            $template = CC_PLUGIN_PATH . '/template/results.php';
-                    }elseif ($pagename == $this->plugin_slug . '/results'){
-    		            $template = CC_PLUGIN_PATH . '/template/results.php';
-    		        }else{
-    		            $template = CC_PLUGIN_PATH . '/template/detail.php';
-    		        }
-    		        // force status to 200 - OK
-    		        status_header(200);
-
-    		        // redirect to page and finish execution
-    		        include($template);
-    		        die();
-    		    }
+                
+                add_action('wp_enqueue_scripts', array(&$this, 'page_template_styles_scripts'));
+                
+                if ($this->startsWith($pagename, $this->plugin_slug)) {
+                    if ($pagename == $this->plugin_slug) {
+                        $template = CC_PLUGIN_PATH . '/template/indicadores.php'; // Mude isso para a página inicial desejada
+                    } elseif ($pagename == $this->plugin_slug . '/listas') {
+                        $template = CC_PLUGIN_PATH . '/template/listas.php';
+                    } elseif ($pagename == $this->plugin_slug . '/listas/fichas') {
+                        $template = CC_PLUGIN_PATH . '/template/fichas.php';
+                    } else {
+                        $template = CC_PLUGIN_PATH . '/template/detail.php';
+                    }
+                    // Force status to 200 - OK
+                    status_header(200);
+                    
+                    // Redirect to page and finish execution
+                    include($template);
+                    die();
+                }
             }
-		}
+        }
 
 		function register_sidebars(){
 		    $args = array(
@@ -293,7 +291,23 @@ if(!class_exists('CC_Plugin')) {
 
             die();
         }
-
+        function fetch_api_data() {
+            $api_url = 'https://mgdi-api.teste.bireme.org/api/indicador/RIPSAG4A';
+            $response = wp_remote_get($api_url);
+    
+            if (is_wp_error($response)) {
+                return false;
+            }
+    
+            $body = wp_remote_retrieve_body($response);
+            $data = json_decode($body, true);
+    
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return false;
+            }
+    
+            return $data;
+        }
 	} // END class CC_Plugin
 } // END if(!class_exists('CC_Plugin'))
 

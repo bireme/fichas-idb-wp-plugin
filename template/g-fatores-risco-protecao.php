@@ -6,7 +6,7 @@ $indicadores = [
     ['codigo' => 'G.1', 'nome' => 'Prevalência de sedentarismo'],
     ['codigo' => 'G.2', 'nome' => 'Prevalência de consumo abusivo de álcool'],
     ['codigo' => 'G.3', 'nome' => 'Taxa de obesidade'],
-    ['codigo' => 'G.4', 'nome' => 'Prevalência de tabagismo', 'link' => '/fichasidb/listas/fichas'],
+    ['codigo' => 'G.4', 'nome' => 'Prevalência de tabagismo', 'link' => 'g-fatores-risco-protecao/ficha?code=G4A'],
     ['codigo' => 'G.5', 'nome' => 'Consumo de sal'],
     ['codigo' => 'G.6', 'nome' => 'Consumo de gorduras saturadas'],
     ['codigo' => 'G.7', 'nome' => 'Prevalência de hipertensão arterial'],
@@ -24,14 +24,14 @@ $indicadores = [
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?php echo home_url(); ?>">Home</a></li>
                 <li class="breadcrumb-item"><a href="<?php echo site_url('/fichasidb'); ?>">Fichas IDB</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a href="<?php echo site_url('/fichasidb/listas'); ?>">Lista de Indicadores</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a>Fatores de Risco e Proteção</a></li>
             </ol>
         </nav>
     </div>
 </div>
 <div class="container">
     <div class="row indicators-page">
-        <h2>G. Indicadores de Fatores de Risco</h2>
+        <h2>G. Indicadores de Fatores de Risco e Proteção</h2>
         <?php foreach ($indicadores as $indicador): ?>
                 <button class="btn-indicator" 
                         onclick="window.location.href='<?php echo isset($indicador['link']) ? $indicador['link'] : '#'; ?>';">

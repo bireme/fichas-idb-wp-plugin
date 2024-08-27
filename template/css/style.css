@@ -359,7 +359,7 @@ body{
 }
 
 .indicator-box {
-   background-color: #f5f5f5;
+   background-color: #ffffff;
    border-radius: 10px;
    margin: 10px;
    padding: 20px;
@@ -367,17 +367,20 @@ body{
    display: flex;
    align-items: center;
    transition: background-color 0.3s;
+   border-radius: 8px;
+   border: 1px solid #ddd;
 }
 
 .indicator-box:hover {
-   background-color: #e0e0e0;
+   background-color: #fff;
+   border: 1px solid #2D358C;
 }
 
 .indicator-letter {
-   font-size: 3em;
-   font-weight: bold;
+   font-size: 6em;
+   font-weight: regular;
    margin-right: 20px;
-   color: #2D358C;
+   color: #c6c6c6;
 }
 
 .indicator-content {
@@ -387,7 +390,8 @@ body{
 
 .indicator-content i {
    color: #2D358C;
-   margin-right: 15px;
+   margin-right: 100px;
+   font-size: 4em;
 }
 
 .indicator-content h3 {
@@ -564,4 +568,44 @@ body{
 
 .elementor-button-text {
   color: white;
+}
+
+.breadcrumb {
+   background-color: #FFFFFF;
+   max-width: 1140px;
+   padding: 0px 0px 0px 0px;
+   width: 100%;
+}
+
+.container-bread-indicadores {
+   margin-top: 0px;
+   width: 100%;
+   max-width: 1170px;
+   margin-left: auto;
+   margin-right: auto;
+   padding: 0 15px; /* Adiciona um pequeno padding para alinhamento */
+}
+
+.btn-indicator {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   width: 100%;
+   padding: 10px;
+   border: none;
+   background-color: #ffffff; /* Cor de fundo do botão */
+   border-radius: 5px; /* Bordas levemente arredondadas */
+   cursor: pointer;
+   margin: 0px 0px 5px 0px;
+   border: 1px solid #ccc;
+}
+
+.indicator-code {
+   font-weight: bold;
+   margin-right: 10px; /* Espaço entre o código e o nome */
+}
+
+.indicator-name {
+   flex-grow: 1;
+   text-align: left;
 }

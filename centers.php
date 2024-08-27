@@ -116,8 +116,23 @@ if(!class_exists('CC_Plugin')) {
                         $template = CC_PLUGIN_PATH . '/template/indicadores.php'; // Mude isso para a página inicial desejada
                     } elseif ($pagename == $this->plugin_slug . '/listas') {
                         $template = CC_PLUGIN_PATH . '/template/listas.php';
-                    } elseif ($pagename == $this->plugin_slug . '/listas/fichas') {
-                        $template = CC_PLUGIN_PATH . '/template/fichas.php';
+                    } elseif ($pagename == $this->plugin_slug . '/a-demografico') {
+                        $template = CC_PLUGIN_PATH . '/template/a-demografico.php';
+                    } elseif ($pagename == $this->plugin_slug . '/b-socioeconomicos') {
+                        $template = CC_PLUGIN_PATH . '/template/b-socioeconomicos.php';
+                    } elseif ($pagename == $this->plugin_slug . '/c-mortalidade') {
+                        $template = CC_PLUGIN_PATH . '/template/c-mortalidade.php';
+                    } elseif ($pagename == $this->plugin_slug . '/d-morbidade') {
+                        $template = CC_PLUGIN_PATH . '/template/d-morbidade.php';
+                    } elseif ($pagename == $this->plugin_slug . '/f-cobertura') {
+                        $template = CC_PLUGIN_PATH . '/template/f-cobertura.php';
+                    } elseif ($pagename == $this->plugin_slug . '/e-recursos') {
+                        $template = CC_PLUGIN_PATH . '/template/e-recursos.php';
+                    } elseif ($pagename == $this->plugin_slug . '/g-fatores-risco-protecao') {
+                        $template = CC_PLUGIN_PATH . '/template/g-fatores-risco-protecao.php';
+                    // Verifica se a pagina termina com a string 'ficha'
+                    } elseif ( substr($pagename, -strlen('ficha')) === 'ficha') {
+                        $template = CC_PLUGIN_PATH . '/template/ficha.php';
                     } else {
                         $template = CC_PLUGIN_PATH . '/template/detail.php';
                     }
@@ -291,8 +306,9 @@ if(!class_exists('CC_Plugin')) {
 
             die();
         }
-        function fetch_api_data() {
-            $api_url = 'https://mgdi-api.teste.bireme.org/api/indicador/RIPSAG4A';
+        function fetch_api_data($code) {
+            $indicator = 'RIPSA' . $code;
+            $api_url = 'https://mgdi-api.teste.bireme.org/api/indicador/' . $indicator;
             $response = wp_remote_get($api_url);
     
             if (is_wp_error($response)) {

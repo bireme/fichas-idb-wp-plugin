@@ -395,12 +395,12 @@ body{
 }
 
 .indicator-content h3 {
-   margin: 0;
+   margin: 0 0 0 20px;
    color: #2D358C;
 }
 
 .indicator-content p {
-   margin: 5px 0 0 0;
+   margin: 5px 0 0 20px;
    color: #555;
 }
 

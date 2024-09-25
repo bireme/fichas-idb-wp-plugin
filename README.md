@@ -1,4 +1,4 @@
-Centers plugin for WordPress
+FQI plugin for WordPress
 ========================
 
 ## Introduction
@@ -11,8 +11,8 @@ Wordpress 3.x
 
 ## Install
 
-0. [Download](https://github.com/bireme/centers-wp-plugin/archive/master.zip) the Centers plugin for Wordpress;
-0. Unzip the plugin below the `wp-content/plugins` folder of your Wordpress instance and rename it to `centers`;
+0. [Download](https://github.com/bireme/fichas-idb-wp-plugin/) the FQI plugin for Wordpress;
+0. Unzip the plugin below the `wp-content/plugins` folder of your Wordpress instance and rename it to `fichasidb`;
 0. Activate the Centers plugin through the administration panel of WordPress (dashboard).
 
 For further information on installing plugins please see the [Manual Plugin Installation from Wordpress codex site](http://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).

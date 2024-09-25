@@ -4,21 +4,22 @@ get_header();
 
 $indicadores = [
     ['codigo' => 'A.1', 'nome' => 'População total'],
-    ['codigo' => 'A.2', 'nome' => 'Razão de sexos'],
+    ['codigo' => 'A.2', 'nome' => 'Razão de sexos', 'link' => 'a-demografico/ficha?code=008DM'],
     ['codigo' => 'A.3', 'nome' => 'Taxa de crescimento da população'],
-    ['codigo' => 'A.4', 'nome' => 'Grau de urbanização', 'link' => '/fichasidb/fatores-risco-protecao/fichas'],
-    ['codigo' => 'A.13', 'nome' => 'Proporção de menores de 5 anos de idade na população'],
-    ['codigo' => 'A.14', 'nome' => 'Proporção de idosos na população'],
-    ['codigo' => 'A.15', 'nome' => 'Índice de envelhecimento'],
-    ['codigo' => 'A.16', 'nome' => 'Razão de dependência'],
+    ['codigo' => 'A.4', 'nome' => 'Grau de urbanização'],
+    ['codigo' => 'A.13', 'nome' => 'Proporção de menores de 5 anos de idade na população', 'link' => 'a-demografico/ficha?code=004DM'],
+    ['codigo' => 'A.14', 'nome' => 'Proporção de idosos na população', 'link' => 'a-demografico/ficha?code=005DM'],
+    ['codigo' => 'A.15', 'nome' => 'Índice de envelhecimento', 'link' => 'a-demografico/ficha?code=006DM'],
+    ['codigo' => 'A.16', 'nome' => 'Razão de dependência', 'link' => 'a-demografico/ficha?code=007DM'],
     ['codigo' => 'A.5', 'nome' => 'Taxa de fecundidade total'],
     ['codigo' => 'A.6', 'nome' => 'Taxa específica de fecundidade'],
     ['codigo' => 'A.7', 'nome' => 'Taxa bruta de natalidade'],
     ['codigo' => 'A.8', 'nome' => 'Mortalidade proporcional por idade'],
     ['codigo' => 'A.9', 'nome' => 'Mortalidade proporcional por idade em menores de 1 ano de idade'],
-    ['codigo' => 'A.10', 'nome' => 'Taxa bruta de mortalidade'],
-    ['codigo' => 'A.11', 'nome' => 'Esperança de vida ao nascer'],
-    ['codigo' => 'A.12', 'nome' => 'Esperança de vida aos 60 anos de idade'],
+    ['codigo' => 'A.10', 'nome' => 'Taxa bruta de mortalidade', 'link' => 'a-demografico/ficha?code=001DM'],
+    ['codigo' => 'A.11', 'nome' => 'Esperança de vida ao nascer', 'link' => 'a-demografico/ficha?code=002DM'],
+    ['codigo' => 'A.12', 'nome' => 'Esperança de vida aos 60 anos de idade', 'link' => 'a-demografico/ficha?code=003DM'],
+    ['codigo' => 'A.X', 'nome' => 'Registros de imigrantes internacionais', 'link' => 'a-demografico/ficha?code=AXX'],
 ];
 ?>
 <div class="container-bread-indicadores">

@@ -22,7 +22,7 @@ $searchYear = isset($_GET['year']) ? intval($_GET['year']) : '';
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?php echo home_url(); ?>">Home</a></li>
                 <li class="breadcrumb-item"><a href="<?php echo site_url('/fichasidb'); ?>">Fichas IDB</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><?php echo $data['titulo'] .' - '. $param_code;?></li>
+                <li class="breadcrumb-item active" aria-current="page"><?php echo $data['titulo']; ?></li>
             </ol>
         </nav>
     </div>
@@ -33,7 +33,7 @@ $searchYear = isset($_GET['year']) ? intval($_GET['year']) : '';
         <div class="column-left" id="content-to-print">
         <?php
 if ($data) {
-    echo '<h2>' . $data['titulo'] .' - '. $param_code . '</h2>';
+    echo '<h2>' . $data['titulo'] . '</h2>';
                 
     echo '<div class="data-box">';
     echo '<p><h3>Conceituação</h3> ' . $data['conceituacao'] . '</p>';
@@ -101,7 +101,6 @@ if ($data) {
 
         <!-- Segunda coluna: Botões com ícones -->
         <div class="column-right">
-            <h2>Opções</h2>
             <div class="button-box">
                 <!-- Botão Bases de Dados (sem alterações) -->
                 <button class="btn-icon"><i class="fa-solid fa-database"></i> Bases de Dados</button>

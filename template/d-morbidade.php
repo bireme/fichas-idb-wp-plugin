@@ -18,7 +18,7 @@ $indicadores = [
     ['codigo' => 'D.1.12', 'nome' => 'Incidência de rubéola'],
     ['codigo' => 'D.1.13', 'nome' => 'Incidência de síndrome da rubéola congênita'],
     ['codigo' => 'D.1.15', 'nome' => 'Incidência de doença meningocócica'],
-    ['codigo' => 'D.1.17', 'nome' => 'Incidência de leptospirose', 'link' => 'd-morbidade/ficha?code=D117'],
+    ['codigo' => 'D.1.17', 'nome' => 'Incidência de leptospirose', 'link' => 'd-morbidade/ficha?code=001MB'],
     ['codigo' => 'D.2.1', 'nome' => 'Taxa de incidência de aids'],
     ['codigo' => 'D.2.2', 'nome' => 'Taxa de incidência de tuberculose'],
     ['codigo' => 'D.2.3', 'nome' => 'Taxa de incidência de dengue'],

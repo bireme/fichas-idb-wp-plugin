@@ -3,13 +3,18 @@
 get_header();
 
 $indicadores = [
-    ['codigo' => 'B.1', 'nome' => 'Taxa de analfabetismo', 'link' => 'b-socioeconomicos/ficha?code=B1'],
-    ['codigo' => 'B.2', 'nome' => 'Níveis de escolaridade'],
+    ['codigo' => 'B.1', 'nome' => 'Taxa de analfabetismo', 'link' => 'b-socioeconomicos/ficha?code=001SC'],
+    ['codigo' => 'B.2', 'nome' => 'Níveis de escolaridade', 'link' => 'b-socioeconomicos/ficha?code=002SC'],
     ['codigo' => 'B.3', 'nome' => 'Produto Interno Bruto (PIB) per capita'],
     ['codigo' => 'B.4', 'nome' => 'Razão de renda'],
     ['codigo' => 'B.5', 'nome' => 'Proporção de pobres'],
     ['codigo' => 'B.6', 'nome' => 'Taxa de desemprego'],
     ['codigo' => 'B.7', 'nome' => 'Taxa de trabalho infantil'],
+    ['codigo' => 'B.X', 'nome' => 'Proporção de pessoas desocupadas na força de trabalho', 'link' => 'b-socioeconomicos/ficha?code=003SC'],
+    ['codigo' => 'B.X', 'nome' => 'Proporção de pessoas com força de trabalho subutilizada na força de trabalho ampliada', 'link' => 'b-socioeconomicos/ficha?code=004SC'],
+    ['codigo' => 'B.X', 'nome' => 'Proporção de pessoas ocupadas na força de trabalho que não contribuíam para a previdência social', 'link' => 'b-socioeconomicos/ficha?code=005SC'],
+    ['codigo' => 'B.X', 'nome' => 'Proporção na população de jovens de 15 a 29 anos de idade que não estudam e não trabalham', 'link' => 'b-socioeconomicos/ficha?code=006SC'],
+    ['codigo' => 'B.X', 'nome' => 'Proporção de crianças e adolescentes de 5 a 17 anos de idade em situação de trabalho infantil', 'link' => 'b-socioeconomicos/ficha?code=007SC'],
 ];
 ?>
 <div class="container-bread-indicadores">

@@ -6,7 +6,7 @@ $indicadores = [
     ['codigo' => 'G.1', 'nome' => 'Prevalência de sedentarismo'],
     ['codigo' => 'G.2', 'nome' => 'Prevalência de consumo abusivo de álcool'],
     ['codigo' => 'G.3', 'nome' => 'Taxa de obesidade'],
-    ['codigo' => 'G.4', 'nome' => 'Prevalência de tabagismo', 'link' => 'g-fatores-risco-protecao/ficha?code=G4A'],
+    ['codigo' => 'G.4', 'nome' => 'Prevalência de tabagismo', 'link' => 'g-fatores-risco-protecao/ficha?code=001FR'],
     ['codigo' => 'G.5', 'nome' => 'Consumo de sal'],
     ['codigo' => 'G.6', 'nome' => 'Consumo de gorduras saturadas'],
     ['codigo' => 'G.7', 'nome' => 'Prevalência de hipertensão arterial'],

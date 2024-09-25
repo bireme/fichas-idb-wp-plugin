@@ -9,7 +9,7 @@ $indicadores = [
     ['codigo' => 'C.1.3', 'nome' => 'Taxa de mortalidade pós-neonatal'],
     ['codigo' => 'C.2', 'nome' => 'Taxa de mortalidade perinatal'],
     ['codigo' => 'C.16', 'nome' => 'Taxa de mortalidade em menores de cinco anos'],
-    ['codigo' => 'C.3', 'nome' => 'Razão de mortalidade materna', 'link' => 'c-mortalidade/ficha?code=C3'],
+    ['codigo' => 'C.3', 'nome' => 'Razão de mortalidade materna', 'link' => 'c-mortalidade/ficha?code=001MT'],
     ['codigo' => 'C.4', 'nome' => 'Mortalidade proporcional por grupos de causas'],
     ['codigo' => 'C.5', 'nome' => 'Mortalidade proporcional por causas mal definidas'],
     ['codigo' => 'C.6', 'nome' => 'Mortalidade proporcional por doença diarréica aguda em menores de 5 anos de idade'],

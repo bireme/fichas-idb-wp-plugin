@@ -15,7 +15,7 @@ $indicadores = [
     ['codigo' => 'F.13', 'nome' => 'Cobertura vacinal'],
     ['codigo' => 'F.14', 'nome' => 'Proporção da população feminina em uso de métodos anticonceptivos'],
     ['codigo' => 'F.15', 'nome' => 'Cobertura de planos de saúde'],
-    ['codigo' => 'F.16', 'nome' => 'Cobertura de planos privados de saúde', 'link' => 'f-cobertura/ficha?code=F16'],
+    ['codigo' => 'F.16', 'nome' => 'Cobertura de planos privados de saúde', 'link' => 'f-cobertura/ficha?code=001CB'],
     ['codigo' => 'F.17', 'nome' => 'Cobertura de redes de abastecimento de água'],
     ['codigo' => 'F.18', 'nome' => 'Cobertura de esgotamento sanitário'],
     ['codigo' => 'F.19', 'nome' => 'Cobertura de coleta de lixo'],

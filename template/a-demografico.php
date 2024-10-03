@@ -2,24 +2,26 @@
 // Inclua o cabeçalho e outras partes do template conforme necessário
 get_header();
 
+$plugin = new CC_Plugin(); // Instancia o plugin
+
+// Lista de indicadores com códigos
 $indicadores = [
-    ['codigo' => 'A.1', 'nome' => 'População total'],
-    ['codigo' => 'A.2', 'nome' => 'Razão de sexos', 'link' => 'a-demografico/ficha?code=008DM'],
-    ['codigo' => 'A.3', 'nome' => 'Taxa de crescimento da população'],
-    ['codigo' => 'A.4', 'nome' => 'Grau de urbanização'],
-    ['codigo' => 'A.13', 'nome' => 'Proporção de menores de 5 anos de idade na população', 'link' => 'a-demografico/ficha?code=004DM'],
-    ['codigo' => 'A.14', 'nome' => 'Proporção de idosos na população', 'link' => 'a-demografico/ficha?code=005DM'],
-    ['codigo' => 'A.15', 'nome' => 'Índice de envelhecimento', 'link' => 'a-demografico/ficha?code=006DM'],
-    ['codigo' => 'A.16', 'nome' => 'Razão de dependência', 'link' => 'a-demografico/ficha?code=007DM'],
-    ['codigo' => 'A.5', 'nome' => 'Taxa de fecundidade total'],
-    ['codigo' => 'A.6', 'nome' => 'Taxa específica de fecundidade'],
-    ['codigo' => 'A.7', 'nome' => 'Taxa bruta de natalidade'],
-    ['codigo' => 'A.8', 'nome' => 'Mortalidade proporcional por idade'],
-    ['codigo' => 'A.9', 'nome' => 'Mortalidade proporcional por idade em menores de 1 ano de idade'],
-    ['codigo' => 'A.10', 'nome' => 'Taxa bruta de mortalidade', 'link' => 'a-demografico/ficha?code=001DM'],
-    ['codigo' => 'A.11', 'nome' => 'Esperança de vida ao nascer', 'link' => 'a-demografico/ficha?code=002DM'],
-    ['codigo' => 'A.12', 'nome' => 'Esperança de vida aos 60 anos de idade', 'link' => 'a-demografico/ficha?code=003DM'],
-    ['codigo' => 'A.X', 'nome' => 'Registros de imigrantes internacionais', 'link' => 'a-demografico/ficha?code=AXX'],
+    ['codigo' => 'A.1', 'link' => 'a-demografico/ficha?code='],
+    ['codigo' => 'A.2', 'link' => 'a-demografico/ficha?code=008DM'],
+    ['codigo' => 'A.3', 'link' => 'a-demografico/ficha?code='],
+    ['codigo' => 'A.4', 'link' => 'a-demografico/ficha?code='],
+    ['codigo' => 'A.13', 'link' => 'a-demografico/ficha?code=004DM'],
+    ['codigo' => 'A.14', 'link' => 'a-demografico/ficha?code=005DM'],
+    ['codigo' => 'A.15', 'link' => 'a-demografico/ficha?code=006DM'],
+    ['codigo' => 'A.16', 'link' => 'a-demografico/ficha?code=007DM'],
+    ['codigo' => 'A.5', 'link' => 'a-demografico/ficha?code='],
+    ['codigo' => 'A.6', 'link' => 'a-demografico/ficha?code='],
+    ['codigo' => 'A.7', 'link' => 'a-demografico/ficha?code='],
+    ['codigo' => 'A.8', 'link' => 'a-demografico/ficha?code='],
+    ['codigo' => 'A.9', 'link' => 'a-demografico/ficha?code='],
+    ['codigo' => 'A.10', 'link' => 'a-demografico/ficha?code=001DM'],
+    ['codigo' => 'A.11', 'link' => 'a-demografico/ficha?code=002DM'],
+    ['codigo' => 'A.12', 'link' => 'a-demografico/ficha?code=003DM'],
 ];
 ?>
 <div class="container-bread-indicadores">
@@ -37,11 +39,30 @@ $indicadores = [
     <div class="row indicators-page">
         <h2>A. Indicadores Demográficos</h2>
         <?php foreach ($indicadores as $indicador): ?>
-                <button class="btn-indicator" 
-                        onclick="window.location.href='<?php echo isset($indicador['link']) ? $indicador['link'] : '#'; ?>';">
-                    <div class="indicator-code"><?php echo $indicador['codigo']; ?></div>
-                    <div class="indicator-name"><?php echo $indicador['nome']; ?></div>
-                </button>
+            <?php
+                // Obtenha o código diretamente da query string da URL
+                $param_code = isset($indicador['link']) ? explode('code=', $indicador['link'])[1] : '';
+                
+                // Chame a API e obtenha os dados para o código atual da ficha
+                $data = $plugin->fetch_api_data($param_code);
+                
+                // Use o título retornado pela API, ou mostre uma mensagem de erro caso não haja
+                $titulo = isset($data['titulo']) ? $data['titulo'] : 'Título não encontrado';
+
+                // Remove os primeiros caracteres redundantes, se o título começar com o código
+                if (strpos($titulo, $indicador['codigo']) === 0) {
+                    // O número 4 é apenas um exemplo, ajuste conforme o tamanho típico dos códigos
+                    $titulo = substr($titulo, strlen($indicador['codigo']) + 1);
+                }
+
+                // Construa o link da página ou utilize o código padrão
+                $link = isset($indicador['link']) ? $indicador['link'] : '#';
+            ?>
+            <button class="btn-indicator" 
+                    onclick="window.location.href='<?php echo $link; ?>';">
+                <div class="indicator-code"><?php echo $indicador['codigo']; ?></div>
+                <div class="indicator-name"><?php echo $titulo; ?></div>
+            </button>
         <?php endforeach; ?>
     </div>
 </div>

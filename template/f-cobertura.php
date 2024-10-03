@@ -2,26 +2,29 @@
 // Inclua o cabeçalho e outras partes do template conforme necessário
 get_header();
 
+$plugin = new CC_Plugin(); // Instancia o plugin
+
+// Lista de indicadores com códigos e links
 $indicadores = [
-    ['codigo' => 'F.1', 'nome' => 'Número de consultas médicas (SUS) por habitante'],
-    ['codigo' => 'F.2', 'nome' => 'Número de procedimentos diagnósticos por consulta médica (SUS)'],
-    ['codigo' => 'F.3', 'nome' => 'Número de internações hospitalares (SUS) por habitante'],
-    ['codigo' => 'F.5', 'nome' => 'Proporção de internações hospitalares (SUS) por especialidade', 'link' => '/fichasidb/fatores-risco-protecao/fichas'],
-    ['codigo' => 'F.6', 'nome' => 'Cobertura de consultas de pré-natal'],
-    ['codigo' => 'F.7', 'nome' => 'Proporção de partos hospitalares'],
-    ['codigo' => 'F.8', 'nome' => 'Proporção de partos cesáreos'],
-    ['codigo' => 'F.10', 'nome' => 'Razão entre nascidos vivos informados e estimados'],
-    ['codigo' => 'F.11', 'nome' => 'Razão entre óbitos informados e estimados'],
-    ['codigo' => 'F.13', 'nome' => 'Cobertura vacinal'],
-    ['codigo' => 'F.14', 'nome' => 'Proporção da população feminina em uso de métodos anticonceptivos'],
-    ['codigo' => 'F.15', 'nome' => 'Cobertura de planos de saúde'],
-    ['codigo' => 'F.16', 'nome' => 'Cobertura de planos privados de saúde', 'link' => 'f-cobertura/ficha?code=001CB'],
-    ['codigo' => 'F.17', 'nome' => 'Cobertura de redes de abastecimento de água'],
-    ['codigo' => 'F.18', 'nome' => 'Cobertura de esgotamento sanitário'],
-    ['codigo' => 'F.19', 'nome' => 'Cobertura de coleta de lixo'],
-    ['codigo' => 'F1', 'nome' => 'Anexo I – Procedimentos considerados como consulta médica'],
-    ['codigo' => 'F2', 'nome' => 'Anexo II – Procedimentos complementares SUS'],
-    ['codigo' => 'F13', 'nome' => 'Anexo III – População-alvo para o cálculo da cobertura vacinal'],
+    ['codigo' => 'F.1', 'link' => 'f-cobertura/ficha?code='],
+    ['codigo' => 'F.2', 'link' => 'f-cobertura/ficha?code='],
+    ['codigo' => 'F.3', 'link' => 'f-cobertura/ficha?code='],
+    ['codigo' => 'F.5', 'link' => 'f-cobertura/ficha?code='],
+    ['codigo' => 'F.6', 'link' => 'f-cobertura/ficha?code='],
+    ['codigo' => 'F.7', 'link' => 'f-cobertura/ficha?code='],
+    ['codigo' => 'F.8', 'link' => 'f-cobertura/ficha?code='],
+    ['codigo' => 'F.10', 'link' => 'f-cobertura/ficha?code='],
+    ['codigo' => 'F.11', 'link' => 'f-cobertura/ficha?code='],
+    ['codigo' => 'F.13', 'link' => 'f-cobertura/ficha?code='],
+    ['codigo' => 'F.14', 'link' => 'f-cobertura/ficha?code='],
+    ['codigo' => 'F.15', 'link' => 'f-cobertura/ficha?code='],
+    ['codigo' => 'F.16', 'link' => 'f-cobertura/ficha?code=001CB'],
+    ['codigo' => 'F.17', 'link' => 'f-cobertura/ficha?code='],
+    ['codigo' => 'F.18', 'link' => 'f-cobertura/ficha?code='],
+    ['codigo' => 'F.19', 'link' => 'f-cobertura/ficha?code='],
+    ['codigo' => 'F1', 'link' => 'f-cobertura/ficha?code='],
+    ['codigo' => 'F2', 'link' => 'f-cobertura/ficha?code='],
+    ['codigo' => 'F13', 'link' => 'f-cobertura/ficha?code='],
 ];
 ?>
 <div class="container-bread-indicadores">
@@ -39,11 +42,29 @@ $indicadores = [
     <div class="row indicators-page">
         <h2>F. Indicadores de Cobertura</h2>
         <?php foreach ($indicadores as $indicador): ?>
-                <button class="btn-indicator" 
-                        onclick="window.location.href='<?php echo isset($indicador['link']) ? $indicador['link'] : '#'; ?>';">
-                    <div class="indicator-code"><?php echo $indicador['codigo']; ?></div>
-                    <div class="indicator-name"><?php echo $indicador['nome']; ?></div>
-                </button>
+            <?php
+                // Obtenha o código diretamente da query string da URL, se existir
+                $param_code = isset($indicador['link']) ? explode('code=', $indicador['link'])[1] : '';
+                
+                // Chame a API e obtenha os dados para o código atual da ficha, caso o código exista
+                $data = !empty($param_code) ? $plugin->fetch_api_data($param_code) : null;
+                
+                // Use o título retornado pela API, ou mostre uma mensagem de erro caso não haja
+                $titulo = isset($data['titulo']) ? $data['titulo'] : 'Título não encontrado';
+
+                // Remova os primeiros caracteres redundantes, se o título começar com o código
+                if (strpos($titulo, $indicador['codigo']) === 0) {
+                    $titulo = substr($titulo, strlen($indicador['codigo']) + 1);
+                }
+
+                // Construa o link da página ou utilize o link padrão
+                $link = isset($indicador['link']) ? $indicador['link'] : '#';
+            ?>
+            <button class="btn-indicator" 
+                    onclick="window.location.href='<?php echo $link; ?>';">
+                <div class="indicator-code"><?php echo $indicador['codigo']; ?></div>
+                <div class="indicator-name"><?php echo $titulo; ?></div>
+            </button>
         <?php endforeach; ?>
     </div>
 </div>

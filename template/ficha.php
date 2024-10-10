@@ -2,7 +2,7 @@
 // Inclua o cabeçalho e outras partes do template conforme necessário
 get_header();
 
-// Pega parametro com identificador da ficha
+// Pega o parâmetro com identificador da ficha
 $param_code = $_GET['code'];
 
 // Instancie o plugin e obtenha os dados
@@ -14,6 +14,10 @@ $codigo = $data['codigo'];
 // Processamento de pesquisa
 $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
 $searchYear = isset($_GET['year']) ? intval($_GET['year']) : '';
+
+// Remove <p class="ql-align-justify"> and </p> tags from the formula_calculo field
+$formula_calculo = str_replace('<p class="ql-align-justify">', '', $data['formula_calculo']);
+$formula_calculo = str_replace('</p>', '', $formula_calculo);
 
 ?>
 <div class="container-bread-indicadores">
@@ -56,7 +60,10 @@ if ($data) {
     echo '</div>';
     
     echo '<div class="data-box">';
-    echo '<p><h3>Fórmula de Cálculo</h3> ' . $data['formula_calculo'] . '</p>';
+    // Fórmula de Cálculo com suporte para LaTeX via MathJax
+    //echo '<p><h3>Fórmula de Cálculo</h3> <span class="formula-latex">\\(' . htmlspecialchars($data['formula_calculo']) . '\\)</span></p>';
+    // Output the processed formula_calculo with LaTeX rendering support using htmlspecialchars
+    echo '<p><h3>Fórmula de Cálculo</h3> <span class="formula-latex">\\(' . htmlspecialchars($formula_calculo) . '\\)</span></p>';
     echo '</div>';
     
     echo '<div class="data-box">';
@@ -150,3 +157,6 @@ get_footer();
 
 <!-- Importação da biblioteca jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- Carrega o MathJax para renderizar LaTeX -->
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

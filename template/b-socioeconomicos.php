@@ -41,12 +41,25 @@ $indicadores = [
             <?php
                 // Obtenha o código diretamente da query string da URL
                 $param_code = isset($indicador['link']) ? explode('code=', $indicador['link'])[1] : '';
-                
-                // Chame a API e obtenha os dados para o código atual da ficha
-                $data = !empty($param_code) ? $plugin->fetch_api_data($param_code) : null;
+
+                // Defina uma chave de cache exclusiva para cada código de indicador
+                $cache_key = 'indicador_' . $param_code;
+                $cache_duration = 12 * HOUR_IN_SECONDS; // Cache por 12 horas
+
+                // Tente obter os dados do cache
+                $data = get_transient($cache_key);
+
+                // Se o cache estiver vazio, faça a requisição à API e armazene os dados
+                if ($data === false && !empty($param_code)) {
+                    $data = $plugin->fetch_api_data($param_code);
+                    if (!empty($data)) {
+                        // Armazene o resultado da API no cache
+                        set_transient($cache_key, $data, $cache_duration);
+                    }
+                }
 
                 // Use o título retornado pela API, ou mostre uma mensagem de erro caso não haja
-                $titulo = isset($data['titulo']) ? $data['titulo'] : 'Título não encontrado';
+                $titulo = isset($data['titulo']) ? $data['titulo'] : '';
 
                 // Remove os primeiros caracteres redundantes, se o título começar com o código
                 if (strpos($titulo, $indicador['codigo']) === 0) {

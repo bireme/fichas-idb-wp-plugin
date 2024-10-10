@@ -23,7 +23,27 @@ $indicadores = [
     ['codigo' => 'A.11', 'link' => 'a-demografico/ficha?code=002DM'],
     ['codigo' => 'A.12', 'link' => 'a-demografico/ficha?code=003DM'],
 ];
+
+// Função para obter dados da API com cache
+function get_cached_api_data($param_code, $plugin) {
+    $cache_key = 'api_data_' . $param_code; // Gera uma chave única para o cache
+    $cache_duration = 12 * HOUR_IN_SECONDS; // Define o tempo de cache em 12 horas
+
+    // Verifica se os dados já estão no cache
+    $data = get_transient($cache_key);
+
+    if ($data === false) {
+        // Se não houver dados no cache, faz a requisição à API
+        $data = $plugin->fetch_api_data($param_code);
+
+        // Armazena os dados no cache
+        set_transient($cache_key, $data, $cache_duration);
+    }
+
+    return $data;
+}
 ?>
+
 <div class="container-bread-indicadores">
     <div class="breadcrumb">
         <nav aria-label="breadcrumb">
@@ -42,12 +62,12 @@ $indicadores = [
             <?php
                 // Obtenha o código diretamente da query string da URL
                 $param_code = isset($indicador['link']) ? explode('code=', $indicador['link'])[1] : '';
-                
-                // Chame a API e obtenha os dados para o código atual da ficha
-                $data = $plugin->fetch_api_data($param_code);
+
+                // Obtém os dados do cache ou faz uma requisição à API, se necessário
+                $data = get_cached_api_data($param_code, $plugin);
                 
                 // Use o título retornado pela API, ou mostre uma mensagem de erro caso não haja
-                $titulo = isset($data['titulo']) ? $data['titulo'] : 'Título não encontrado';
+                $titulo = isset($data['titulo']) ? $data['titulo'] : '';
 
                 // Remove os primeiros caracteres redundantes, se o título começar com o código
                 if (strpos($titulo, $indicador['codigo']) === 0) {

@@ -19,6 +19,15 @@ $indicadores = [
 ];
 
 ?>
+
+<!-- Inclua a fonte Inter do Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+
+<!-- Banner de Cabeçalho -->
+<div class="header-banner">
+    Fichas de Indicadores de Desenvolvimento Básico
+</div>
+</br>
 <div class="container-bread-indicadores">
     <div class="breadcrumb">
         <nav aria-label="breadcrumb">
@@ -29,11 +38,12 @@ $indicadores = [
         </nav>
     </div>
 </div>
+
 <div class="container">
     <div class="row indicators-page">
         <?php foreach ($indicadores as $indicador): ?>
             <a href="<?php echo site_url('fichasidb/' . $indicador['link']); ?>" class="indicator-box">
-                <div class="indicator-letter"><?php echo $indicador['letra']; ?></div>
+                <div class="indicator-letter highlight-letter"><?php echo $indicador['letra']; ?></div>
                 <div class="indicator-content">
                     <img src="<?php echo $plugin_path . $indicador['icone']; ?>" alt="<?php echo $indicador['nome']; ?>" class="indicator-icon" />
                     <div>

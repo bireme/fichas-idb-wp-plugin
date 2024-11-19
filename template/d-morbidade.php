@@ -53,6 +53,14 @@ $indicadores = [
     ['codigo' => 'D.XX', 'link' => 'd-morbidade/ficha?code=001MB'],
 ];
 ?>
+<!-- Inclua a fonte Inter do Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+
+<!-- Banner de Cabeçalho -->
+<div class="header-banner">
+    Morbidade
+</div>
+</br>
 <div class="container-bread-indicadores">
     <div class="breadcrumb">
         <nav aria-label="breadcrumb">
@@ -66,7 +74,7 @@ $indicadores = [
 </div>
 <div class="container">
     <div class="row indicators-page">
-        <h2>D. Indicadores de Morbidade</h2>
+        <h2 class="green-title"><b>D. Indicadores de Morbidade</b></h2>
         <?php foreach ($indicadores as $indicador): ?>
             <?php
                 // Obtenha o código diretamente da query string da URL, se existir
@@ -99,15 +107,26 @@ $indicadores = [
 
                 // Construa o link da página ou utilize o código padrão
                 $link = isset($indicador['link']) ? $indicador['link'] : '#';
+
+                // Verifique se o código está vazio para desativar o botão
+                $is_disabled = empty($param_code);
             ?>
-            <button class="btn-indicator" 
-                    onclick="window.location.href='<?php echo $link; ?>';">
+            <button class="btn-indicator <?php echo $is_disabled ? 'disabled' : ''; ?>" 
+                    onclick="<?php echo $is_disabled ? 'return false;' : "window.location.href='{$link}';"; ?>"
+                    <?php echo $is_disabled ? 'disabled' : ''; ?>>
                 <div class="indicator-code"><?php echo $indicador['codigo']; ?></div>
                 <div class="indicator-name"><?php echo $titulo; ?></div>
             </button>
         <?php endforeach; ?>
     </div>
 </div>
+
+<style>
+    .btn-indicator.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+</style>
 
 <?php
 // Inclua o rodapé e outras partes do template conforme necessário

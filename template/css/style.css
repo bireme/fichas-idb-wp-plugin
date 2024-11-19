@@ -1,8 +1,32 @@
 /* @autor: BIREME | OPAS | OMS - > Lucas Ramos */
+
+/* Aumenta o tamanho da fonte em elementos de texto */
+body, p, h1, h2, h3, .indicator-content, .data-box, .api-data-item, .breadcrumb, .container-bread-indicadores {
+   font-size: 16px !important; /* Ajuste o valor conforme necessário */
+   line-height: 1.6 !important; /* Linha mais espaçada para melhorar a leitura */
+}
+
+/* Especificamente para textos menores */
+.indicator-content p, .data-box p {
+   font-size: 16px !important; /* Ajuste o valor conforme necessário */
+}
+
+.indicator-content h3 {
+   font-size: 1.2em !important; /* Aumenta títulos */
+   font-weight: bold;
+}
+
+.indicator-letter {
+   font-size: 7em !important; /* Tamanho das letras dos indicadores */
+}
+
+
 body{
 	/*background: #f5f5f5;*/
 	font-family: 'Source Sans Pro', sans-serif;
 	font-weight: 400;
+   font-size: 16px !important; /* Tamanho desejado */
+   line-height: 1.5 !important; /* Espaçamento para legibilidade */
 }
 #header{
    background: #ededed;
@@ -118,10 +142,9 @@ body{
    transform: scale(.9);
 }
 #footer{
-   padding: 30px 0 20px 0;
+   padding: 0px 0 0px 0;
    margin-top: 0px;
    border-top: 0px solid #ddd;
-   background: #2D358C;
    color: #333;
 }
 #footer a{
@@ -362,7 +385,7 @@ body{
    background-color: #ffffff;
    border-radius: 10px;
    margin: 10px;
-   padding: 20px;
+   padding: 0px 100px 0 80px;
    width: 100%;
    display: flex;
    align-items: center;
@@ -371,9 +394,20 @@ body{
    border: 1px solid #ddd;
 }
 
+/* Ajuste de padding para dispositivos móveis */
+@media (max-width: 768px) {
+   .indicator-box {
+      padding: 0px; /* Aplica padding zero em dispositivos móveis */
+   }
+}
+
 .indicator-box:hover {
    background-color: #fff;
-   border: 1px solid #2D358C;
+   border: 1px solid #54AB31;
+}
+
+.green-title {
+   color: #54AB31;
 }
 
 .indicator-letter {
@@ -401,7 +435,7 @@ body{
 
 .indicator-content p {
    margin: 5px 0 0 20px;
-   color: #555;
+   color: #000;
 }
 
 
@@ -474,14 +508,14 @@ body{
    gap: 10px;
 }
 
-/* Estilo das caixas de dados */
-.data-box {
+.data-box, .doi-box {
    background-color: #FFFFFF;
    border: 1px solid #ddd;
    border-radius: 8px;
    padding: 20px;
-   margin-bottom: 20px;
-     margin: 0px 20px 10px 0px;
+   margin: 0 auto 20px auto; /* Centraliza horizontalmente */
+   max-width: 780px; /* Define uma largura máxima */
+   text-align: left; /* Centraliza o conteúdo dentro da caixa */
 }
 
 .data-box h2 {
@@ -556,7 +590,7 @@ body{
 .search-box button {
    padding: 8px 12px;
    border: none;
-   background-color: #E32880;
+   background-color: #54AB31;
    color: white;
    border-radius: 4px;
    cursor: pointer;
@@ -608,4 +642,26 @@ body{
 .indicator-name {
    flex-grow: 1;
    text-align: left;
+}
+
+/* Estilo para as letras A, B, C, D, E, F, G em verde */
+.indicator-letter.highlight-letter {
+   color: #54AB31;
+}
+
+/* Efeito de sublinhado verde ao passar o mouse sobre as letras */
+.indicator-box:hover .indicator-letter.highlight-letter {
+   text-decoration: underline;
+   text-decoration-color: #54AB31;
+}
+
+.header-banner {
+   background: linear-gradient(to right, #2D358C, #4A3E8F); /* Gradiente azul */
+   color: #FFFFFF;
+   text-align: center;
+   padding: 20px;
+   font-size: 24px;
+   font-weight: bold;
+   font-weight: 400; /* Peso da fonte */
+   font-family: 'Inter', sans-serif; /* Fonte Inter */
 }

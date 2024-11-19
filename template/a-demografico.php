@@ -6,9 +6,9 @@ $plugin = new CC_Plugin(); // Instancia o plugin
 
 // Lista de indicadores com códigos
 $indicadores = [
-    ['codigo' => 'A.1', 'link' => 'a-demografico/ficha?code='],
+    ['codigo' => 'A.1', 'link' => 'a-demografico/ficha?code=014DM'],
     ['codigo' => 'A.2', 'link' => 'a-demografico/ficha?code=008DM'],
-    ['codigo' => 'A.3', 'link' => 'a-demografico/ficha?code='],
+    ['codigo' => 'A.3', 'link' => 'a-demografico/ficha?code=015DM'],
     ['codigo' => 'A.4', 'link' => 'a-demografico/ficha?code='],
     ['codigo' => 'A.13', 'link' => 'a-demografico/ficha?code=004DM'],
     ['codigo' => 'A.14', 'link' => 'a-demografico/ficha?code=005DM'],
@@ -16,12 +16,16 @@ $indicadores = [
     ['codigo' => 'A.16', 'link' => 'a-demografico/ficha?code=007DM'],
     ['codigo' => 'A.5', 'link' => 'a-demografico/ficha?code='],
     ['codigo' => 'A.6', 'link' => 'a-demografico/ficha?code='],
-    ['codigo' => 'A.7', 'link' => 'a-demografico/ficha?code='],
+    ['codigo' => 'A.7', 'link' => 'a-demografico/ficha?code=011DM'],
     ['codigo' => 'A.8', 'link' => 'a-demografico/ficha?code='],
     ['codigo' => 'A.9', 'link' => 'a-demografico/ficha?code='],
     ['codigo' => 'A.10', 'link' => 'a-demografico/ficha?code=001DM'],
     ['codigo' => 'A.11', 'link' => 'a-demografico/ficha?code=002DM'],
     ['codigo' => 'A.12', 'link' => 'a-demografico/ficha?code=003DM'],
+    ['codigo' => 'A.XX', 'link' => 'a-demografico/ficha?code=009DM'],
+    ['codigo' => 'A.XX', 'link' => 'a-demografico/ficha?code=010DM'],
+    ['codigo' => 'A.XX', 'link' => 'a-demografico/ficha?code=012DM'],
+    ['codigo' => 'A.XX', 'link' => 'a-demografico/ficha?code=013DM'],
 ];
 
 // Função para obter dados da API com cache
@@ -44,6 +48,14 @@ function get_cached_api_data($param_code, $plugin) {
 }
 ?>
 
+<!-- Inclua a fonte Inter do Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+
+<!-- Banner de Cabeçalho -->
+<div class="header-banner">
+    Demográfico
+</div>
+</br>
 <div class="container-bread-indicadores">
     <div class="breadcrumb">
         <nav aria-label="breadcrumb">
@@ -56,8 +68,8 @@ function get_cached_api_data($param_code, $plugin) {
     </div>
 </div>
 <div class="container">
-    <div class="row indicators-page">
-        <h2>A. Indicadores Demográficos</h2>
+<div class="row indicators-page">
+    <h2 class="green-title"><b>A. Indicadores Demográficos</b></h2>
         <?php foreach ($indicadores as $indicador): ?>
             <?php
                 // Obtenha o código diretamente da query string da URL
@@ -77,15 +89,26 @@ function get_cached_api_data($param_code, $plugin) {
 
                 // Construa o link da página ou utilize o código padrão
                 $link = isset($indicador['link']) ? $indicador['link'] : '#';
+
+                // Verifique se o código está vazio para desativar o botão
+                $is_disabled = empty($param_code);
             ?>
-            <button class="btn-indicator" 
-                    onclick="window.location.href='<?php echo $link; ?>';">
+            <button class="btn-indicator <?php echo $is_disabled ? 'disabled' : ''; ?>" 
+                    onclick="<?php echo $is_disabled ? 'return false;' : "window.location.href='{$link}';"; ?>"
+                    <?php echo $is_disabled ? 'disabled' : ''; ?>>
                 <div class="indicator-code"><?php echo $indicador['codigo']; ?></div>
                 <div class="indicator-name"><?php echo $titulo; ?></div>
             </button>
         <?php endforeach; ?>
     </div>
 </div>
+
+<style>
+    .btn-indicator.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+</style>
 
 <?php
 // Inclua o rodapé e outras partes do template conforme necessário

@@ -9,7 +9,10 @@ $param_code = $_GET['code'];
 $plugin = new CC_Plugin();
 $data = $plugin->fetch_api_data($param_code);
 
-$codigo = $data['codigo'];
+// Adicione o DOI manualmente para a ficha com código 014DM como exemplo
+if ($param_code === '014DM') {
+    $data['doi'] = '10.5281/zenodo.7789893'; // DOI de exemplo para teste
+}
 
 // Processamento de pesquisa
 $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
@@ -19,6 +22,8 @@ $searchYear = isset($_GET['year']) ? intval($_GET['year']) : '';
 $formula_calculo = str_replace('<p class="ql-align-justify">', '', $data['formula_calculo']);
 $formula_calculo = str_replace('</p>', '', $formula_calculo);
 
+// Remove delimitadores de fórmula LaTeX $$ caso estejam presentes
+$formula_calculo = str_replace('$$', '', $formula_calculo);
 ?>
 <div class="container-bread-indicadores">
     <div class="breadcrumb">
@@ -35,86 +40,105 @@ $formula_calculo = str_replace('</p>', '', $formula_calculo);
     <div class="row">
         <!-- Primeira coluna: Exibição dos dados -->
         <div class="column-left" id="content-to-print">
-        <?php
-if ($data) {
-    echo '<h2>' . $data['titulo'] . '</h2>';
+            <?php if ($data): ?>
+                <h2><b><?php echo $data['titulo']; ?></b></h2>
                 
-    echo '<div class="data-box">';
-    echo '<p><h3>Conceituação</h3> ' . $data['conceituacao'] . '</p>';
-    echo '</div>';
-    
-    echo '<div class="data-box">';
-    echo '<p><h3>Interpretação</h3> ' . $data['interpretacao'] . '</p>';
-    echo '</div>';
-    
-    echo '<div class="data-box">';
-    echo '<p><h3>Usos</h3> ' . $data['usos'] . '</p>';
-    echo '</div>';
-    
-    echo '<div class="data-box">';
-    echo '<p><h3>Limitações</h3> ' . $data['limitacoes'] . '</p>';
-    echo '</div>';
-    
-    echo '<div class="data-box">';
-    echo '<p><h3>Fonte de Dados</h3> ' . $data['fonte_dados'] . '</p>';
-    echo '</div>';
-    
-    echo '<div class="data-box">';
-    // Fórmula de Cálculo com suporte para LaTeX via MathJax
-    //echo '<p><h3>Fórmula de Cálculo</h3> <span class="formula-latex">\\(' . htmlspecialchars($data['formula_calculo']) . '\\)</span></p>';
-    // Output the processed formula_calculo with LaTeX rendering support using htmlspecialchars
-    echo '<p><h3>Fórmula de Cálculo</h3> <span class="formula-latex">\\(' . htmlspecialchars($formula_calculo) . '\\)</span></p>';
-    echo '</div>';
-    
-    echo '<div class="data-box">';
-    echo '<p><h3>Método de Cálculo</h3> ' . $data['metodo_calculo'] . '</p>'; // Este campo pode estar vazio
-    echo '</div>';
-    
-    echo '<div class="data-box">';
-    echo '<p><h3>Categorias de Análise</h3> '; 
-    if (isset($data['CategoriasAnalise']) && is_array($data['CategoriasAnalise'])) {
-        foreach ($data['CategoriasAnalise'] as $categoria) {
-            echo '<span>' . $categoria['titulo'] . '</span><br>';
-        }
-    }
-    echo '</div>';
-    
-    echo '<div class="data-box">';
-    echo '<p><h3>Granularidade</h3> ' . $data['Granularidade']['descricao'] . '</p>';
-    echo '</div>';
-    
-    echo '<div class="data-box">';
-    echo '<p><h3>Periodicidade de Atualização</h3> ' . $data['PeriodicidadeAtualizacao']['descricao'] . '</p>';
-    echo '</div>';
-    
-    echo '<div class="data-box">';
-    echo '<p><h3>Responsabilidade Gerencial</h3> '; 
-    echo isset($data['ResponsavelGerencial']) && !empty($data['ResponsavelGerencial']) ? $data['ResponsavelGerencial'] : 'Não informado';
-    echo '</div>';
-    
-    echo '<div class="data-box">';
-    echo '<p><h3>Notas</h3> ' . $data['notas'] . '</p>';
-    echo '</div>';
-    
-    echo '<div class="data-box">';
-    echo '<p><h3>Análise Descritiva do Indicador</h3> '; 
-    echo isset($data['analise_descritiva']) ? $data['analise_descritiva'] : 'Sem análise descritiva';
-    echo '</div>';
-} else {
-    echo 'Não foi possível recuperar os dados.';
-}
-?>
+                <div class="data-box">
+                    <p><h3>Conceituação</h3> <?php echo $data['conceituacao']; ?></p>
+                </div>
+                
+                <div class="data-box">
+                    <p><h3>Interpretação</h3> <?php echo $data['interpretacao']; ?></p>
+                </div>
+                
+                <div class="data-box">
+                    <p><h3>Usos</h3> <?php echo $data['usos']; ?></p>
+                </div>
+                
+                <div class="data-box">
+                    <p><h3>Limitações</h3> <?php echo $data['limitacoes']; ?></p>
+                </div>
+                
+                <div class="data-box">
+                    <p><h3>Fonte de Dados</h3> <?php echo $data['fonte_dados']; ?></p>
+                </div>
+                
+                <div class="data-box">
+                    <p><h3>Fórmula de Cálculo</h3> <span class="formula-latex">\\(<?php echo htmlspecialchars($formula_calculo); ?>\\)</span></p>
+                </div>
+                
+                <div class="data-box">
+                    <p><h3>Método de Cálculo</h3> <?php echo $data['metodo_calculo'] ?: 'Não informado'; ?></p>
+                </div>
+                
+                <div class="data-box">
+                    <p><h3>Categorias de Análise</h3>
+                        <?php 
+                        if (isset($data['CategoriasAnalise']) && is_array($data['CategoriasAnalise'])) {
+                            foreach ($data['CategoriasAnalise'] as $categoria) {
+                                echo '<span>' . $categoria['titulo'] . '</span><br>';
+                            }
+                        }
+                        ?>
+                    </p>
+                </div>
+                
+                <div class="data-box">
+                    <p><h3>Granularidade</h3> <?php echo $data['Granularidade']['descricao']; ?></p>
+                </div>
+                
+                <div class="data-box">
+                    <p><h3>Periodicidade de Atualização</h3> <?php echo $data['PeriodicidadeAtualizacao']['descricao']; ?></p>
+                </div>
+                
+                <div class="data-box">
+                    <p><h3>Responsabilidade Gerencial</h3> <?php echo $data['ResponsavelGerencial'] ?: 'Não informado'; ?></p>
+                </div>
+                
+                <div class="data-box">
+                    <p><h3>Notas</h3> <?php echo $data['notas']; ?></p>
+                </div>
+                
+                <div class="data-box">
+                    <p><h3>Análise Descritiva do Indicador</h3> <?php echo $data['analise_descritiva'] ?: 'Sem análise descritiva'; ?></p>
+                </div>
+                
+                <!-- Seção Como Citar -->
+                <div class="data-box">
+                    <p><h3>Como Citar</h3>
+                        <?php if (isset($data['doi']) && !empty($data['doi'])): ?>
+                            Para citar este indicador, use o seguinte DOI: <a href="https://doi.org/<?php echo $data['doi']; ?>" target="_blank"><?php echo $data['doi']; ?></a>.
+                        <?php else: ?>
+                            As informações de citação não estão disponíveis para este indicador.
+                        <?php endif; ?>
+                    </p>
+                </div>
+                
+                <!-- Seção Direitos Creative Commons -->
+                <div class="data-box">
+                    <p><h3>Direitos</h3>
+                        <span style="display: flex; align-items: center; padding: 10px 0;">
+                            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                                <img src="<?php echo plugins_url('images/cc-by-4.0-icon.png', __FILE__); ?>" alt="cc-by-4.0 icon" style="width:80px; height:28px; margin-right: 8px;">
+                                <span style="font-size: 9px; line-height: 1.2;">Creative Commons Attribution 4.0 International</span>
+                            </a>
+                        </span>
+                    </p>
+                </div>
+            <?php else: ?>
+                <p>Não foi possível recuperar os dados.</p>
+            <?php endif; ?>
         </div>
 
         <!-- Segunda coluna: Botões com ícones -->
         <div class="column-right">
+            <!-- Exibe o DOI na coluna direita se estiver definido para a ficha -->
+            <?php if (isset($data['doi']) && !empty($data['doi'])): ?>
+                <div class="data-box doi-box">
+                    <p><h3>DOI</h3> <a href="https://doi.org/<?php echo $data['doi']; ?>" target="_blank"><?php echo $data['doi']; ?></a></p>
+                </div>
+            <?php endif; ?>
             <div class="button-box">
-                <!-- Botão Bases de Dados (sem alterações) -->
-                <button class="btn-icon"><i class="fa-solid fa-database"></i> Bases de Dados</button>
-                
-                <!-- Botão Imprimir -->
-                <button class="btn-icon" id="print-button"><i class="fa-solid fa-print"></i> Imprimir</button>
-                
                 <!-- Botão Gerar PDF -->
                 <button class="btn-icon" id="pdf-button"><i class="fa-solid fa-file-pdf"></i> PDF</button>
             </div>
@@ -127,36 +151,20 @@ if ($data) {
 get_footer();
 ?>
 
-<!-- JavaScript para impressão e geração de PDF -->
+<!-- JavaScript para impressão -->
 <script>
-    // Função para imprimir o conteúdo
-    document.getElementById('print-button').addEventListener('click', function() {
+    document.getElementById('print-button')?.addEventListener('click', function() {
         var printContent = document.getElementById('content-to-print').innerHTML;
         var originalContent = document.body.innerHTML;
         document.body.innerHTML = printContent;
         window.print();
         document.body.innerHTML = originalContent;
     });
-
-    // Função para gerar PDF usando jsPDF
-    document.getElementById('pdf-button').addEventListener('click', function() {
-        var { jsPDF } = window.jspdf;
-
-        var doc = new jsPDF();
-
-        // Captura o conteúdo a ser convertido para PDF
-        var content = document.getElementById('content-to-print').innerText;
-
-        // Adiciona o conteúdo no PDF
-        doc.text(content, 10, 10);
-
-        // Salva o arquivo PDF com o nome especificado
-        doc.save('indicador.pdf');
-    });
 </script>
 
 <!-- Importação da biblioteca jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
+<!-- Importação da biblioteca html2canvas -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <!-- Carrega o MathJax para renderizar LaTeX -->
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

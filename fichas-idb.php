@@ -281,7 +281,6 @@ if(!class_exists('IDB_Plugin')) {
         }
 
         function fetch_api_indicador($indicator) {
-
             $api_url = $this->api_url . 'indicador/' . $indicator;
             $response = wp_remote_get($api_url);
 
@@ -299,7 +298,7 @@ if(!class_exists('IDB_Plugin')) {
             return $data;
         }
 
-        function fetch_api_lista_indicadores($categoria_code) {
+        function fetch_api_lista_indicadores($categoria) {
             $cache_key = 'api_lista_indicadores'; // Gera uma chave única para o cache
             $cache_duration = 12 * HOUR_IN_SECONDS; // Define o tempo de cache em 12 horas
             $indicadores = [];
@@ -328,15 +327,14 @@ if(!class_exists('IDB_Plugin')) {
             }
 
             $tags = $data['Tags'] ?? [];
-            // Filter to categoria_code
-            if ($tags && $categoria_code) {
-                $categoria = array_filter($tags, function ($tag) use ($categoria_code) {
-                    return isset($tag['codigo']) && $tag['codigo'] == $categoria_code;
-                });
-
-                $indicadores = $categoria[0]['Indicadores'] ?? [];
+            foreach ($tags as $tag) {
+                if (trim($tag['descricao']) == trim($categoria)) {
+                    if (isset($tag['Indicadores']) && is_array($tag['Indicadores'])) {
+                        $indicadores = $tag['Indicadores'];
+                        break; // Encerra o loop após encontrar a categoria desejada
+                    }
+                }
             }
-
             return $indicadores;
         }
 

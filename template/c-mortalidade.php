@@ -2,7 +2,7 @@
 get_header();
 
 $plugin = new IDB_Plugin(); // Instancia o plugin
-$indicadores = $plugin->fetch_api_lista_indicadores(108); // Obtém os dados da API para a categoria "Demográfico"
+$indicadores = $plugin->fetch_api_lista_indicadores('RIPSA - Mortalidade'); // Obtém os dados da API para a categoria "Mortalidade"
 
 if ($indicadores) {
     usort($indicadores, function ($a, $b) {

@@ -1,33 +1,141 @@
 <?php
-// Inclua o cabeçalho e outras partes do template conforme necessário
 get_header();
-
-// Processamento de pesquisa
-$searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
-$searchYear = isset($_GET['year']) ? intval($_GET['year']) : '';
 
 $plugin_path = plugin_dir_url(__FILE__) . 'images/icons/';
 
 $indicadores = [
-    ['letra' => 'A', 'icone' => 'demografico.png', 'nome' => 'Demográfico', 'descricao' => 'Indicadores que medem a distribuição de fatores determinantes da situação de saúde, relacionados à dinâmica populacional em uma área geográfica referida.', 'link' => 'a-demografico'],
-    ['letra' => 'B', 'icone' => 'socioeconomico.png', 'nome' => 'Socioeconômicos', 'descricao' => 'Indicadores que medem a distribuição dos fatores determinantes da situação de saúde relacionados ao perfil econômico e social da população residente em uma área geográfica referida.', 'link' => 'b-socioeconomicos'],
-    ['letra' => 'C', 'icone' => 'mortalidade.png', 'nome' => 'Mortalidade', 'descricao' => 'Indicadores que informam a ocorrência e distribuição das causas de óbito no perfil da mortalidade da população residente em uma área geográfica referida.', 'link' => 'c-mortalidade'],
-    ['letra' => 'D', 'icone' => 'morbidade.png', 'nome' => 'Morbidade', 'descricao' => 'Indicadores que informam a ocorrência e distribuição de doenças e agravos à saúde na população residente em uma área geográfica referida.', 'link' => 'd-morbidade'],
-    ['letra' => 'E', 'icone' => 'recursos.png', 'nome' => 'Recursos', 'descricao' => 'Indicadores que medem a oferta e a demanda de recursos humanos, físicos e financeiros para atendimento às necessidades básicas de saúde da população em uma área geográfica referida.', 'link' => 'e-recursos'],
-    ['letra' => 'F', 'icone' => 'cobertura.png', 'nome' => 'Cobertura', 'descricao' => 'Indicadores que medem o grau de utilização dos meios oferecidos pelo setor público e pelo setor privado para atender às necessidades de saúde da população em uma área geográfica referida.', 'link' => 'f-cobertura'],
-    ['letra' => 'G', 'icone' => 'fatores_de_risco.png', 'nome' => 'Fatores de Risco e Proteção', 'descricao' => 'Indicadores que medem os fatores de risco (por ex. tabaco, álcool), e/ou proteção (por ex. alimentação saudável, atividade física, aleitamento) que predispõe a doenças e agravos ou protegem das doenças e agravos.', 'link' => 'g-fatores-risco-protecao'],
+    ['letra' => 'F', 'icone' => 'cobertura.png', 'nome' => 'Cobertura', 'link' => 'f-cobertura'],
+    ['letra' => 'DEM', 'icone' => 'demografico.png', 'nome' => 'Demográfico', 'link' => 'a-demografico'],
+    ['letra' => 'G', 'icone' => 'fatores_de_risco.png', 'nome' => 'Fatores de Risco e Proteção', 'link' => 'g-fatores-risco-protecao'],
+    ['letra' => 'D', 'icone' => 'morbidade.png', 'nome' => 'Morbidade', 'link' => 'd-morbidade'],
+    ['letra' => 'C', 'icone' => 'mortalidade.png', 'nome' => 'Mortalidade', 'link' => 'c-mortalidade'],
+    ['letra' => 'E', 'icone' => 'recursos.png', 'nome' => 'Recursos', 'link' => 'e-recursos'],
+    ['letra' => 'B', 'icone' => 'socioeconomico.png', 'nome' => 'Socioeconômico', 'link' => 'b-socioeconomicos'],
 ];
-
 ?>
 
-<!-- Inclua a fonte Inter do Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+<!-- Estilos -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f5f7fa;
+        color: #1a1a1a;
+    }
 
-<!-- Banner de Cabeçalho -->
-<div class="header-banner">
-    Fichas de Indicadores de Desenvolvimento Básico
-</div>
-</br>
+    .breadcrumb {
+        background-color: #f5f7fa;
+    }
+
+    .header-banner {
+        text-align: center;
+        font-size: 28px;
+        font-weight: 700;
+        margin: 40px 0 20px;
+        color: #ffffff;
+    }
+
+    .indicators-section {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 20px 60px;
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+    }
+
+    .indicators-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+    }
+
+    .indicators-row:last-child {
+        margin-top: 40px;
+        gap: 40px;
+    }
+
+    .indicator-card {
+        width: 220px;
+        text-align: center;
+        text-decoration: none;
+        transition: transform 0.2s ease;
+    }
+
+    .indicator-card:hover {
+        transform: translateY(-4px);
+    }
+
+    .indicator-icon-circle {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        border: 4px solid #2e7d32;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 14px;
+        background-color: white;
+    }
+
+    .indicator-card.active .indicator-icon-circle {
+        border-color: #2e318f;
+    }
+
+    .indicator-icon-circle img {
+        width: 72px;
+        height: 72px;
+        object-fit: contain;
+    }
+
+    .indicator-label {
+        background-color: #2e7d32;
+        color: white;
+        border-radius: 30px;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+        white-space: nowrap;
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .indicator-card:hover .indicator-label,
+    .indicator-card.active .indicator-label {
+        background-color: #2e318f;
+    }
+
+    /* Último indicador: força o texto inteiro em uma linha */
+    .last-indicator .indicator-label {
+        white-space: nowrap;
+        overflow: visible;
+        text-overflow: unset;
+        font-size: 15px;
+        max-width: 260px;
+        text-align: center;
+    }
+
+    @media (max-width: 768px) {
+        .indicator-card {
+            width: 100%;
+        }
+
+        .indicator-label {
+            font-size: 14px;
+        }
+
+        .last-indicator .indicator-label {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<!-- Conteúdo -->
+<div class="header-banner">Fichas de Qualificação dos Indicadores (FQI)</div>
+
 <div class="container-bread-indicadores">
     <div class="breadcrumb">
         <nav aria-label="breadcrumb">
@@ -39,24 +147,33 @@ $indicadores = [
     </div>
 </div>
 
-<div class="container">
-    <div class="row indicators-page">
-        <?php foreach ($indicadores as $indicador): ?>
-            <a href="<?php echo site_url('fichasidb/' . $indicador['link']); ?>" class="indicator-box">
-                <div class="indicator-letter highlight-letter"><?php echo $indicador['letra']; ?></div>
-                <div class="indicator-content">
-                    <img src="<?php echo $plugin_path . $indicador['icone']; ?>" alt="<?php echo $indicador['nome']; ?>" class="indicator-icon" />
-                    <div>
-                        <h3><?php echo $indicador['nome']; ?></h3>
-                        <p><?php echo $indicador['descricao']; ?></p>
-                    </div>
+<div class="indicators-section">
+    <div class="indicators-row">
+        <?php foreach (array_slice($indicadores, 0, 4) as $indicador): ?>
+            <?php $is_active = $indicador['letra'] === $indicador_ativo; ?>
+            <a href="<?php echo site_url($idb_plugin_slug . '/' . $indicador['link']); ?>" class="indicator-card <?php echo $is_active ? 'active' : ''; ?>">
+                <div class="indicator-icon-circle">
+                    <img src="<?php echo $plugin_path . $indicador['icone']; ?>" alt="<?php echo $indicador['nome']; ?>" />
                 </div>
+                <div class="indicator-label"><?php echo $indicador['nome']; ?></div>
+            </a>
+        <?php endforeach; ?>
+    </div>
+
+    <div class="indicators-row">
+        <?php foreach (array_slice($indicadores, 4) as $i => $indicador): ?>
+            <?php
+                $is_active = $indicador['letra'] === $indicador_ativo;
+                $is_last = $i === 2 ? 'last-indicator' : '';
+            ?>
+            <a href="<?php echo site_url($idb_plugin_slug . '/' . $indicador['link']); ?>" class="indicator-card <?php echo $is_active ? 'active' : ''; ?> <?php echo $is_last; ?>">
+                <div class="indicator-icon-circle">
+                    <img src="<?php echo $plugin_path . $indicador['icone']; ?>" alt="<?php echo $indicador['nome']; ?>" />
+                </div>
+                <div class="indicator-label"><?php echo $indicador['nome']; ?></div>
             </a>
         <?php endforeach; ?>
     </div>
 </div>
 
-<?php
-// Inclua o rodapé e outras partes do template conforme necessário
-get_footer();
-?>
+<?php get_footer(); ?>

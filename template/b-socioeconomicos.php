@@ -1,104 +1,157 @@
 <?php
-// Inclua o cabeçalho e outras partes do template conforme necessário
 get_header();
 
-$plugin = new CC_Plugin(); // Instancia o plugin
+$plugin = new IDB_Plugin(); // Instancia o plugin
+$indicadores = $plugin->fetch_api_lista_indicadores(108); // Obtém os dados da API para a categoria "Demográfico"
 
-// Lista de indicadores com códigos e links
-$indicadores = [
-    ['codigo' => 'B.1', 'link' => 'b-socioeconomicos/ficha?code=001SC'],
-    ['codigo' => 'B.2', 'link' => 'b-socioeconomicos/ficha?code=002SC'],
-    ['codigo' => 'B.3', 'link' => 'b-socioeconomicos/ficha?code='],
-    ['codigo' => 'B.4', 'link' => 'b-socioeconomicos/ficha?code='],
-    ['codigo' => 'B.5', 'link' => 'b-socioeconomicos/ficha?code='],
-    ['codigo' => 'B.6', 'link' => 'b-socioeconomicos/ficha?code='],
-    ['codigo' => 'B.7', 'link' => 'b-socioeconomicos/ficha?code='],
-    ['codigo' => 'B.X', 'link' => 'b-socioeconomicos/ficha?code=003SC'],
-    ['codigo' => 'B.X', 'link' => 'b-socioeconomicos/ficha?code=004SC'],
-    ['codigo' => 'B.X', 'link' => 'b-socioeconomicos/ficha?code=005SC'],
-    ['codigo' => 'B.X', 'link' => 'b-socioeconomicos/ficha?code=006SC'],
-    ['codigo' => 'B.X', 'link' => 'b-socioeconomicos/ficha?code=007SC'],
+if ($indicadores) {
+    usort($indicadores, function ($a, $b) {
+        return strnatcmp($a['titulo'], $b['titulo']);
+    });
+}
+
+$dimensoes = [
+    'SOC.1' => 'Educação',
+    'SOC.2' => 'Ocupação da força de trabalho',
+    'SOC.3' => 'Renda',
+    'SOC.4' => 'Saneamento',
+    'SOC.5' => 'Segurança alimentar',
 ];
 ?>
 
-<!-- Inclua a fonte Inter do Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 
-<!-- Banner de Cabeçalho -->
-<div class="header-banner">
-    Socioeconômicos
-</div>
-</br>
+<div class="header-banner">Socioeconômico</div>
+
 <div class="container-bread-indicadores">
     <div class="breadcrumb">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <!-- Link para Home -->
                 <li class="breadcrumb-item"><a href="<?php echo home_url(); ?>">Home</a></li>
-                <!-- Link para Fichas IDB -->
                 <li class="breadcrumb-item"><a href="<?php echo site_url('/fichasidb'); ?>">Fichas IDB</a></li>
-                <!-- Link para indicadores Socioeconômicos -->
-                <li class="breadcrumb-item active" aria-current="page"><a>Socioeconômicos</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a>Socioeconômico</a></li>
             </ol>
         </nav>
     </div>
 </div>
-<div class="container">
-    <div class="row indicators-page">
-        <h2 class="green-title"><b>B. Indicadores Socioeconômicos</b></h2>
-        <?php foreach ($indicadores as $indicador): ?>
-            <?php
-                // Obtenha o código diretamente da query string da URL
-                $param_code = isset($indicador['link']) ? explode('code=', $indicador['link'])[1] : '';
 
-                // Defina uma chave de cache exclusiva para cada código de indicador
-                $cache_key = 'indicador_' . $param_code;
-                $cache_duration = 12 * HOUR_IN_SECONDS; // Cache por 12 horas
-
-                // Tente obter os dados do cache
-                $data = get_transient($cache_key);
-
-                // Se o cache estiver vazio, faça a requisição à API e armazene os dados
-                if ($data === false && !empty($param_code)) {
-                    $data = $plugin->fetch_api_data($param_code);
-                    if (!empty($data)) {
-                        // Armazene o resultado da API no cache
-                        set_transient($cache_key, $data, $cache_duration);
-                    }
-                }
-
-                // Use o título retornado pela API, ou mostre uma mensagem de erro caso não haja
-                $titulo = isset($data['titulo']) ? $data['titulo'] : '';
-
-                // Remove os primeiros caracteres redundantes, se o título começar com o código
-                if (strpos($titulo, $indicador['codigo']) === 0) {
-                    $titulo = substr($titulo, strlen($indicador['codigo']) + 1);
-                }
-
-                // Construa o link da página ou utilize o código padrão
-                $link = isset($indicador['link']) ? $indicador['link'] : '#';
-
-                // Verifique se o código está vazio para desativar o botão
-                $is_disabled = empty($param_code);
-            ?>
-            <button class="btn-indicator <?php echo $is_disabled ? 'disabled' : ''; ?>" 
-                    onclick="<?php echo $is_disabled ? 'return false;' : "window.location.href='{$link}';"; ?>"
-                    <?php echo $is_disabled ? 'disabled' : ''; ?>>
-                <div class="indicator-code"><?php echo $indicador['codigo']; ?></div>
-                <div class="indicator-name"><?php echo $titulo; ?></div>
-            </button>
-        <?php endforeach; ?>
+<div class="dem-container">
+    <div class="left-column">
+        <div class="indicator-circle">
+            <img src="<?php echo plugin_dir_url(__FILE__) . 'images/icons/socioeconomico.png'; ?>" alt="Socioeconômico" class="dem-icon">
+        </div>
+        <div class="dem-label">Socioeconômico</div>
+        <div class="vertical-line"></div>
     </div>
+
+    <div class="right-column">
+        <div class="accordion-container">
+            <?php foreach ($indicadores as $indicador): ?>
+                <?php
+                    $titulo = $indicador['titulo'];
+                    $codigo_api = $indicador['codigo'];
+                    $codigo_indicador = '';
+                    if (preg_match('/^([^–-]+)\s*[–-]\s*(.+)$/u', $titulo, $m)) {
+                        $codigo_indicador = trim($m[1]);   // FRP.9.01
+                        $titulo = trim($m[2]);   // Índice CPO-D (...)
+                    }
+                    // Obtenha o código diretamente da query string da URL
+                    $param_code = isset($indicador['link']) ? explode('code=', $indicador['link'])[1] : '';
+
+                    // Construa o link da página ou utilize o código padrão
+                    $link = isset($indicador['link']) ? $indicador['link'] : '#';
+                ?>
+                <a href="a-demografico/ficha?code=<?php echo $codigo_api; ?>" class="btn-indicator">
+                    <div class="indicator-code"><?php echo $codigo_indicador; ?></div>
+                    <div class="indicator-name"><?php echo $titulo; ?></div>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
 </div>
 
 <style>
-    .btn-indicator.disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
+body { font-family: 'Inter', sans-serif; }
+.header-banner {
+    text-align: center; font-size: 28px; font-weight: 700;
+    margin: 40px 0 10px; color: #2e318f;
+}
+.container-bread-indicadores {
+    max-width: 1100px; margin: 0 auto 30px; padding: 0 20px;
+}
+.dem-container {
+    display: flex; flex-direction: row; align-items: flex-start;
+    max-width: 1100px; margin: 0 auto 40px; padding: 0 20px;
+}
+.left-column {
+    text-align: center; margin-right: 40px;
+}
+.indicator-circle {
+    width: 120px; height: 120px; background-color: white;
+    border: 4px solid #2e7d32; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto;
+}
+.dem-icon {
+    width: 64px; height: 64px;
+}
+.dem-label {
+    background-color: #2e7d32; color: white; font-weight: bold;
+    border-radius: 20px; padding: 6px 16px; margin-top: 10px;
+    display: inline-block; font-size: 18px;
+}
+.vertical-line {
+    width: 4px; height: 100%; background-color: #2e7d32;
+    margin: 10px auto;
+}
+.right-column { flex: 1; }
+.accordion-toggle {
+    background-color: #2e318f; color: white; font-size: 16px;
+    font-weight: bold; padding: 12px 20px; margin: 10px 0;
+    border: none; border-radius: 30px; width: 100%;
+    text-align: left; position: relative; cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.accordion-toggle:hover,
+.accordion-item.active .accordion-toggle,
+.accordion-toggle:focus {
+    background-color: #2e7d32; color: white; outline: none;
+}
+.accordion-toggle .circle {
+    background-color: #2e7d32; border-radius: 50%;
+    width: 24px; height: 24px; display: inline-block;
+    color: white; font-size: 18px;
+    text-align: center; line-height: 24px;
+    margin-right: 10px;
+}
+.accordion-content { display: none; padding-left: 20px; }
+.accordion-item.active .accordion-content { display: block; }
+.btn-indicator {
+    background-color: #ffffff; border: 1px solid #ccc;
+    border-radius: 12px; padding: 10px; margin: 6px 0;
+    width: 100%; text-align: left; cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.btn-indicator:hover,
+.btn-indicator:focus {
+    background-color: #eee;
+}
+.btn-indicator.disabled {
+    opacity: 0.5; cursor: not-allowed;
+}
 </style>
 
-<?php
-// Inclua o rodapé e outras partes do template conforme necessário
-get_footer();
-?>
+<script>
+document.querySelectorAll('.accordion-toggle').forEach(button => {
+    button.addEventListener('click', () => {
+        const item = button.parentElement;
+        item.classList.toggle('active');
+
+        const icon = button.querySelector('.circle');
+        icon.textContent = item.classList.contains('active') ? '−' : '+';
+    });
+});
+</script>
+
+<?php get_footer(); ?>

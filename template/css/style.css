@@ -1,5 +1,107 @@
 /* @autor: BIREME | OPAS | OMS - > Lucas Ramos */
 
+
+.data-box.citation {
+   background-color: #f7f9fc; /* Cor de fundo leve */
+   border-left: 5px solid #54AB31; /* Destaque na borda esquerda */
+}
+
+.data-box.citation p {
+   font-size: 15px;
+   color: #333;
+}
+
+.data-box.citation h3 {
+   color: #54AB31;
+}
+
+
+.formula-latex, .onde-calc, .nota-calc {
+   overflow: hidden; /* Remove a barra de rolagem horizontal */
+   word-wrap: break-word; /* Permite quebra de palavras longas */
+   white-space: normal; /* Permite quebra de linhas */
+   display: block; /* Garante que o elemento ocupe toda a largura */
+   max-width: 100%; /* Impede que o conteúdo exceda o contêiner */
+   line-height: 1.5; /* Ajusta o espaçamento entre linhas */
+   margin-bottom: 10px; /* Adiciona espaço inferior para separar visualmente */
+}
+
+.data-box {
+   word-wrap: break-word; /* Permite quebrar palavras longas */
+   white-space: normal; /* Garante que o texto seja quebrado em linhas */
+}
+
+.data-box p {
+   overflow-wrap: break-word; /* Garante quebra de palavras longas */
+   word-break: break-word; /* Força a quebra de palavras em navegadores mais antigos */
+   line-height: 1.5; /* Melhora o espaçamento entre linhas para leitura */
+   margin: 0; /* Remove margens desnecessárias */
+}
+
+.data-box h3 {
+   word-wrap: break-word;
+   white-space: normal;
+}
+
+.formula-latex {
+   overflow-x: auto;
+   white-space: nowrap;
+   max-width: 100%;
+}
+
+.button-box .btn-icon:hover {
+   background-color: #54AB31; /* Define a cor de fundo no hover */
+   color: white; /* Altere a cor do texto para garantir contraste */
+   border: 1px solid #54AB31; /* Ajusta a borda se necessário */
+}
+
+.box-container {
+   border: 1px solid #ccc; /* Borda ao redor da caixa */
+   border-radius: 8px; /* Cantos arredondados */
+   padding: 20px; /* Espaçamento interno */
+   background-color: #f9f9f9; /* Cor de fundo */
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra leve */
+}
+
+@media (max-width: 1024px) {
+   .wpr-mobile-nav-menu-container {
+       display: none !important;
+   }
+}
+
+/* Estilo dos títulos */
+h3 {
+   font-size: 1.5em; /* Ajuste o tamanho do título */
+   font-weight: bold; /* Deixa o título em negrito */
+   position: relative; /* Necessário para o traço */
+   margin-bottom: 20px; /* Espaço inferior */
+}
+
+.data-box h3::after {
+   content: "";
+   display: block;
+   background-color: #54AB31; /* Cor do traço */
+   height: 4px; /* Altura do traço */
+   width: 50px; /* Largura do traço */
+   margin-top: 5px; /* Espaço entre o título e o traço */
+   border-radius: 2px; /* Bordas arredondadas */
+}
+
+.doi-box h3::after {
+   content: none;
+}
+
+/* Traço decorativo abaixo do título */
+h3::after {
+   content: "";
+   display: block;
+   background-color: #54AB31; /* Cor do traço */
+   height: 4px; /* Altura do traço */
+   width: 50px; /* Largura do traço */
+   margin-top: 5px; /* Espaço entre o título e o traço */
+   border-radius: 2px; /* Bordas arredondadas */
+}
+
 /* Aumenta o tamanho da fonte em elementos de texto */
 body, p, h1, h2, h3, .indicator-content, .data-box, .api-data-item, .breadcrumb, .container-bread-indicadores {
    font-size: 16px !important; /* Ajuste o valor conforme necessário */
@@ -311,7 +413,7 @@ body{
 /* Estilo das caixas de dados */
 .data-box {
    background-color: #f9f9f9;
-   border: 1px solid #ddd;
+   border: 0px solid #ddd;
    border-radius: 8px;
    padding: 20px;
    margin-bottom: 20px;
@@ -385,7 +487,7 @@ body{
    background-color: #ffffff;
    border-radius: 10px;
    margin: 10px;
-   padding: 0px 100px 0 80px;
+   padding: 0px 25px 0 25px;
    width: 100%;
    display: flex;
    align-items: center;
@@ -429,12 +531,12 @@ body{
 }
 
 .indicator-content h3 {
-   margin: 0 0 0 20px;
+   margin: 20px 0 0 20px;
    color: #2D358C;
 }
 
 .indicator-content p {
-   margin: 5px 0 0 20px;
+   margin: 5px 0 20px 20px;
    color: #000;
 }
 
@@ -445,13 +547,17 @@ body{
 }
 
 .btn-indicator {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
    width: 100%;
-   padding: 20px;
-   border: 1px solid #ccc;
-   border-radius: 8px;
-   text-align: left;
-   background-color: #f9f9f9;
+   padding: 10px;
+   border: none;
+   background-color: #ffffff; /* Cor de fundo do botão */
+   border-radius: 5px; /* Bordas levemente arredondadas */
    cursor: pointer;
+   margin: 0px 0px 5px 0px;
+   border: 1px solid #ccc;
 }
 
 .indicator-code {
@@ -467,6 +573,13 @@ body{
 
 .btn-indicator:hover {
    background-color: #e0e0e0;
+}
+
+/* Cor ao clicar (active) */
+.btn-indicator:active {
+   background-color: limegreen; /* Fundo ao clicar */
+   color: white; /* Texto ao clicar */
+   border-color: lime; /* Borda ao clicar */
 }
 
 /* Estilo para os títulos */
@@ -510,7 +623,7 @@ body{
 
 .data-box, .doi-box {
    background-color: #FFFFFF;
-   border: 1px solid #ddd;
+   border: 0px solid #ddd;
    border-radius: 8px;
    padding: 20px;
    margin: 0 auto 20px auto; /* Centraliza horizontalmente */
@@ -620,19 +733,7 @@ body{
    padding: 0 15px; /* Adiciona um pequeno padding para alinhamento */
 }
 
-.btn-indicator {
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   width: 100%;
-   padding: 10px;
-   border: none;
-   background-color: #ffffff; /* Cor de fundo do botão */
-   border-radius: 5px; /* Bordas levemente arredondadas */
-   cursor: pointer;
-   margin: 0px 0px 5px 0px;
-   border: 1px solid #ccc;
-}
+
 
 .indicator-code {
    font-weight: bold;
@@ -664,4 +765,113 @@ body{
    font-weight: bold;
    font-weight: 400; /* Peso da fonte */
    font-family: 'Inter', sans-serif; /* Fonte Inter */
+}
+/* Estilo Mobile */
+
+@media (max-width: 768px) {
+   /* Ajuste do cabeçalho */
+   #header {
+       text-align: center;
+       padding: 20px 0; /* Reduz padding no mobile */
+   }
+   #titleMain {
+       float: none;
+       margin: 10px 0;
+       text-align: center;
+       font-size: 20px; /* Título menor */
+   }
+   .lang {
+       text-align: center;
+       margin-top: 10px;
+   }
+   .lang ul {
+       padding: 0;
+       display: flex;
+       justify-content: center; /* Centraliza as opções */
+       gap: 10px; /* Espaçamento entre itens */
+   }
+   .headerBt {
+       margin-top: 20px;
+       text-align: center;
+   }
+
+   /* Botões de busca */
+   .btnBoxSearch button {
+       padding: 10px;
+       width: 100%; /* Botão ocupa toda a largura */
+   }
+   .btnBoxSearch button i {
+       font-size: 15px;
+   }
+   .textBTSearch {
+       display: inline-block;
+       font-weight: bold;
+       padding-left: 10px;
+   }
+
+   /* Footer */
+   #footer img {
+       max-width: 100%;
+       margin-top: 20px;
+   }
+
+   /* Ajuste dos indicadores */
+   .indicator-box {
+       flex-direction: column; /* Empilha o conteúdo */
+       align-items: flex-start;
+       padding: 15px; /* Padding menor */
+   }
+   .indicator-letter {
+       font-size: 4em; /* Reduz tamanho no mobile */
+       margin-bottom: 10px;
+   }
+   .indicator-content h3 {
+       font-size: 1.5em; /* Reduz tamanho dos títulos */
+       margin: 10px 0;
+   }
+   .indicator-content p {
+       font-size: 14px; /* Texto menor para melhor encaixe */
+       line-height: 1.4;
+   }
+
+   /* Caixas de dados */
+   .data-box {
+       padding: 15px;
+       margin: 10px 0;
+       max-width: 100%; /* Ocupa toda a largura no mobile */
+   }
+   .data-box h3 {
+       font-size: 1.4em; /* Título menor */
+       margin-bottom: 15px;
+   }
+
+   /* Botões com ícones */
+   .btn-icon {
+       width: 100%; /* Botões ocupam a largura completa */
+       justify-content: center; /* Centraliza o conteúdo */
+       padding: 10px;
+   }
+
+   /* Pesquisa */
+   .search-box {
+       flex-direction: column; /* Empilha os elementos */
+       gap: 10px;
+   }
+   .search-box input[type="text"], .search-box input[type="number"] {
+       width: 100%; /* Campos ocupam toda a largura */
+   }
+
+   /* Ajuste de banners */
+   .header-banner {
+       font-size: 18px; /* Texto menor no mobile */
+       padding: 15px; /* Padding ajustado */
+   }
+
+   /* Títulos e hierarquia */
+   h3 {
+       font-size: 1.4em; /* Reduz tamanho do título */
+   }
+   h3::after {
+       width: 40px; /* Traço decorativo menor */
+   }
 }

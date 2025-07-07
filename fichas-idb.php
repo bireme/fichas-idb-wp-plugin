@@ -267,8 +267,6 @@ if(!class_exists('IDB_Plugin')) {
 
 		function register_settings(){
             register_setting('idb-settings-group', 'idb_config');
-            wp_enqueue_style ('idb', IDB_PLUGIN_URL . 'template/css/admin.css');
-            wp_enqueue_script('jquery-ui-sortable');
 		}
 
         function settings_link($links) {

@@ -23,7 +23,7 @@ $dimensoes = [];
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?php echo home_url(); ?>">Home</a></li>
-                <li class="breadcrumb-item"><a href="<?php echo site_url('/fichasidb'); ?>">Fichas IDB</a></li>
+                <li class="breadcrumb-item"><a href="<?php echo site_url($idb_plugin_slug); ?>">Fichas IDB</a></li>
                 <li class="breadcrumb-item active" aria-current="page"><a>Fatores de Risco e Proteção</a></li>
             </ol>
         </nav>

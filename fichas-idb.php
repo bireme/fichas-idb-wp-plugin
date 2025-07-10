@@ -19,7 +19,7 @@ if(!class_exists('IDB_Plugin')) {
     class IDB_Plugin {
 
         private $plugin_slug = 'fichas-idb';
-        private $api_url = 'http://mgdi-api:8001/api/';
+        private $default_api_url = 'http://mgdi-api:8001/api/';
         private $ripsa_tag_code = '21'; // Código da categoria Ripsa
 
         /**
@@ -60,6 +60,7 @@ if(!class_exists('IDB_Plugin')) {
             // Do nothing
         } // END public static function deactivate
 
+
         function load_translation(){
 		    // load internal plugin translations
 		    load_plugin_textdomain('idb', false,  IDB_PLUGIN_DIR . '/languages');
@@ -71,13 +72,19 @@ if(!class_exists('IDB_Plugin')) {
 		function plugin_init() {
 		    $idb_config = get_option('idb_config');
 
-
 		    if ( $idb_config && $idb_config['plugin_slug'] != ''){
 		        $this->plugin_slug = $idb_config['plugin_slug'];
-                $this->api_url = array_key_exists('mgdi_api_url', $idb_config) ? $idb_config['mgdi_api_url'] : $this->api_url;
 		    }
-
 		}
+
+        /**
+         * Get the current API URL from settings
+         */
+        private function get_api_url() {
+            $idb_config = get_option('idb_config');
+            return (!empty($idb_config['mgdi_api_url'])) ? $idb_config['mgdi_api_url'] : $this->default_api_url;
+        }
+
 
 		function admin_menu() {
 
@@ -281,7 +288,7 @@ if(!class_exists('IDB_Plugin')) {
         }
 
         function fetch_api_indicador($indicator) {
-            $api_url = $this->api_url . 'indicador/' . $indicator;
+            $api_url = $this->get_api_url() . 'indicador/' . $indicator;
             $response = wp_remote_get($api_url);
 
             if (is_wp_error($response)) {
@@ -308,9 +315,9 @@ if(!class_exists('IDB_Plugin')) {
 
             if ($data === false) {
                 // Se não houver dados no cache, faz a requisição à API
-                $api_url = $this->api_url . 'tag-categoria/' . $this->ripsa_tag_code;
+                $api_url = $this->get_api_url() . 'tag-categoria/' . $this->ripsa_tag_code;
                 $response = wp_remote_get($api_url);
-                // print_r($response);
+                //print_r($response);
 
                 if (!is_wp_error($response)) {
 

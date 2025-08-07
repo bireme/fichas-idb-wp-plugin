@@ -16,6 +16,7 @@ $dimensoes = [
     'MRB.3' => 'Prevalência de exposição em doenças transmissíveis',
     'MRB.4' => 'Doenças não transmissíveis',
     'MRB.5' => 'Acidentes e doenças do trabalho',
+    'MRB.6' => 'Morbidade hospitalar'
 ];
 
 $grupos = [];

@@ -288,7 +288,7 @@ if(!class_exists('IDB_Plugin')) {
         }
 
         function fetch_api_indicador($indicator) {
-            $api_url = $this->get_api_url() . 'indicador/' . $indicator;
+            $api_url = $this->get_api_url() . 'indicador/' . $indicator . '?format=html';
             $response = wp_remote_get($api_url);
 
             if (is_wp_error($response)) {

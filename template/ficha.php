@@ -2,8 +2,10 @@
 // Inclua o cabeçalho e outras partes do template conforme necessário
 get_header();
 ?>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"
+    integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP"
+    crossorigin="anonymous">
+
 <?php
 // Pega o parâmetro com identificador da ficha
 $codigo_indicador = $_GET['code'];
@@ -150,12 +152,12 @@ function format_bullets($content)
 
                 <!-- Exibe a frase "Onde", se existir -->
                 <?php if (!empty($onde)): ?>
-                <p class="onde-calc"><strong>Onde:</strong> <?php echo htmlspecialchars($onde); ?></p>
+                <p class="onde-calc"><strong>Onde:</strong> <?php echo $onde; ?></p>
                 <?php endif; ?>
 
                 <!-- Exibe a nota formatada, se existir -->
                 <?php if (!empty($nota)): ?>
-                <p class="nota-calc"><strong>Nota:</strong> <?php echo htmlspecialchars($nota); ?></p>
+                <p class="nota-calc"><strong>Nota:</strong> <?php echo $nota; ?></p>
                 <?php endif; ?>
                 <?php } else { ?>
                 <p>Fórmula de cálculo não disponível.</p>

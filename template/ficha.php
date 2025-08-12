@@ -24,7 +24,7 @@ if (preg_match('/^([^–-]+)\s*[–-]\s*(.+)$/u', $titulo, $match_code)) {
 // Diretório base para PDFs na pasta uploads
 $upload_dir = wp_upload_dir();
 $pdf_file_url = null;
-$pdf_dir = '/fichas-idb/2025/';
+$pdf_dir = '/fichasidb/2024/';
 $pdf_base_path = $upload_dir['basedir'] . $pdf_dir;
 $pdf_base_url = $upload_dir['baseurl'] . $pdf_dir;
 
@@ -292,7 +292,7 @@ function format_bullets($content)
     $titulo = $data['titulo'] ?? 'Título não disponível';
     $doi = isset($data['doi']) && !empty($data['doi']) ? $data['doi'] : 'DOI não disponível';
     $site_url = site_url();
-    $url = '<a href="'. $site_url . $_SERVER['REQUEST_URI'] . '" target="_blank">' . $site_url . $_SERVER['REQUEST_URI'] . '</a>';
+    $url = '<a href="https://www.ripsa.org.br/fichasidb" target="_blank">https://www.ripsa.org.br/fichasidb</a>';
 
     // Determina o número de páginas do PDF
     $numero_paginas = 'não informado';
@@ -332,6 +332,7 @@ function format_bullets($content)
 
         <!-- Segunda coluna: Botões com ícones -->
         <div class="column-right">
+            <?php if ($pdf_file_url || isset($data['doi'])): ?>
             <div class="box-container">
                 <!-- Adiciona a nova caixa -->
                 <?php if (isset($data['doi']) && !empty($data['doi'])): ?>
@@ -351,12 +352,9 @@ function format_bullets($content)
                         </a>
                     </p>
                 </div>
-                <?php else: ?>
-                <div class="button-box">
-                    <p class="text-muted"></p>
-                </div>
                 <?php endif; ?>
             </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
@@ -375,5 +373,3 @@ document.getElementById('print-button')?.addEventListener('click', function() {
     document.body.innerHTML = originalContent;
 });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>

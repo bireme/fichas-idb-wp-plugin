@@ -8,41 +8,39 @@ get_header();
 
 <?php
 // Pega o parâmetro com identificador da ficha
-$codigo_indicador = $_GET['code'];
+$codigo_api = $_GET['code'];
 
 // Instancie o plugin e obtenha os dados
 $plugin = new IDB_Plugin();
-$data = $plugin->fetch_api_indicador($codigo_indicador);
+$data = $plugin->fetch_api_indicador($codigo_api);
+
+$titulo = $data['titulo'];
+
+// Extract the code from the title
+if (preg_match('/^([^–-]+)\s*[–-]\s*(.+)$/u', $titulo, $match_code)) {
+    $codigo_indicador = trim($match_code[1]);
+}
 
 // Diretório base para PDFs na pasta uploads
 $upload_dir = wp_upload_dir();
-$pdf_base_path = $upload_dir['basedir'] . '/fichasidb/2024/';
-$pdf_base_url = $upload_dir['baseurl'] . '/fichasidb/2024/';
-
-// Busca arquivos que começam com o código da ficha
-$pdf_files = glob($pdf_base_path . $param_code . '_*.pdf');
-
-// Inicializa variáveis do PDF e DOI
 $pdf_file_url = null;
-$pdf_doi_suffix = null;
+$pdf_dir = '/fichas-idb/2025/';
+$pdf_base_path = $upload_dir['basedir'] . $pdf_dir;
+$pdf_base_url = $upload_dir['baseurl'] . $pdf_dir;
 
-// Verifica se há PDFs compatíveis
-if (!empty($pdf_files)) {
-    // Usa o primeiro arquivo encontrado
-    $pdf_file_path = $pdf_files[0];
-    $pdf_file_name = basename($pdf_file_path);
+$pdf_file_name = $codigo_indicador . '.pdf';
+$pdf_file_path = $pdf_base_path . $pdf_file_name;
+
+if (file_exists($pdf_file_path)) {
+    $pdf_file_url = $pdf_base_url . $codigo_indicador . '.pdf';
 
     // Extrai o DOI do nome do arquivo (parte após o "_")
-    if (preg_match('/' . preg_quote($param_code, '/') . '_([\w]+)\.pdf$/', $pdf_file_name, $matches)) {
+    if (preg_match('/' . preg_quote($codigo_indicador, '/') . '_([\w]+)\.pdf$/', $pdf_file_name, $matches)) {
         $pdf_doi_suffix = $matches[1]; // Sufixo do DOI
         $pdf_file_url = $pdf_base_url . $pdf_file_name; // URL completa do PDF
         $data['doi'] = '10.5281/zenodo.' . $pdf_doi_suffix; // DOI gerado dinamicamente
     }
 }
-
-// Processamento de pesquisa
-$searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
-$searchYear = isset($_GET['year']) ? intval($_GET['year']) : '';
 
 // Remove <p class="ql-align-justify"> and </p> tags from the formula_calculo field
 $formula_calculo = str_replace('<p class="ql-align-justify">', '', $data['formula_calculo']);
@@ -293,7 +291,8 @@ function format_bullets($content)
     $tema = $temas[$current_alias] ?? 'Indefinido';
     $titulo = $data['titulo'] ?? 'Título não disponível';
     $doi = isset($data['doi']) && !empty($data['doi']) ? $data['doi'] : 'DOI não disponível';
-    $url = '<a href="https://www.ripsa.org.br/fichasidb" target="_blank">https://www.ripsa.org.br/fichasidb</a>';
+    $site_url = site_url();
+    $url = '<a href="'. $site_url . $_SERVER['REQUEST_URI'] . '" target="_blank">' . $site_url . $_SERVER['REQUEST_URI'] . '</a>';
 
     // Determina o número de páginas do PDF
     $numero_paginas = 'não informado';
@@ -306,7 +305,7 @@ function format_bullets($content)
     }
 
     // Gera a citação
-    $citacao = "Rede Interagencial de Informações para a Saúde. Comitê de Gestão de Indicadores $tema. $titulo. In: Ficha de Qualificação do Indicador. Brasília: Ripsa; 2024. $numero_paginas p. Disponível em: $url. doi:$doi.";
+    $citacao = "Rede Interagencial de Informações para a Saúde. Comitê de Gestão de Indicadores $tema. $titulo. In: Ficha de Qualificação do Indicador. Brasília: Ripsa; 2025. Disponível em: $url. doi:$doi.";
     ?>
                 <p><?php echo $citacao; ?></p>
             </div>
@@ -329,6 +328,7 @@ function format_bullets($content)
             <p>Não foi possível recuperar os dados.</p>
             <?php endif; ?>
         </div>
+    </div>
 
         <!-- Segunda coluna: Botões com ícones -->
         <div class="column-right">

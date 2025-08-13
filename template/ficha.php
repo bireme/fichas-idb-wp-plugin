@@ -271,6 +271,16 @@ function format_bullets($content)
     ?>
             </div>
 
+            <!-- Referências Bibliográficas -->
+            <?php if (!empty($data['referencia_bibliografica'])): ?>
+            <div class="data-box">
+                <p>
+                <h3>Referências</h3>
+                </p>
+                <?php echo $data['referencia_bibliografica']; ?>
+            </div>
+            <?php endif; ?>
+
             <!-- Seção Como Citar -->
             <div class="data-box citation">
                 <h3>Como Citar</h3>

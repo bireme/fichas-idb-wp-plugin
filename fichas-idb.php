@@ -62,20 +62,20 @@ if(!class_exists('IDB_Plugin')) {
 
 
         function load_translation(){
-		    // load internal plugin translations
-		    load_plugin_textdomain('idb', false,  IDB_PLUGIN_DIR . '/languages');
+            // load internal plugin translations
+            load_plugin_textdomain('idb', false,  IDB_PLUGIN_DIR . '/languages');
             // load plugin translations
             $site_language = strtolower(get_bloginfo('language'));
             $lang = substr($site_language,0,2);
-		}
+        }
 
-		function plugin_init() {
-		    $idb_config = get_option('idb_config');
+        function plugin_init() {
+            $idb_config = get_option('idb_config');
 
-		    if ( $idb_config && $idb_config['plugin_slug'] != ''){
-		        $this->plugin_slug = $idb_config['plugin_slug'];
-		    }
-		}
+            if ( $idb_config && $idb_config['plugin_slug'] != ''){
+                $this->plugin_slug = $idb_config['plugin_slug'];
+            }
+        }
 
         /**
          * Get the current API URL from settings
@@ -86,14 +86,14 @@ if(!class_exists('IDB_Plugin')) {
         }
 
 
-		function admin_menu() {
+        function admin_menu() {
 
-		    add_submenu_page( 'options-general.php', __('IDB Settings', 'idb'), __('IDB', 'idb'), 'manage_options', 'idb', 'IDB_page_admin');
+            add_submenu_page( 'options-general.php', __('IDB Settings', 'idb'), __('IDB', 'idb'), 'manage_options', 'idb', 'IDB_page_admin');
 
-		    //call register settings function
-		    add_action( 'admin_init', array(&$this, 'register_settings') );
+            //call register settings function
+            add_action( 'admin_init', array(&$this, 'register_settings') );
 
-		}
+        }
 
         function theme_redirect() {
             global $wp, $idb_plugin_slug;
@@ -145,17 +145,17 @@ if(!class_exists('IDB_Plugin')) {
             }
         }
 
-		function register_sidebars(){
-		    $args = array(
-		        'name' => 'IDB Sidebar',
-		        'id'   => 'idb-home',
-		        'description' => __('IDB Area', 'idb'),
-		        'before_widget' => '<section id="%1$s" class="row-fluid widget %2$s">',
-		        'after_widget'  => '</section>',
-		        'before_title'  => '<h2 class="widgettitle">',
-		        'after_title'   => '</h2>',
-		    );
-		    register_sidebar( $args );
+        function register_sidebars(){
+            $args = array(
+                'name' => 'IDB Sidebar',
+                'id'   => 'idb-home',
+                'description' => __('IDB Area', 'idb'),
+                'before_widget' => '<section id="%1$s" class="row-fluid widget %2$s">',
+                'after_widget'  => '</section>',
+                'before_title'  => '<h2 class="widgettitle">',
+                'after_title'   => '</h2>',
+            );
+            register_sidebar( $args );
 
             $args2 = array(
                 'name' => 'IDB Header',
@@ -167,7 +167,7 @@ if(!class_exists('IDB_Plugin')) {
                 'after_title'   => '</h1></header>',
             );
             register_sidebar( $args2 );
-		}
+        }
 
         function title_tag_sep(){
             return '|';
@@ -231,25 +231,25 @@ if(!class_exists('IDB_Plugin')) {
             add_theme_support('title-tag');
         }
 
-		function page_title(){
-		    global $wp;
-		    $pagename = $wp->query_vars["pagename"];
+        function page_title(){
+            global $wp;
+            $pagename = $wp->query_vars["pagename"];
 
-		    if ( strpos($pagename, $this->plugin_slug) === 0 ) { //pagename starts with plugin slug
-		        return __('IDB', 'idb') . ' | ';
-		    }
-		}
+            if ( strpos($pagename, $this->plugin_slug) === 0 ) { //pagename starts with plugin slug
+                return __('IDB', 'idb') . ' | ';
+            }
+        }
 
-		function search_form( $form ) {
-		    global $wp;
-		    $pagename = $wp->query_vars["pagename"];
+        function search_form( $form ) {
+            global $wp;
+            $pagename = $wp->query_vars["pagename"];
 
-		    if ($pagename == $this->plugin_slug || preg_match('/detail\//', $pagename)) {
-		        $form = preg_replace('/action="([^"]*)"(.*)/','action="' . home_url($this->plugin_slug) . '"',$form);
-		    }
+            if ($pagename == $this->plugin_slug || preg_match('/detail\//', $pagename)) {
+                $form = preg_replace('/action="([^"]*)"(.*)/','action="' . home_url($this->plugin_slug) . '"',$form);
+            }
 
-		    return $form;
-		}
+            return $form;
+        }
 
         function page_template_styles_scripts(){
             wp_enqueue_style('bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css');
@@ -272,9 +272,9 @@ if(!class_exists('IDB_Plugin')) {
             )), 'before');
         }
 
-		function register_settings(){
+        function register_settings(){
             register_setting('idb-settings-group', 'idb_config');
-		}
+        }
 
         function settings_link($links) {
             $settings_link = '<a href="options-general.php?page=idb.php">Settings</a>';
@@ -346,7 +346,7 @@ if(!class_exists('IDB_Plugin')) {
             return $indicadores;
         }
 
-	} // END class IDB_Plugin
+    } // END class IDB_Plugin
 } // END if(!class_exists('IDB_Plugin'))
 
 if(class_exists('IDB_Plugin'))

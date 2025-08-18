@@ -174,20 +174,17 @@ function format_bullets($content)
                 <p>
                     <?php
                         if (!empty($data['CategoriasAnalise'])):
-                            $categorias = array_map(function ($categoria) {
-                                $codigo = $categoria['codigo'] ?? 'Código não informado';
-                                $titulo = $categoria['titulo'] ?? 'Título não informado';
-                                return "$codigo - $titulo";
-                            }, $data['CategoriasAnalise']);
-                            echo implode(', ', $categorias);
+                            echo '<ul>';
+                            foreach ($data['CategoriasAnalise'] as $cat_analise){
+                                echo '<li>' . $cat_analise['titulo'] . '</li>';
+                            }
+                            echo '<ul>';
                         else:
                             echo 'Não informado';
                         endif;
                         ?>
                 </p>
             </div>
-
-
 
             <div class="data-box">
                 <h3>Granularidade</h3>

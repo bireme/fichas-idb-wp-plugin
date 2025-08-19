@@ -4,15 +4,14 @@ get_header();
 $plugin_path = plugin_dir_url(__FILE__) . 'images/icons/';
 
 $indicadores = [
-    ['letra' => 'F', 'icone' => 'cobertura.png', 'nome' => 'Cobertura', 'link' => 'f-cobertura'],
     ['letra' => 'DEM', 'icone' => 'demografico.png', 'nome' => 'Demográfico', 'link' => 'a-demografico'],
-    ['letra' => 'G', 'icone' => 'fatores_de_risco.png', 'nome' => 'Fatores de Risco e Proteção', 'link' => 'g-fatores-risco-protecao'],
+    ['letra' => 'B', 'icone' => 'socioeconomico.png', 'nome' => 'Socioeconômico', 'link' => 'b-socioeconomicos'],
     ['letra' => 'D', 'icone' => 'morbidade.png', 'nome' => 'Morbidade', 'link' => 'd-morbidade'],
     ['letra' => 'C', 'icone' => 'mortalidade.png', 'nome' => 'Mortalidade', 'link' => 'c-mortalidade'],
+    ['letra' => 'G', 'icone' => 'fatores_de_risco.png', 'nome' => 'Fatores de Risco e Proteção', 'link' => 'g-fatores-risco-protecao'],
     ['letra' => 'E', 'icone' => 'recursos.png', 'nome' => 'Recursos', 'link' => 'e-recursos'],
-    ['letra' => 'B', 'icone' => 'socioeconomico.png', 'nome' => 'Socioeconômico', 'link' => 'b-socioeconomicos'],
+    ['letra' => 'F', 'icone' => 'cobertura.png', 'nome' => 'Cobertura', 'link' => 'f-cobertura'],
 ];
-?>
 
 <!-- Estilos -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">

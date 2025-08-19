@@ -12,7 +12,7 @@ $indicadores = [
     ['letra' => 'E', 'icone' => 'recursos.png', 'nome' => 'Recursos', 'link' => 'e-recursos'],
     ['letra' => 'F', 'icone' => 'cobertura.png', 'nome' => 'Cobertura', 'link' => 'f-cobertura'],
 ];
-
+?>
 <!-- Estilos -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 <style>

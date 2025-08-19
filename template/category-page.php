@@ -22,8 +22,8 @@
         <div class="dem-label"><?php echo $category_name; ?></div>
         <div class="vertical-line"></div>
     </div>
-
     <div class="right-column">
+        <ul type="none"><?php dynamic_sidebar('fqi') ?></ul>
         <div class="accordion-container">
              <?php foreach ($grupos as $key => $fichas): ?>
                 <div class="accordion-item">
@@ -140,4 +140,19 @@ document.querySelectorAll('.accordion-toggle').forEach(button => {
         icon.textContent = item.classList.contains('active') ? '−' : '+';
     });
 });
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  // Pega a última parte da URL (depois da última "/")
+  let url = window.location.href;
+  let lastPart = url.substring(url.lastIndexOf("/") + 1);
+
+  // Tenta encontrar um elemento com o id igual à última parte da URL
+  let targetDiv = document.getElementById(lastPart);
+
+  if (targetDiv) {
+    targetDiv.classList.remove("d-none");
+  }
+});
+
 </script>

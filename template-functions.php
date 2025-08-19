@@ -152,5 +152,14 @@ if ( !function_exists('real_site_url') ) {
         return $site_url;
     }
 }
+// Widgets
+register_sidebar(array(
+    'name'         => 'Descrição FQIs',
+    'id'           => 'fqi',
+    'description'  => 'Descrição FQIs',
+    'class'        => 'list-unstyled',
+    'before_title' => '<h5>',
+    'after_title'  => '</h5>'
+));
 
 ?>

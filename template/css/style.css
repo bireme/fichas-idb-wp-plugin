@@ -745,7 +745,7 @@ body{
 
 .header-banner {
    background: linear-gradient(to right, #2D358C, #4A3E8F); /* Gradiente azul */
-   color: #FFFFFF;
+   color: #FFFFFF!important;
    text-align: center;
    padding: 20px;
    font-size: 24px;

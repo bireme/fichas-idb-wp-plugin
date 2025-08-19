@@ -1,5 +1,5 @@
-/* @autor: BIREME | OPAS | OMS */
-/**/
+column-left/* @autor: BIREME | OPAS | OMS */
+
 
 .data-box .citation{
    font-size: 15px;
@@ -100,7 +100,7 @@ h3::after {
 }
 
 /* Aumenta o tamanho da fonte em elementos de texto */
-body, p, h1, h2, h3, .indicator-content, .data-box, .api-data-item, .breadcrumb, .container-bread-indicadores {
+body, p, h1, h2, h3.indicator-content, .data-box, .api-data-item, .breadcrumb, .container-bread-indicadores {
    font-size: 16px !important; /* Ajuste o valor conforme necessário */
    line-height: 1.6 !important; /* Linha mais espaçada para melhorar a leitura */
 }
@@ -585,7 +585,7 @@ body{
    margin-bottom: 15px;
    background-color: #FFFFFF;
 }
-
+  /*teste*/
 /* Estilo geral para a estrutura de colunas */
 .container {
    display: flex;
@@ -864,4 +864,16 @@ body{
    h3::after {
        width: 40px; /* Traço decorativo menor */
    }
+}
+[type=button], [type=submit], button{
+   white-space:normal;
+}
+.title-fqi h2{
+   font-size: 3rem!important;
+   font-weight: bold;
+   text-align: center;
+   color: #2c358b;
+}
+.title-fqi section{
+   padding: 0;
 }

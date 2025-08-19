@@ -23,7 +23,7 @@
         <div class="vertical-line"></div>
     </div>
     <div class="right-column">
-        <ul type="none"><?php dynamic_sidebar('fqi') ?></ul>
+        <ul type="none" class="title-fqi"><?php dynamic_sidebar('fqi') ?></ul>
         <div class="accordion-container">
              <?php foreach ($grupos as $key => $fichas): ?>
                 <div class="accordion-item">

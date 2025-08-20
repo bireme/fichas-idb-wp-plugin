@@ -71,7 +71,7 @@ function format_bullets($content)
         </nav>
     </div>
 </div>
-<div class="container"> 
+<div class="container">
     <h2><b><?php echo $data['titulo']; ?></b></h2>
 </div>
 <div class="container">
@@ -322,26 +322,32 @@ function format_bullets($content)
 
 <!-- Segunda coluna: Botões com ícones -->
 <div class="column-right">
-    <?php if ($pdf_file_url || isset($data['doi'])): ?>
-        <div class="box-container">
-            <!-- Adiciona a nova caixa -->
-            <?php if (isset($data['doi']) && !empty($data['doi'])): ?>
-            <div class="data-box doi-box">
-                <h3>DOI</h3> <a href="https://doi.org/<?php echo $data['doi']; ?>"
-                    target="_blank"><?php echo $data['doi']; ?></a>
-                </div>
-            <?php endif; ?>
 
-            <!-- Botão para baixar PDF -->
-            <?php if ($pdf_file_url): ?>
-                <div class="button-box">
-                    <a href="<?php echo $pdf_file_url; ?>" class="btn-icon" target="_blank" download>
-                        <i class="fa-solid fa-file-pdf"></i> PDF
-                    </a>
-                </div>
-            <?php endif; ?>
+    <div class="box-container">
+        <!-- Adiciona a nova caixa -->
+        <?php if (isset($data['doi']) && !empty($data['doi'])): ?>
+        <div class="data-box doi-box">
+            <h3>DOI</h3> <a href="https://doi.org/<?php echo $data['doi']; ?>"
+                target="_blank"><?php echo $data['doi']; ?></a>
+            </div>
+        <?php endif; ?>
+
+        <!-- Botão para baixar PDF -->
+        <?php if ($pdf_file_url): ?>
+            <div class="button-box">
+                <a href="<?php echo $pdf_file_url; ?>" class="btn-icon" target="_blank" download>
+                    <i class="fa-solid fa-file-pdf"></i> PDF
+                </a>
+            </div>
+        <?php endif; ?>
+
+        <div class="button-box">
+            <a href="<?php echo 'http://tabnet2.datasus.gov.br/cgi/dhx3.py?idb2025/' . strtolower($codigo_indicador) . '.def'; ?>" class="btn-icon" target="_blank">
+                <i class="fa-solid fa-table"></i> TABNET<sub>BD</sub>
+            </a>
         </div>
-    <?php endif; ?>
+    </div>
+
 </div>
 </div>
 </div>

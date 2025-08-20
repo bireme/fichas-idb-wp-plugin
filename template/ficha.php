@@ -1,362 +1,362 @@
 <?php
-// Inclua o cabeçalho e outras partes do template conforme necessário
-get_header();
-?>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"
-integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP"
-crossorigin="anonymous">
+/*
+Plugin Name: Fichas de Qualificação do Indicador (FQI)
+Plugin URI: https://github.com/bireme/fichas-idb-wp-plugin/
+Description: FQI RIPSA WordPress plugin
+Author: BIREME/OPAS/OMS
+Version: 2.0
+*/
 
-<?php
-// Pega o parâmetro com identificador da ficha
-$codigo_api = $_GET['code'];
+define('IDB_VERSION', '2.0' );
+define('IDB_PLUGIN_PATH',  plugin_dir_path(__FILE__) );
+define('IDB_PLUGIN_URL',   plugin_dir_url(__FILE__) );
+define('IDB_PLUGIN_DIR',   plugin_basename( IDB_PLUGIN_PATH ) );
 
-// Instancie o plugin e obtenha os dados
-$plugin = new IDB_Plugin();
-$data = $plugin->fetch_api_indicador($codigo_api);
+require_once(IDB_PLUGIN_PATH . '/settings.php');
+require_once(IDB_PLUGIN_PATH . '/template-functions.php');
 
-$titulo = $data['titulo'];
+if(!class_exists('IDB_Plugin')) {
+    class IDB_Plugin {
 
-// Extract the code from the title
-if (preg_match('/^([^–-]+)\s*[–-]\s*(.+)$/u', $titulo, $match_code)) {
-    $codigo_indicador = trim($match_code[1]);
-}
+        private $plugin_slug = 'fichas-idb';
+        private $default_api_url = 'http://mgdi-api:8001/api/';
+        private $ripsa_tag_code = '21'; // Código da categoria Ripsa
 
-// Diretório base para PDFs na pasta uploads
-$upload_dir = wp_upload_dir();
-$pdf_file_url = null;
-$pdf_dir = '/fichasidb/2024/';
-$pdf_base_path = $upload_dir['basedir'] . $pdf_dir;
-$pdf_base_url = $upload_dir['baseurl'] . $pdf_dir;
+        /**
+         * Construct the plugin object
+         */
+        public function __construct() {
+            // register actions
 
-$pdf_file_name = $codigo_indicador . '.pdf';
-$pdf_file_path = $pdf_base_path . $pdf_file_name;
+            add_action( 'init', array(&$this, 'load_translation'));
+            add_action( 'admin_menu', array(&$this, 'admin_menu'));
+            add_action( 'plugins_loaded', array(&$this, 'plugin_init'));
+            add_action( 'template_redirect', array(&$this, 'theme_redirect'));
+            add_action( 'widgets_init', array(&$this, 'register_sidebars'));
+            add_action( 'after_setup_theme', array(&$this, 'title_tag_setup'));
+            add_filter( 'get_search_form', array(&$this, 'search_form'));
+            add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array(&$this, 'settings_link') );
+            add_filter( 'document_title_separator', array(&$this, 'title_tag_sep') );
+            add_filter( 'document_title_parts', array(&$this, 'theme_slug_render_title'));
+            add_filter( 'wp_title', array(&$this, 'theme_slug_render_wp_title'));
+            add_action( 'wp_ajax_centers_show_more_clusters', array($this, 'centers_show_more_clusters'));
+            add_action( 'wp_ajax_nopriv_centers_show_more_clusters', array($this, 'centers_show_more_clusters'));
 
-if (file_exists($pdf_file_path)) {
-    $pdf_file_url = $pdf_base_url . $codigo_indicador . '.pdf';
+        } // END public function __construct
 
-    // Extrai o DOI do nome do arquivo (parte após o "_")
-    if (preg_match('/' . preg_quote($codigo_indicador, '/') . '_([\w]+)\.pdf$/', $pdf_file_name, $matches)) {
-        $pdf_doi_suffix = $matches[1]; // Sufixo do DOI
-        $pdf_file_url = $pdf_base_url . $pdf_file_name; // URL completa do PDF
-        $data['doi'] = '10.5281/zenodo.' . $pdf_doi_suffix; // DOI gerado dinamicamente
-    }
-}
+        /**
+         * Activate the plugin
+         */
+        public static function activate()
+        {
+            // Do nothing
+        } // END public static function activate
 
-// Remove <p class="ql-align-justify"> and </p> tags from the formula_calculo field
-$formula_calculo = str_replace('<p class="ql-align-justify">', '', $data['formula_calculo']);
-$formula_calculo = str_replace('</p>', '', $formula_calculo);
-$formula_calculo = str_replace('$$', '', $formula_calculo);
+        /**
+         * Deactivate the plugin
+         */
+        public static function deactivate()
+        {
+            // Do nothing
+        } // END public static function deactivate
 
-// Função para formatar bullets
-function format_bullets($content)
-{
-    $content = trim($content);
-    $content = ltrim($content, '•');
-    $content = preg_replace('/(?:•\s*)/', '</li><li>', $content);
-    if (strpos($content, '</li><li>') !== false) {
-        $content = '<ul><li>' . $content . '</li></ul>';
-    }
-    $content = nl2br($content);
-    return $content;
-}
-?>
-<div class="container-bread-indicadores">
-    <div class="breadcrumb">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="<?php echo home_url(); ?>">Home</a></li>
-                <li class="breadcrumb-item"><a href="<?php echo site_url($idb_plugin_slug); ?>">Fichas IDB</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><?php echo $data['titulo']; ?></li>
-            </ol>
-        </nav>
-    </div>
-</div>
-<div class="container"> 
-    <h2><b><?php echo $data['titulo']; ?></b></h2>
-</div>
-<div class="container">
-    <div class="row">
-        <!-- Primeira coluna: Exibição dos dados -->
-        <?php if ($data): ?>
-            <div class="column-left" id="content-to-print">
-                <div class="data-box">
-                    <h3>Conceituação</h3>
-                    <?php echo format_bullets($data['conceituacao']); ?>
-                </div>
 
-                <div class="data-box">
-                    <h3>Interpretação</h3>
-                    <?php echo format_bullets($data['interpretacao']); ?>
-                </div>
+        function load_translation(){
+            // load internal plugin translations
+            load_plugin_textdomain('idb', false,  IDB_PLUGIN_DIR . '/languages');
+            // load plugin translations
+            $site_language = strtolower(get_bloginfo('language'));
+            $lang = substr($site_language,0,2);
+        }
 
-                <div class="data-box">
-                    <h3>Usos</h3>
-                    <?php echo format_bullets($data['usos']); ?>
-                </div>
+        function plugin_init() {
+            $idb_config = get_option('idb_config');
 
-                <div class="data-box">
-                    <h3>Limitações</h3>
-                    <?php if (!empty($data['limitacoes'])): ?>
-                        <p><?php echo nl2br($data['limitacoes']); ?></p>
-                    <?php else: ?>
-                        <p>Não informado</p>
-                    <?php endif; ?>
-                </div>
+            if ( $idb_config && $idb_config['plugin_slug'] != ''){
+                $this->plugin_slug = $idb_config['plugin_slug'];
+            }
+        }
 
-                <div class="data-box">
-                    <h3>Fonte de Dados</h3>
-                    <?php echo format_bullets($data['fonte_dados']); ?>
-                </div>
-                <div class="data-box">
-                    <h3>Fórmula de Cálculo</h3>
+        /**
+         * Get the current API URL from settings
+         */
+        private function get_api_url() {
+            $idb_config = get_option('idb_config');
+            return (!empty($idb_config['mgdi_api_url'])) ? $idb_config['mgdi_api_url'] : $this->default_api_url;
+        }
 
-                    <?php
-                    // Verifica se existe conteúdo na fórmula de cálculo
-                    if (!empty($formula_calculo)) {
-                        // Procura por "Nota:" e "Onde:" e separa o conteúdo
-                        $parts = explode('Nota:', $formula_calculo);
-                        $formula_and_others = trim($parts[0]); // Fórmula e possíveis textos adicionais
-                        $nota = isset($parts[1]) ? trim($parts[1]) : ''; // Nota, se existir
 
-                        // Procura por "Onde:" na parte principal
-                        $subparts = explode('Onde:', $formula_and_others);
-                        $formula = trim($subparts[0]); // Apenas a fórmula LaTeX
-                        $onde = isset($subparts[1]) ? trim($subparts[1]) : ''; // Parte "Onde", se existir
-                        ?>
-                        <!-- Exibe a fórmula -->
-                        <p class="formula-latex" id="formula"><?php echo $formula; ?></p>
-                        <script>
-                            document.addEventListener("DOMContentLoaded", function() {
-                                if (typeof katex !== 'undefined') {
-                                    var formulaElement = document.getElementById('formula');
-                                    katex.render(formulaElement.textContent, formulaElement, {
-                                        throwOnError: false,
-                                        displayMode: true
-                                    });
-                                }
-                            });
-                        </script>
+        function admin_menu() {
 
-                        <!-- Exibe a frase "Onde", se existir -->
-                        <?php if (!empty($onde)): ?>
-                            <p class="onde-calc"><strong>Onde:</strong> <?php echo $onde; ?></p>
-                        <?php endif; ?>
+            add_submenu_page( 'options-general.php', __('IDB Settings', 'idb'), __('IDB', 'idb'), 'manage_options', 'idb', 'IDB_page_admin');
 
-                        <!-- Exibe a nota formatada, se existir -->
-                        <?php if (!empty($nota)): ?>
-                            <p class="nota-calc"><strong>Nota:</strong> <?php echo $nota; ?></p>
-                        <?php endif; ?>
-                    <?php } else { ?>
-                        <p>Fórmula de cálculo não disponível.</p>
-                    <?php } ?>
-                </div>
+            //call register settings function
+            add_action( 'admin_init', array(&$this, 'register_settings') );
 
-                <div class="data-box">
-                    <h3>Método de Cálculo</h3>
-                    <p><?php echo $data['metodo_calculo'] ?? 'Não informado'; ?></p>
-                </div>
-                <!-- Novas seções -->
-                <div class="data-box">
-                    <h3>Categorias de Análise</h3>
-                    <p>
-                        <?php
-                        if (!empty($data['CategoriasAnalise'])):
-                            echo '<ul>';
-                            foreach ($data['CategoriasAnalise'] as $cat_analise){
-                                echo '<li>' . $cat_analise['titulo'] . '</li>';
-                            }
-                            echo '<ul>';
-                        else:
-                            echo 'Não informado';
-                        endif;
-                        ?>
-                    </p>
-                </div>
+        }
 
-                <div class="data-box">
-                    <h3>Granularidade</h3>
-                    <p><?php echo !empty($data['Granularidade']['descricao']) ? $data['Granularidade']['descricao'] : 'Não informado'; ?>
-                </p>
-            </div>
+        function theme_redirect() {
+            global $wp, $idb_plugin_slug;
+            $pagename = '';
 
-            <div class="data-box">
-                <h3>Periodicidade de Atualização</h3>
-                <p><?php echo !empty($data['PeriodicidadeAtualizacao']['descricao']) ? $data['PeriodicidadeAtualizacao']['descricao'] : 'Não informado'; ?>
-            </p>
-        </div>
+            // Check if request contains plugin slug string
+            $pos_slug = strpos($wp->request, $this->plugin_slug);
+            if ($pos_slug !== false) {
+                $pagename = substr($wp->request, $pos_slug);
+            }
 
-        <div class="data-box">
-            <h3>Responsabilidade Gerencial</h3>
-            <p>
-                <?php
-                if (!empty($data['ResponsavelGerencial'])):
-                    $responsaveisGerenciais = array_map(function ($responsavelGerencial) {
-                        $sigla = $responsavelGerencial['sigla'] ?? 'Sigla não informada';
-                        $nome = $responsavelGerencial['nome'] ?? 'Nome não informado';
-                        return "$sigla - $nome";
-                    }, $data['ResponsavelGerencial']);
-                    echo implode(', ', $responsaveisGerenciais);
-                else:
-                    echo 'Não informado';
-                endif;
-                ?>
-            </p>
-        </div>
+            if (is_404() && $pos_slug !== false) {
+                $idb_plugin_slug = $this->plugin_slug;
 
-        <!-- Fim das novas seções -->
-        <?php if (!empty($data['notas'])): ?>
-            <div class="data-box">
-                <h3>Notas</h3>
-                <?php echo $data['notas']; ?>
-            </div>
-        <?php endif; ?>
+                add_action('wp_enqueue_scripts', array(&$this, 'page_template_styles_scripts'));
 
-        <div class="data-box">
-            <h3>Análise Descritiva do Indicador</h3>
-            <?php
-            if (!empty($data['analise'])) {
-        // Substitui \r\n antes de "|"
-                $analise = preg_replace('/\r\n\|/', '|', $data['analise']);
-
-        // Remove espaços e quebras de linha extras no início e no fim
-                $analise = preg_replace('/(\r\n|\n|\r)+$/', '', $analise);
-
-        // Remove múltiplas quebras de linha consecutivas
-                $analise = preg_replace('/(\r\n|\n|\r){2,}/', "\n", $analise);
-
-        // Transforma tabelas em HTML
-                if (preg_match('/\|.*\|/', $analise)) {
-                    $linhas = explode("\n", $analise);
-                    $tabela_html = '<table border="1">';
-                    foreach ($linhas as $linha) {
-                        if (strpos($linha, '|') !== false) {
-                            $tabela_html .= '<tr>';
-                            $colunas = array_map('trim', explode('|', trim($linha, '|')));
-                            foreach ($colunas as $coluna) {
-                                $tabela_html .= '<td>' . htmlspecialchars($coluna) . '</td>';
-                            }
-                            $tabela_html .= '</tr>';
-                        }
+                if ($this->startsWith($pagename, $this->plugin_slug)) {
+                    if ($pagename == $this->plugin_slug) {
+                        $template = IDB_PLUGIN_PATH . '/template/indicadores.php'; // Mude isso para a página inicial desejada
+                    } elseif ($pagename == $this->plugin_slug . '/listas') {
+                        $template = IDB_PLUGIN_PATH . '/template/listas.php';
+                    } elseif ($pagename == $this->plugin_slug . '/a-demografico') {
+                        $template = IDB_PLUGIN_PATH . '/template/a-demografico.php';
+                    } elseif ($pagename == $this->plugin_slug . '/b-socioeconomicos') {
+                        $template = IDB_PLUGIN_PATH . '/template/b-socioeconomicos.php';
+                    } elseif ($pagename == $this->plugin_slug . '/c-mortalidade') {
+                        $template = IDB_PLUGIN_PATH . '/template/c-mortalidade.php';
+                    } elseif ($pagename == $this->plugin_slug . '/d-morbidade') {
+                        $template = IDB_PLUGIN_PATH . '/template/d-morbidade.php';
+                    } elseif ($pagename == $this->plugin_slug . '/f-cobertura') {
+                        $template = IDB_PLUGIN_PATH . '/template/f-cobertura.php';
+                    } elseif ($pagename == $this->plugin_slug . '/e-recursos') {
+                        $template = IDB_PLUGIN_PATH . '/template/e-recursos.php';
+                    } elseif ($pagename == $this->plugin_slug . '/g-fatores-risco-protecao') {
+                        $template = IDB_PLUGIN_PATH . '/template/g-fatores-risco-protecao.php';
+                    // Verifica se a pagina termina com a string 'ficha'
+                    } elseif ( substr($pagename, -strlen('ficha')) === 'ficha') {
+                        $template = IDB_PLUGIN_PATH . '/template/ficha.php';
+                    } else {
+                        $template = IDB_PLUGIN_PATH . '/template/detail.php';
                     }
-                    $tabela_html .= '</table>';
-                    $analise = $tabela_html;
+                    // Force status to 200 - OK
+                    status_header(200);
+
+                    // Redirect to page and finish execution
+                    include($template);
+                    die();
+                }
+            }
+        }
+
+        function register_sidebars(){
+            $args = array(
+                'name' => 'IDB Sidebar',
+                'id'   => 'idb-home',
+                'description' => __('IDB Area', 'idb'),
+                'before_widget' => '<section id="%1$s" class="row-fluid widget %2$s">',
+                'after_widget'  => '</section>',
+                'before_title'  => '<h2 class="widgettitle">',
+                'after_title'   => '</h2>',
+            );
+            register_sidebar( $args );
+
+            $args2 = array(
+                'name' => 'IDB Header',
+                'id'   => 'idb-header',
+                'description' => __('IDB Header', 'idb'),
+                'before_widget' => '<section id="%1$s" class="row-fluid widget %2$s">',
+                'after_widget'  => '</section>',
+                'before_title'  => '<header class="row-fluid border-bottom marginbottom15"><h1 class="h1-header">',
+                'after_title'   => '</h1></header>',
+            );
+            register_sidebar( $args2 );
+        }
+
+        function title_tag_sep(){
+            return '|';
+        }
+
+        function theme_slug_render_title($title) {
+            global $wp, $idb_plugin_title;
+            $pagename = '';
+
+            // check if request contains plugin slug string
+            $pos_slug = strpos($wp->request, $this->plugin_slug);
+            if ( $pos_slug !== false ){
+                $pagename = substr($wp->request, $pos_slug);
+            }
+
+            if ( is_404() && $pos_slug !== false ){
+                $idb_config = get_option('idb_config');
+
+                if ( function_exists( 'pll_the_languages' ) ) {
+                    $current_lang = pll_current_language();
+                    $idb_plugin_title = $idb_config['plugin_title_' . $current_lang];
+                }else{
+                    $idb_plugin_title = $idb_config['plugin_title'];
+                }
+                $title['title'] = $idb_plugin_title . " | " . get_bloginfo('name');
+            }
+
+            return $title;
+        }
+
+        function theme_slug_render_wp_title($title) {
+            global $wp, $idb_plugin_title;
+            $pagename = '';
+
+            // check if request contains plugin slug string
+            $pos_slug = strpos($wp->request, $this->plugin_slug);
+            if ( $pos_slug !== false ){
+                $pagename = substr($wp->request, $pos_slug);
+            }
+
+            if ( is_404() && $pos_slug !== false ){
+                $idb_config = get_option('idb_config');
+
+                if ( function_exists( 'pll_the_languages' ) ) {
+                    $current_lang = pll_current_language();
+                    $idb_plugin_title = $idb_config['plugin_title_' . $current_lang];
+                }else{
+                    $idb_plugin_title = $idb_config['plugin_title'];
                 }
 
-        // Remove qualquer espaço ou quebra de linha adicional
-                $analise = trim($analise);
-
-        // Exibe o conteúdo processado
-                echo $analise;
-            } else {
-                echo '<p>Sem análise descritiva.</p>';
+                if ( $idb_plugin_title )
+                    $title = $idb_plugin_title . ' | ';
+                else
+                    $title = '';
             }
-            ?>
-        </div>
 
-        <!-- Referências Bibliográficas -->
-        <?php if (!empty($data['referencia_bibliografica'])): ?>
-            <div class="data-box">
-                <h3>Referências</h3>
-                <?php echo $data['referencia_bibliografica']; ?>
-            </div>
-        <?php endif; ?>
-
-        <!-- Seção Como Citar -->
-        <div class="data-box citation">
-            <h3>Como Citar</h3>
-            <?php
-            $temas = [
-                'a-demografico' => 'Demográfico',
-                'b-socioeconomicos' => 'Socioeconômico',
-                'c-mortalidade' => 'Mortalidade',
-                'd-morbidade' => 'Morbidade',
-                'e-recursos' => 'Recursos',
-                'f-cobertura' => 'Cobertura',
-                'g-fatores-risco-protecao' => 'Fatores de Risco e Proteção'
-            ];
-            $current_alias = '';
-            if (preg_match('/\/fichasidb\/([^\/]+)\//', $_SERVER['REQUEST_URI'], $matches)) {
-                $current_alias = $matches[1];
-            }
-            $tema = $temas[$current_alias] ?? 'Indefinido';
-            $titulo = $data['titulo'] ?? 'Título não disponível';
-            $doi = isset($data['doi']) && !empty($data['doi']) ? $data['doi'] : 'DOI não disponível';
-            $site_url = site_url();
-            $url = '<a href="https://www.ripsa.org.br/fichasidb" target="_blank">https://www.ripsa.org.br/fichasidb</a>';
-
-    // Determina o número de páginas do PDF
-            $numero_paginas = 'não informado';
-            if (!empty($pdf_file_path)) {
-                if (file_exists($pdf_file_path)) {
-            $pdf_content = file_get_contents($pdf_file_path); // Lê o conteúdo do PDF
-            preg_match_all("/\/Type\s*\/Page\b/", $pdf_content, $matches); // Encontra todas as ocorrências de '/Type /Page'
-            $numero_paginas = count($matches[0]); // Conta as ocorrências
+            return $title;
         }
-    }
 
-    // Gera a citação
-    $citacao = "Rede Interagencial de Informações para a Saúde. Comitê de Gestão de Indicadores $tema. $titulo. In: Ficha de Qualificação do Indicador. Brasília: Ripsa; 2025. Disponível em: $url. doi:$doi.";
-    ?>
-    <p><?php echo $citacao; ?></p>
-</div>
+        function title_tag_setup() {
+            add_theme_support('title-tag');
+        }
 
-<!-- Seção Direitos Creative Commons -->
-<div class="data-box">
-    <p>
-        <span style="display: flex; align-items: center; padding: 10px 0;">
-            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"
-            style="text-decoration: none; color: inherit; display: flex; align-items: center;">
-            <img src="<?php echo plugins_url('images/by-nc-sa.png', __FILE__); ?>" alt="cc-by-4.0 icon"
-            style="width:80px; height:28px; margin-right: 8px;">
-            <span style="font-size: 9px; line-height: 1.2;">Esta obra está sob a licença </br>Creative
-            Commons Attribution – NonCommercial – ShareAlike – 4.0 International</span>
-        </a>
-    </span>
-</p>
-</div>
-<?php else: ?>
-    <p>Não foi possível recuperar os dados.</p>
-<?php endif; ?>
-</div>
-</div>
+        function page_title(){
+            global $wp;
+            $pagename = $wp->query_vars["pagename"];
 
-<!-- Segunda coluna: Botões com ícones -->
-<div class="column-right">
-    <?php if ($pdf_file_url || isset($data['doi'])): ?>
-        <div class="box-container">
-            <!-- Adiciona a nova caixa -->
-            <?php if (isset($data['doi']) && !empty($data['doi'])): ?>
-            <div class="data-box doi-box">
-                <h3>DOI</h3> <a href="https://doi.org/<?php echo $data['doi']; ?>"
-                    target="_blank"><?php echo $data['doi']; ?></a>
-                </div>
-            <?php endif; ?>
+            if ( strpos($pagename, $this->plugin_slug) === 0 ) { //pagename starts with plugin slug
+                return __('IDB', 'idb') . ' | ';
+            }
+        }
 
-            <!-- Botão para baixar PDF -->
-            <?php if ($pdf_file_url): ?>
-                <div class="button-box">
-                    <a href="<?php echo $pdf_file_url; ?>" class="btn-icon" target="_blank" download>
-                        <i class="fa-solid fa-file-pdf"></i> PDF
-                    </a>
-                </div>
-            <?php endif; ?>
-        </div>
-    <?php endif; ?>
-</div>
-</div>
-</div>
+        function search_form( $form ) {
+            global $wp;
+            $pagename = $wp->query_vars["pagename"];
 
-<?php
-// Inclua o rodapé e outras partes do template conforme necessário
-get_footer();
+            if ($pagename == $this->plugin_slug || preg_match('/detail\//', $pagename)) {
+                $form = preg_replace('/action="([^"]*)"(.*)/','action="' . home_url($this->plugin_slug) . '"',$form);
+            }
+
+            return $form;
+        }
+
+        function page_template_styles_scripts(){
+            wp_enqueue_style('bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css');
+            wp_enqueue_style('style-centers', IDB_PLUGIN_URL . 'template/css/style.css');
+            wp_enqueue_style('accessibility', IDB_PLUGIN_URL . 'template/css/accessibility.css');
+            wp_enqueue_style('fontawesome', '//use.fontawesome.com/releases/v5.8.1/css/all.css');
+            wp_enqueue_style('fontgoogle', '//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,900');
+
+            wp_enqueue_script('bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js', array('jquery'), '4.0.0', true);
+            wp_enqueue_script('cookie',  IDB_PLUGIN_URL . 'template/js/cookie.js', array('jquery'), '1.0.0', true);
+            wp_enqueue_script('accessibility', IDB_PLUGIN_URL . 'template/js/accessibility.js', array('jquery'), '1.0.0', true);
+            wp_enqueue_script('functions', IDB_PLUGIN_URL . 'template/js/functions.js', array('jquery'), '1.0.0', true);
+
+
+            wp_enqueue_script('jquery');
+
+            wp_add_inline_script('jquery', 'const IDB_script_vars = ' . json_encode( array(
+                    'ajaxurl' => admin_url( 'admin-ajax.php' ),
+                    'ajaxnonce' => wp_create_nonce( 'ajax_post_validation' )
+            )), 'before');
+        }
+
+        function register_settings(){
+            register_setting('idb-settings-group', 'idb_config');
+        }
+
+        function settings_link($links) {
+            $settings_link = '<a href="options-general.php?page=idb.php">Settings</a>';
+            array_unshift($links, $settings_link);
+            return $links;
+        }
+
+        function startsWith ($string, $startString) {
+            $len = strlen($startString);
+            return (substr($string, 0, $len) === $startString);
+        }
+
+        function fetch_api_indicador($indicator) {
+            $api_url = $this->get_api_url() . 'indicador/' . $indicator . '?format=html';
+            $response = wp_remote_get($api_url);
+
+            if (is_wp_error($response)) {
+                return false;
+            }
+
+            $body = wp_remote_retrieve_body($response);
+            $data = json_decode($body, true);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return false;
+            }
+
+            return $data;
+        }
+
+        function fetch_api_lista_indicadores($categoria) {
+            $cache_key = 'api_lista_indicadores'; // Gera uma chave única para o cache
+            $cache_duration = 12 * HOUR_IN_SECONDS; // Define o tempo de cache em 12 horas
+            $indicadores = [];
+
+            // Verifica se os dados já estão no cache
+            $data = get_transient($cache_key);
+
+            if ($data === false) {
+                // Se não houver dados no cache, faz a requisição à API
+                $api_url = $this->get_api_url() . 'tag-categoria/' . $this->ripsa_tag_code;
+                $response = wp_remote_get($api_url);
+                //print_r($response);
+
+                if (!is_wp_error($response)) {
+
+                    $body = wp_remote_retrieve_body($response);
+                    $data = json_decode($body, true);
+
+                    if (!empty($data) && isset($data['Tags'])) {
+                        // Armazena os dados no cache
+                        set_transient($cache_key, $data, $cache_duration);
+                    }else{
+                        // Se a resposta não contiver dados válidos, retorna um array vazio
+                        return [];
+                    }
+               }
+            }
+
+            $tags = $data['Tags'] ?? [];
+            foreach ($tags as $tag) {
+                if (trim($tag['descricao']) == trim($categoria)) {
+                    if (isset($tag['Indicadores']) && is_array($tag['Indicadores'])) {
+                        $indicadores = $tag['Indicadores'];
+                        break; // Encerra o loop após encontrar a categoria desejada
+                    }
+                }
+            }
+            return $indicadores;
+        }
+
+    } // END class IDB_Plugin
+} // END if(!class_exists('IDB_Plugin'))
+
+if(class_exists('IDB_Plugin'))
+{
+    // Installation and uninstallation hooks
+    register_activation_hook(__FILE__, array('IDB_Plugin', 'activate'));
+    register_deactivation_hook(__FILE__, array('IDB_Plugin', 'deactivate'));
+
+    // Instantiate the plugin class
+    $wp_plugin_template = new IDB_Plugin();
+}
+
 ?>
-
-<script>
-    document.getElementById('print-button')?.addEventListener('click', function() {
-        var printContent = document.getElementById('content-to-print').innerHTML;
-        var originalContent = document.body.innerHTML;
-        document.body.innerHTML = printContent;
-        window.print();
-        document.body.innerHTML = originalContent;
-    });
-</script>

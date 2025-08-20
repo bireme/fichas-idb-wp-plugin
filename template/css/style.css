@@ -59,13 +59,6 @@ column-left/* @autor: BIREME | OPAS | OMS */
    background-color: #f9f9f9; /* Cor de fundo */
    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra leve */
 }
-
-@media (max-width: 1024px) {
-   .wpr-mobile-nav-menu-container {
-       display: none !important;
-   }
-}
-
 /* Estilo dos títulos */
 h3 {
    font-size: 1.5em; /* Ajuste o tamanho do título */
@@ -174,11 +167,11 @@ body{
    border:0;
    border-radius: 3px;
 }
-   .btnBlue:hover{
-      background:#464bbb;
-      color: #fff;
-      text-decoration: none;
-   }
+.btnBlue:hover{
+  background:#464bbb;
+  color: #fff;
+  text-decoration: none;
+}
 .selectBoxSearch select{
    width: 100%;
    height: 100%;
@@ -323,49 +316,49 @@ body{
 }
 @media (max-width: 768px){
    #header{
-      text-align: center;
-   }
-   #titleMain{
-      float:none;
-      margin-top:20px;
-      margin-bottom:0;
-      display: block;
-      float: none!important;
-   }
-   .lang{
-      text-align: center;
-      margin-top: 20px;
-   }
-      .lang ul{
-         padding: 0;
-      }
-   .headerBt{
-      margin-top: 20px;
-      text-align: center;
-   }
-   .inputBoxSearch input{
-      border-top: 1px solid #ddd;
-   }
-   .formSelect{
-      background: url(img/downMobile.svg) no-repeat #fff;
-      background-position: 100% center;
-   }
-   .btnBoxSearch button{
-      padding: 10px;
-      width: 100%;
-   }
-   .btnBoxSearch button i{
-      font-size: 15px;
-   }
-   .textBTSearch{
-      display: inline-block;
-      font-weight: bold;
-      padding-left: 10px;
-   }
-   #footer img{
-      max-width: 100%;
-      margin-top: 20px;
-   }
+     text-align: center;
+  }
+  #titleMain{
+     float:none;
+     margin-top:20px;
+     margin-bottom:0;
+     display: block;
+     float: none!important;
+  }
+  .lang{
+     text-align: center;
+     margin-top: 20px;
+  }
+  .lang ul{
+    padding: 0;
+ }
+ .headerBt{
+  margin-top: 20px;
+  text-align: center;
+}
+.inputBoxSearch input{
+  border-top: 1px solid #ddd;
+}
+.formSelect{
+  background: url(img/downMobile.svg) no-repeat #fff;
+  background-position: 100% center;
+}
+.btnBoxSearch button{
+  padding: 10px;
+  width: 100%;
+}
+.btnBoxSearch button i{
+  font-size: 15px;
+}
+.textBTSearch{
+  display: inline-block;
+  font-weight: bold;
+  padding-left: 10px;
+}
+#footer img{
+  max-width: 100%;
+  margin-top: 20px;
+}
 }
 
 /* Estilo para os tĆ­tulos */
@@ -404,7 +397,7 @@ body{
    border-radius: 8px;
    padding: 20px;
    margin-bottom: 20px;
-      margin: 0px 10px 0px 0px;
+   margin: 0px 10px 0px 0px;
 }
 
 .data-box h2 {
@@ -585,7 +578,7 @@ body{
    margin-bottom: 15px;
    background-color: #FFFFFF;
 }
-  /*teste*/
+/*teste*/
 /* Estilo geral para a estrutura de colunas */
 .container {
    display: flex;
@@ -678,7 +671,7 @@ body{
 .search-box {
    display: flex;
    gap: 10px;
-     margin: 0px 20px 0px 0px;
+   margin: 0px 20px 0px 0px;
 }
 
 .search-box input[type="text"], .search-box input[type="number"] {
@@ -701,7 +694,7 @@ body{
 }
 
 .elementor-button-text {
-  color: white;
+ color: white;
 }
 
 .breadcrumb {
@@ -761,119 +754,159 @@ body{
 @media (max-width: 768px) {
    /* Ajuste do cabeçalho */
    #header {
-       text-align: center;
-       padding: 20px 0; /* Reduz padding no mobile */
-   }
-   #titleMain {
-       float: none;
-       margin: 10px 0;
-       text-align: center;
-       font-size: 20px; /* Título menor */
-   }
-   .lang {
-       text-align: center;
-       margin-top: 10px;
-   }
-   .lang ul {
-       padding: 0;
-       display: flex;
-       justify-content: center; /* Centraliza as opções */
-       gap: 10px; /* Espaçamento entre itens */
-   }
-   .headerBt {
-       margin-top: 20px;
-       text-align: center;
-   }
+     text-align: center;
+     padding: 20px 0; /* Reduz padding no mobile */
+  }
+  #titleMain {
+     float: none;
+     margin: 10px 0;
+     text-align: center;
+     font-size: 20px; /* Título menor */
+  }
+  .lang {
+     text-align: center;
+     margin-top: 10px;
+  }
+  .lang ul {
+     padding: 0;
+     display: flex;
+     justify-content: center; /* Centraliza as opções */
+     gap: 10px; /* Espaçamento entre itens */
+  }
+  .headerBt {
+     margin-top: 20px;
+     text-align: center;
+  }
 
-   /* Botões de busca */
-   .btnBoxSearch button {
-       padding: 10px;
-       width: 100%; /* Botão ocupa toda a largura */
-   }
-   .btnBoxSearch button i {
-       font-size: 15px;
-   }
-   .textBTSearch {
-       display: inline-block;
-       font-weight: bold;
-       padding-left: 10px;
-   }
+  /* Botões de busca */
+  .btnBoxSearch button {
+     padding: 10px;
+     width: 100%; /* Botão ocupa toda a largura */
+  }
+  .btnBoxSearch button i {
+     font-size: 15px;
+  }
+  .textBTSearch {
+     display: inline-block;
+     font-weight: bold;
+     padding-left: 10px;
+  }
 
-   /* Footer */
-   #footer img {
-       max-width: 100%;
-       margin-top: 20px;
-   }
+  /* Footer */
+  #footer img {
+     max-width: 100%;
+     margin-top: 20px;
+  }
 
-   /* Ajuste dos indicadores */
-   .indicator-box {
-       flex-direction: column; /* Empilha o conteúdo */
-       align-items: flex-start;
-       padding: 15px; /* Padding menor */
-   }
-   .indicator-letter {
-       font-size: 4em; /* Reduz tamanho no mobile */
-       margin-bottom: 10px;
-   }
-   .indicator-content h3 {
-       font-size: 1.5em; /* Reduz tamanho dos títulos */
-       margin: 10px 0;
-   }
-   .indicator-content p {
-       font-size: 14px; /* Texto menor para melhor encaixe */
-       line-height: 1.4;
-   }
+  /* Ajuste dos indicadores */
+  .indicator-box {
+     flex-direction: column; /* Empilha o conteúdo */
+     align-items: flex-start;
+     padding: 15px; /* Padding menor */
+  }
+  .indicator-letter {
+     font-size: 4em; /* Reduz tamanho no mobile */
+     margin-bottom: 10px;
+  }
+  .indicator-content h3 {
+     font-size: 1.5em; /* Reduz tamanho dos títulos */
+     margin: 10px 0;
+  }
+  .indicator-content p {
+     font-size: 14px; /* Texto menor para melhor encaixe */
+     line-height: 1.4;
+  }
 
-   /* Caixas de dados */
-   .data-box {
-       padding: 15px;
-       margin: 10px 0;
-       max-width: 100%; /* Ocupa toda a largura no mobile */
-   }
-   .data-box h3 {
-       font-size: 1.4em; /* Título menor */
-       margin-bottom: 15px;
-   }
+  /* Caixas de dados */
+  .data-box {
+     padding: 15px;
+     margin: 10px 0;
+     max-width: 100%; /* Ocupa toda a largura no mobile */
+  }
+  .data-box h3 {
+     font-size: 1.4em; /* Título menor */
+     margin-bottom: 15px;
+  }
 
-   /* Botões com ícones */
-   .btn-icon {
-       width: 100%; /* Botões ocupam a largura completa */
-       justify-content: center; /* Centraliza o conteúdo */
-       padding: 10px;
-   }
+  /* Botões com ícones */
+  .btn-icon {
+     width: 100%; /* Botões ocupam a largura completa */
+     justify-content: center; /* Centraliza o conteúdo */
+     padding: 10px;
+  }
 
-   /* Pesquisa */
-   .search-box {
-       flex-direction: column; /* Empilha os elementos */
-       gap: 10px;
-   }
-   .search-box input[type="text"], .search-box input[type="number"] {
-       width: 100%; /* Campos ocupam toda a largura */
-   }
+  /* Pesquisa */
+  .search-box {
+     flex-direction: column; /* Empilha os elementos */
+     gap: 10px;
+  }
+  .search-box input[type="text"], .search-box input[type="number"] {
+     width: 100%; /* Campos ocupam toda a largura */
+  }
 
-   /* Ajuste de banners */
-   .header-banner {
-       font-size: 18px; /* Texto menor no mobile */
-       padding: 15px; /* Padding ajustado */
-   }
+  /* Ajuste de banners */
+  .header-banner {
+     font-size: 18px; /* Texto menor no mobile */
+     padding: 15px; /* Padding ajustado */
+  }
 
-   /* Títulos e hierarquia */
-   h3 {
-       font-size: 1.4em; /* Reduz tamanho do título */
-   }
-   h3::after {
-       width: 40px; /* Traço decorativo menor */
-   }
+  /* Títulos e hierarquia */
+  h3 {
+     font-size: 1.4em; /* Reduz tamanho do título */
+  }
+  h3::after {
+     width: 40px; /* Traço decorativo menor */
+  }
 }
 [type=button], [type=submit], button{
    white-space:normal;
 }
 .title-fqi h2{
-   font-size: 3rem!important;
+   font-size: 2.5rem!important;
    font-weight: bold;
    text-align: center;
    color: #2c358b;
 }
 .title-fqi section{
    padding: 0;
+}
+.title-fqi{
+   margin: 20px 0!important;
+   padding: 0;
+}
+
+.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)){
+   max-width: 100%;
+}
+@media (max-width: 1024px) {
+   .wpr-mobile-nav-menu-container {
+     display: none !important;
+  }
+}
+@media (max-width: 992px){
+   .dem-container{
+      display: block!important;
+   }
+   .column-left, .column-right{
+      display: block!important;
+      margin:20px 0;
+   }
+   .container{
+      max-width: auto!important;
+   }
+   .left-column{
+      margin: 20px auto!important;
+   }
+   .title-fqi{
+      margin: 20px 0!important;
+      padding: 0;
+   }
+}
+@media (max-width: 768px) {
+   .column-left {
+      display: none;
+   }
+   .indicator-card{
+      width: 100%;
+   }
 }

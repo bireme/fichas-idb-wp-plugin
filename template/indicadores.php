@@ -6,11 +6,11 @@ $plugin_path = plugin_dir_url(__FILE__) . 'images/icons/';
 $indicadores = [
     ['letra' => 'DEM', 'icone' => 'demografico.png', 'nome' => 'Demográfico', 'link' => 'a-demografico'],
     ['letra' => 'B', 'icone' => 'socioeconomico.png', 'nome' => 'Socioeconômico', 'link' => 'b-socioeconomicos'],
-    ['letra' => 'D', 'icone' => 'morbidade.png', 'nome' => 'Morbidade', 'link' => 'd-morbidade'],
     ['letra' => 'C', 'icone' => 'mortalidade.png', 'nome' => 'Mortalidade', 'link' => 'c-mortalidade'],
+    ['letra' => 'D', 'icone' => 'morbidade.png', 'nome' => 'Morbidade', 'link' => 'd-morbidade'],
     ['letra' => 'G', 'icone' => 'fatores_de_risco.png', 'nome' => 'Fatores de Risco e Proteção', 'link' => 'g-fatores-risco-protecao'],
-    ['letra' => 'E', 'icone' => 'recursos.png', 'nome' => 'Recursos', 'link' => 'e-recursos'],
     ['letra' => 'F', 'icone' => 'cobertura.png', 'nome' => 'Cobertura', 'link' => 'f-cobertura'],
+    ['letra' => 'E', 'icone' => 'recursos.png', 'nome' => 'Recursos', 'link' => 'e-recursos'],
 ];
 ?>
 <!-- Estilos -->

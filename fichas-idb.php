@@ -315,7 +315,7 @@ if(!class_exists('IDB_Plugin')) {
 
             if ($data === false) {
                 // Se não houver dados no cache, faz a requisição à API
-                $api_url = $this->get_api_url() . 'tag-categoria/' . $this->ripsa_tag_code;
+                $api_url = $this->get_api_url() . 'tag-categoria/' . $this->ripsa_tag_code . '?ativo=true';
                 $response = wp_remote_get($api_url);
                 //print_r($response);
 

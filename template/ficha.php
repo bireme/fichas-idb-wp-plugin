@@ -15,11 +15,7 @@ $plugin = new IDB_Plugin();
 $data = $plugin->fetch_api_indicador($codigo_api);
 
 $titulo = $data['titulo'];
-
-// Extract the code from the title
-if (preg_match('/^([^–-]+)\s*[–-]\s*(.+)$/u', $titulo, $match_code)) {
-    $codigo_indicador = trim($match_code[1]);
-}
+$codigo_indicador = $data['prefixo'];
 
 // Diretório base para PDFs na pasta uploads
 $upload_dir = wp_upload_dir();
@@ -72,7 +68,7 @@ function format_bullets($content)
     </div>
 </div>
 <div class="container">
-    <h2><b><?php echo $data['titulo']; ?></b></h2>
+    <h2><b><?php echo $data['prefixo'] . ' - ' . $data['titulo']; ?></b></h2>
 </div>
 <div class="container">
     <div class="row">

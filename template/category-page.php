@@ -36,11 +36,8 @@
                         <?php
                             $titulo = $indicador['titulo'];
                             $codigo_api = $indicador['codigo'];
-                            $codigo_indicador = '';
-                            if (preg_match('/^([^–-]+)\s*[–-]\s*(.+)$/u', $titulo, $m)) {
-                                $codigo_indicador = trim($m[1]);   // FRP.9.01
-                                $titulo = trim($m[2]);   // Índice CPO-D (...)
-                            }
+                            $codigo_indicador = $indicador['prefixo'];
+
                             // Obtenha o código diretamente da query string da URL
                             $param_code = isset($indicador['link']) ? explode('code=', $indicador['link'])[1] : '';
 

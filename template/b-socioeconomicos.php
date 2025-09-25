@@ -6,7 +6,7 @@ $indicadores = $plugin->fetch_api_lista_indicadores('RIPSA - Socioeconômico'); 
 
 if ($indicadores) {
     usort($indicadores, function ($a, $b) {
-        return strnatcmp($a['titulo'], $b['titulo']);
+        return strnatcmp($a['prefixo'], $b['prefixo']);
     });
 }
 
@@ -21,13 +21,9 @@ $dimensoes = [
 $grupos = [];
 foreach ($indicadores as $indicador) {
     $titulo = $indicador['titulo'];
+    $prefixo = $indicador['prefixo'];
 
-    // Extract the code from the title
-    if (preg_match('/^([^–-]+)\s*[–-]\s*(.+)$/u', $titulo, $match_code)) {
-        $codigo = trim($match_code[1]);
-    }
-
-    if (preg_match('/^(SOC\.\d)/', $codigo, $match_dim)) {
+    if (preg_match('/^(SOC\.\d)/', $prefixo, $match_dim)) {
         $dimensao = $match_dim[1] ?? 'Outros';
         $grupos[$dimensao][] = $indicador;
     }

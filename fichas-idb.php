@@ -289,7 +289,7 @@ if(!class_exists('IDB_Plugin')) {
 
         function fetch_api_indicador($indicator) {
             $api_url = $this->get_api_url() . 'indicador/' . $indicator . '?format=html';
-            $response = wp_remote_get($api_url);
+            $response = wp_remote_get($api_url, array('timeout' => 20));
 
             if (is_wp_error($response)) {
                 return false;
@@ -316,7 +316,7 @@ if(!class_exists('IDB_Plugin')) {
             if ($data === false) {
                 // Se não houver dados no cache, faz a requisição à API
                 $api_url = $this->get_api_url() . 'tag-categoria/' . $this->ripsa_tag_code . '?ativo=true';
-                $response = wp_remote_get($api_url);
+                $response = wp_remote_get($api_url, array('timeout' => 20));
 
                 if (!is_wp_error($response)) {
 

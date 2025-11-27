@@ -39,3 +39,23 @@ include('category-page.php');
 
 get_footer();
 ?>
+
+<!-- Remover links-->
+<script>
+  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_MJN"]').attr('href', '#!');
+  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_MZM"]').attr('href', '#!');
+  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_MK7"]').attr('href', '#!');
+  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_04Y"]').attr('href', '#!');
+  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_LZC"]').attr('href', '#!');
+  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_M1P"]').attr('href', '#!');
+  jQuery('a[href="a-demografico/ficha?code=RIPSA007FR"]').attr('href', '#!');
+  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_8QG"]').attr('href', '#!');
+  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_78V"]').attr('href', '#!');
+  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_FXD"]').attr('href', '#!');
+  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_AU5"]').attr('href', '#!');
+  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_R5H"]').attr('href', '#!');
+  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_KVK"]').attr('href', '#!');
+  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_V5F"]').attr('href', '#!');
+  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_16V"]').attr('href', '#!');
+  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_EUQ"]').attr('href', '#!');
+</script>

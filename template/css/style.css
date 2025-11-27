@@ -910,3 +910,30 @@ body{
       width: 100%;
    }
 }
+
+/*fichas especiais*/
+.accordion-content .btn-indicator[href*="#!"]{
+    cursor: default;
+    color: #999;
+    text-decoration: none;
+    position: relative;
+    pointer-events: none;
+     cursor: not-allowed;
+}
+.accordion-content .btn-indicator[href*="#!"]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    pointer-events: none;
+    z-index: 5;
+    pointer-events: auto;
+     cursor: not-allowed;
+}
+.accordion-content .btn-indicator[href*="#!"] .indicator-code, 
+{
+    color: #999!important;
+    text-decoration: none!important;
+    pointer-events: none;
+     cursor: not-allowed;
+}

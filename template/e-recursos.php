@@ -36,3 +36,8 @@ include('category-page.php');
 
 get_footer();
 ?>
+
+<!-- Remover links-->
+<script>
+  jQuery('a[href="a-demografico/ficha?code=RIPSA016RC"]').attr('href', '#!');
+</script>

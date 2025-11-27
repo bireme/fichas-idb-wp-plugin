@@ -114,9 +114,9 @@ body, p, h1, h2, h3.indicator-content, .data-box, .api-data-item, .breadcrumb, .
 
 
 body{
-   /*background: #f5f5f5;*/
-   font-family: 'Source Sans Pro', sans-serif;
-   font-weight: 400;
+	/*background: #f5f5f5;*/
+	font-family: 'Source Sans Pro', sans-serif;
+	font-weight: 400;
    font-size: 16px !important; /* Tamanho desejado */
    line-height: 1.5 !important; /* Espaçamento para legibilidade */
 }
@@ -911,7 +911,14 @@ body{
    }
 }
 
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> ee8e000dad72c339a7e53e1aedb134479a9e38f4
+>>>>>>> 2a4f77cf03fe59f9a66d7276a71902a60c2566c5
 /*fichas especiais*/
 .accordion-content .btn-indicator[href*="#!"]{
     cursor: default;
@@ -937,4 +944,12 @@ body{
     text-decoration: none!important;
     pointer-events: none;
      cursor: not-allowed;
+<<<<<<< HEAD
 }
+=======
+<<<<<<< HEAD
+}
+=======
+}
+>>>>>>> ee8e000dad72c339a7e53e1aedb134479a9e38f4
+>>>>>>> 2a4f77cf03fe59f9a66d7276a71902a60c2566c5

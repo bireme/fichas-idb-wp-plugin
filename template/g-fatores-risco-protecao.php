@@ -39,6 +39,13 @@ include('category-page.php');
 
 get_footer();
 ?>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> ee8e000dad72c339a7e53e1aedb134479a9e38f4
+>>>>>>> 2a4f77cf03fe59f9a66d7276a71902a60c2566c5
 <!-- Remover links-->
 <script>
   jQuery('a[href="a-demografico/ficha?code=MGDI_MS_MJN"]').attr('href', '#!');

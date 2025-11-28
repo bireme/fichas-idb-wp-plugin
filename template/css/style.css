@@ -929,10 +929,12 @@ body{
     pointer-events: auto;
      cursor: not-allowed;
 }
-.accordion-content .btn-indicator[href*="#!"] .indicator-code, 
+.accordion-content .btn-indicator[href*="#!"] .indicator-code,
+.accordion-content .btn-indicator[href*="#!"] .indicator-name
+
 {
-    color: #999!important;
-    text-decoration: none!important;
-    pointer-events: none;
-     cursor: not-allowed;
+   color: #999!important;
+   text-decoration: none!important;
+   pointer-events: none;
+   cursor: not-allowed;
 }

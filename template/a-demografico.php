@@ -31,13 +31,7 @@ $category_name = "Demográfico";
 $category_image = "demografico.png";
 
 include('category-page.php');
+include('remover-links.php');
 
 get_footer();
 ?>
-
-<!-- Remover links-->
-<script>
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_S6V"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_1HU"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_NTX"]').attr('href', '#!');
-</script>

@@ -32,6 +32,7 @@ $category_name = "Socioeconômico";
 $category_image = "socioeconomico.png";
 
 include('category-page.php');
+include('remover-links.php');
 
 get_footer();
 ?>

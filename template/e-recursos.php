@@ -33,11 +33,7 @@ $category_name = "Recursos";
 $category_image = "recursos.png";
 
 include('category-page.php');
+include('remover-links.php');
 
 get_footer();
 ?>
-
-<!-- Remover links-->
-<script>
-  jQuery('a[href="a-demografico/ficha?code=RIPSA016RC"]').attr('href', '#!');
-</script>

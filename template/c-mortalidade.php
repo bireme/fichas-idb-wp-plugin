@@ -33,32 +33,7 @@ $category_name = "Mortalidade";
 $category_image = "mortalidade.png";
 
 include('category-page.php');
+include('remover-links.php');
 
 get_footer();
 ?>
-
-<!-- Remover links-->
-<script>
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_K5P"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_M8Y"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_O3O"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_3ZX"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_I8H"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_939"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_S67"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=RIPSA001MT"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_XP0"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_M96"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_Y2U"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_B9F"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_CJZ"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_7MY"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=RIPSA002MT"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_7UM"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_BBT"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_4V1"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_H0W"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_OOH"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_4TT"]').attr('href', '#!');
-  jQuery('a[href="a-demografico/ficha?code=MGDI_MS_46W"]').attr('href', '#!');
-</script>

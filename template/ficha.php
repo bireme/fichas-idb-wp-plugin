@@ -324,7 +324,7 @@ function format_bullets($content)
             <!-- Adiciona a nova caixa -->
             <?php if (isset($data['doi']) && !empty($data['doi'])): ?>
             <div class="data-box doi-box">
-                <h3>DOI</h3> <a href="https://doi.org/<?php echo $data['doi']; ?>"
+                <h3>DOI</h3> <a href="<?php echo $data['doi']; ?>"
                     target="_blank"><?php echo $data['doi']; ?></a>
                 </div>
             <?php endif; ?>

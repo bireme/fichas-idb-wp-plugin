@@ -938,3 +938,46 @@ body{
    pointer-events: none;
    cursor: not-allowed;
 }
+/*Ajuste 2026*/
+.container h2{
+   font-size: 36px!important;
+   color: #218a3a;
+}
+.accordion-item{
+   border: 0;
+}
+.box-container .doi-box{
+   word-wrap: break-word;
+}
+.data-box, .doi-box{
+   border: 0!important;
+   padding: 0px;
+
+}
+.data-box h3{
+   font-size: 24px;
+   color: #218a3a;
+   margin-bottom: 10px!important;
+   display: flex;
+   align-items: center;
+}
+
+.data-box ul, .data-box ol{
+   padding:  0 0 0 20px;
+}
+.data-box h3::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  margin-left: 20px;
+  background: #218a3a;;
+}
+.citation{
+   background:#c5ddcb!important;
+   box-sizing: border-box;
+   padding: 20px;
+   border-radius: 20px;
+}
+#data-box-ref a{
+   word-break: break-word;
+}

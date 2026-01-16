@@ -70,7 +70,7 @@ function format_bullets($content)
 <div class="container">
     <h2><b><?php echo $data['prefixo'] . ' - ' . $data['titulo']; ?></b></h2>
 </div>
-<div class="container">
+<main class="container">
     <div class="row">
         <!-- Primeira coluna: Exibição dos dados -->
         <?php if ($data): ?>
@@ -171,185 +171,171 @@ function format_bullets($content)
 
                 <div class="data-box">
                     <h3>Granularidade</h3>
-                    <p><?php echo !empty($data['Granularidade']['descricao']) ? $data['Granularidade']['descricao'] : 'Não informado'; ?>
-                </p>
-            </div>
+                    <p><?php echo !empty($data['Granularidade']['descricao']) ? $data['Granularidade']['descricao'] : 'Não informado'; ?></p>
+                </div>
 
-            <div class="data-box">
-                <h3>Periodicidade de Atualização</h3>
-                <p><?php echo !empty($data['PeriodicidadeAtualizacao']['descricao']) ? $data['PeriodicidadeAtualizacao']['descricao'] : 'Não informado'; ?>
-            </p>
-        </div>
+                <div class="data-box">
+                    <h3>Periodicidade de Atualização</h3>
+                    <p><?php echo !empty($data['PeriodicidadeAtualizacao']['descricao']) ? $data['PeriodicidadeAtualizacao']['descricao'] : 'Não informado'; ?></p>
+                </div>
 
-        <div class="data-box">
-            <h3>Responsabilidade Gerencial</h3>
-            <p>
-                <?php
-                if (!empty($data['ResponsavelGerencial'])):
-                    $responsaveisGerenciais = array_map(function ($responsavelGerencial) {
-                        $sigla = $responsavelGerencial['sigla'] ?? 'Sigla não informada';
-                        $nome = $responsavelGerencial['nome'] ?? 'Nome não informado';
-                        return "$sigla - $nome";
-                    }, $data['ResponsavelGerencial']);
-                    echo implode(', ', $responsaveisGerenciais);
-                else:
-                    echo 'Não informado';
-                endif;
-                ?>
-            </p>
-        </div>
+                <div class="data-box">
+                    <h3>Responsabilidade Gerencial</h3>
+                    <p>
+                        <?php
+                        if (!empty($data['ResponsavelGerencial'])):
+                            $responsaveisGerenciais = array_map(function ($responsavelGerencial) {
+                                $sigla = $responsavelGerencial['sigla'] ?? 'Sigla não informada';
+                                $nome = $responsavelGerencial['nome'] ?? 'Nome não informado';
+                                return "$sigla - $nome";
+                            }, $data['ResponsavelGerencial']);
+                            echo implode(', ', $responsaveisGerenciais);
+                        else:
+                            echo 'Não informado';
+                        endif;
+                        ?>
+                    </p>
+                </div>
 
-        <!-- Fim das novas seções -->
-        <?php if (!empty($data['notas'])): ?>
-            <div class="data-box">
-                <h3>Notas</h3>
-                <?php echo $data['notas']; ?>
-            </div>
-        <?php endif; ?>
+                <!-- Fim das novas seções -->
+                <?php if (!empty($data['notas'])): ?>
+                    <div class="data-box">
+                        <h3>Notas</h3>
+                        <?php echo $data['notas']; ?>
+                    </div>
+                <?php endif; ?>
 
-        <div class="data-box">
-            <h3>Análise Descritiva do Indicador</h3>
-            <?php
-            if (!empty($data['analise'])) {
-        // Substitui \r\n antes de "|"
-                $analise = preg_replace('/\r\n\|/', '|', $data['analise']);
+                <div class="data-box">
+                    <h3>Análise Descritiva do Indicador</h3>
+                    <?php
+                    if (!empty($data['analise'])) {
+                    // Substitui \r\n antes de "|"
+                        $analise = preg_replace('/\r\n\|/', '|', $data['analise']);
 
-        // Remove espaços e quebras de linha extras no início e no fim
-                $analise = preg_replace('/(\r\n|\n|\r)+$/', '', $analise);
+                        // Remove espaços e quebras de linha extras no início e no fim
+                        $analise = preg_replace('/(\r\n|\n|\r)+$/', '', $analise);
 
-        // Remove múltiplas quebras de linha consecutivas
-                $analise = preg_replace('/(\r\n|\n|\r){2,}/', "\n", $analise);
+                        // Remove múltiplas quebras de linha consecutivas
+                        $analise = preg_replace('/(\r\n|\n|\r){2,}/', "\n", $analise);
 
-        // Transforma tabelas em HTML
-                if (preg_match('/\|.*\|/', $analise)) {
-                    $linhas = explode("\n", $analise);
-                    $tabela_html = '<table border="1">';
-                    foreach ($linhas as $linha) {
-                        if (strpos($linha, '|') !== false) {
-                            $tabela_html .= '<tr>';
-                            $colunas = array_map('trim', explode('|', trim($linha, '|')));
-                            foreach ($colunas as $coluna) {
-                                $tabela_html .= '<td>' . htmlspecialchars($coluna) . '</td>';
+                        // Transforma tabelas em HTML
+                        if (preg_match('/\|.*\|/', $analise)) {
+                            $linhas = explode("\n", $analise);
+                            $tabela_html = '<table border="1">';
+                            foreach ($linhas as $linha) {
+                                if (strpos($linha, '|') !== false) {
+                                    $tabela_html .= '<tr>';
+                                    $colunas = array_map('trim', explode('|', trim($linha, '|')));
+                                    foreach ($colunas as $coluna) {
+                                        $tabela_html .= '<td>' . htmlspecialchars($coluna) . '</td>';
+                                    }
+                                    $tabela_html .= '</tr>';
+                                }
                             }
-                            $tabela_html .= '</tr>';
+                            $tabela_html .= '</table>';
+                            $analise = $tabela_html;
+                        }
+
+                        // Remove qualquer espaço ou quebra de linha adicional
+                        $analise = trim($analise);
+
+                        // Exibe o conteúdo processado
+                        echo $analise;
+                    } else {
+                        echo '<p>Sem análise descritiva.</p>';
+                    }
+                    ?>
+                </div>
+
+                <!-- Referências Bibliográficas -->
+                <?php if (!empty($data['referencia_bibliografica'])): ?>
+                    <div class="data-box" id="data-box-ref">
+                        <h3>Referências</h3>
+                        <?php echo $data['referencia_bibliografica']; ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Seção Como Citar -->
+                <div class="data-box citation">
+                    <h3>Como Citar</h3>
+                    <?php
+                    $temas = [
+                        'a-demografico' => 'Demográfico',
+                        'b-socioeconomicos' => 'Socioeconômico',
+                        'c-mortalidade' => 'Mortalidade',
+                        'd-morbidade' => 'Morbidade',
+                        'e-recursos' => 'Recursos',
+                        'f-cobertura' => 'Cobertura',
+                        'g-fatores-risco-protecao' => 'Fatores de Risco e Proteção'
+                    ];
+                    $current_alias = '';
+                    if (preg_match('/\/fichasidb\/([^\/]+)\//', $_SERVER['REQUEST_URI'], $matches)) {
+                        $current_alias = $matches[1];
+                    }
+                    $tema = $temas[$current_alias] ?? 'Indefinido';
+                    $titulo = $data['titulo'] ?? 'Título não disponível';
+                    $doi = isset($data['doi']) && !empty($data['doi']) ? $data['doi'] : 'DOI não disponível';
+                    $site_url = site_url();
+                    $url = '<a href="https://www.ripsa.org.br/fichasidb" target="_blank">https://www.ripsa.org.br/fichasidb</a>';
+
+                    // Determina o número de páginas do PDF
+                    $numero_paginas = 'não informado';
+                    if (!empty($pdf_file_path)) {
+                        if (file_exists($pdf_file_path)) {
+                            $pdf_content = file_get_contents($pdf_file_path); // Lê o conteúdo do PDF
+                            preg_match_all("/\/Type\s*\/Page\b/", $pdf_content, $matches); // Encontra todas as ocorrências de '/Type /Page'
+                            $numero_paginas = count($matches[0]); // Conta as ocorrências
                         }
                     }
-                    $tabela_html .= '</table>';
-                    $analise = $tabela_html;
-                }
-
-        // Remove qualquer espaço ou quebra de linha adicional
-                $analise = trim($analise);
-
-        // Exibe o conteúdo processado
-                echo $analise;
-            } else {
-                echo '<p>Sem análise descritiva.</p>';
-            }
-            ?>
-        </div>
-
-        <!-- Referências Bibliográficas -->
-        <?php if (!empty($data['referencia_bibliografica'])): ?>
-            <div class="data-box">
-                <h3>Referências</h3>
-                <?php echo $data['referencia_bibliografica']; ?>
-            </div>
-        <?php endif; ?>
-
-        <!-- Seção Como Citar -->
-        <div class="data-box citation">
-            <h3>Como Citar</h3>
-            <?php
-            $temas = [
-                'a-demografico' => 'Demográfico',
-                'b-socioeconomicos' => 'Socioeconômico',
-                'c-mortalidade' => 'Mortalidade',
-                'd-morbidade' => 'Morbidade',
-                'e-recursos' => 'Recursos',
-                'f-cobertura' => 'Cobertura',
-                'g-fatores-risco-protecao' => 'Fatores de Risco e Proteção'
-            ];
-            $current_alias = '';
-            if (preg_match('/\/fichasidb\/([^\/]+)\//', $_SERVER['REQUEST_URI'], $matches)) {
-                $current_alias = $matches[1];
-            }
-            $tema = $temas[$current_alias] ?? 'Indefinido';
-            $titulo = $data['titulo'] ?? 'Título não disponível';
-            $doi = isset($data['doi']) && !empty($data['doi']) ? $data['doi'] : 'DOI não disponível';
-            $site_url = site_url();
-            $url = '<a href="https://www.ripsa.org.br/fichasidb" target="_blank">https://www.ripsa.org.br/fichasidb</a>';
-
-    // Determina o número de páginas do PDF
-            $numero_paginas = 'não informado';
-            if (!empty($pdf_file_path)) {
-                if (file_exists($pdf_file_path)) {
-            $pdf_content = file_get_contents($pdf_file_path); // Lê o conteúdo do PDF
-            preg_match_all("/\/Type\s*\/Page\b/", $pdf_content, $matches); // Encontra todas as ocorrências de '/Type /Page'
-            $numero_paginas = count($matches[0]); // Conta as ocorrências
-        }
-    }
-
-    // Gera a citação
-    $citacao = "Rede Interagencial de Informações para a Saúde. Comitê de Gestão de Indicadores $tema. $titulo. In: Ficha de Qualificação do Indicador. Brasília: Ripsa; 2025. Disponível em: $url. doi:$doi.";
-    ?>
-    <p><?php echo $citacao; ?></p>
-</div>
-
-<!-- Seção Direitos Creative Commons -->
-<div class="data-box">
-    <p>
-        <span style="display: flex; align-items: center; padding: 10px 0;">
-            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"
-            style="text-decoration: none; color: inherit; display: flex; align-items: center;">
-            <img src="<?php echo plugins_url('images/by-nc-sa.png', __FILE__); ?>" alt="cc-by-4.0 icon"
-            style="width:80px; height:28px; margin-right: 8px;">
-            <span style="font-size: 9px; line-height: 1.2;">Esta obra está sob a licença </br>Creative
-            Commons Attribution – NonCommercial – ShareAlike – 4.0 International</span>
-        </a>
-    </span>
-</p>
-</div>
-<?php else: ?>
-    <p>Não foi possível recuperar os dados.</p>
-<?php endif; ?>
-</div>
-</div>
-
-<!-- Segunda coluna: Botões com ícones -->
-<div class="column-right">
-
-    <?php if (isset($data['doi']) || $pdf_file_url): ?>
-        <div class="box-container">
-            <!-- Adiciona a nova caixa -->
-            <?php if (isset($data['doi']) && !empty($data['doi'])): ?>
-            <div class="data-box doi-box">
-                <h3>DOI</h3> <a href="<?php echo $data['doi']; ?>"
-                    target="_blank"><?php echo $data['doi']; ?></a>
+                    // Gera a citação
+                    $citacao = "Rede Interagencial de Informações para a Saúde. Comitê de Gestão de Indicadores $tema. $titulo. In: Ficha de Qualificação do Indicador. Brasília: Ripsa; 2025. Disponível em: $url. doi:$doi.";
+                    ?>
+                    <p><?php echo $citacao; ?></p>
                 </div>
-            <?php endif; ?>
 
-            <!-- Botão para baixar PDF -->
-            <?php if ($pdf_file_url): ?>
-                <div class="button-box">
-                    <a href="<?php echo $pdf_file_url; ?>" class="btn-icon" target="_blank" download>
-                        <i class="fa-solid fa-file-pdf"></i> PDF
-                    </a>
+                <!-- Seção Direitos Creative Commons -->
+                <div class="data-box">
+                    <p><span style="display: flex; align-items: center; padding: 10px 0;">
+                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"
+                        style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                        <img src="<?php echo plugins_url('images/by-nc-sa.png', __FILE__); ?>" alt="cc-by-4.0 icon"
+                        style="width:80px; height:28px; margin-right: 8px;"><span style="font-size: 9px; line-height: 1.2;">Esta obra está sob a licença </br>Creative Commons Attribution – NonCommercial – ShareAlike – 4.0 International</span></a>
+                    </span></p>
                 </div>
-            <?php endif; ?>
-            <!--
-            <div class="button-box">
-                <a href="<?php echo 'http://tabnet2.datasus.gov.br/cgi/dhx3.py?idb2025/' . strtolower($codigo_indicador) . '.def'; ?>" class="btn-icon" target="_blank">
-                    <i class="fa-solid fa-table"></i> TABNET<sub>BD</sub>
-                </a>
+                    <?php else: ?>
+                        <p>Não foi possível recuperar os dados.</p>
+                    <?php endif; ?>
+                </div>
             </div>
-            -->
-        </div>
-    <?php endif; ?>
 
-</div>
-</div>
-</div>
+            <!-- Segunda coluna: Botões com ícones -->
+            <div class="column-right">
+                <div class="box-container">
+                    <!-- Adiciona a nova caixa -->
+                    <?php if (isset($data['doi']) && !empty($data['doi'])): ?>
+                    <div class="data-box doi-box">
+                        <h3>DOI</h3> <a href="https://doi.org/<?php echo $data['doi']; ?>"
+                            target="_blank"><?php echo $data['doi']; ?></a>
+                        </div>
+                    <?php endif; ?>
+
+                    <!-- Botão para baixar PDF -->
+                    <?php if ($pdf_file_url): ?>
+                        <div class="button-box">
+                            <a href="<?php echo $pdf_file_url; ?>" class="btn-icon" target="_blank" download>
+                                <i class="fa-solid fa-file-pdf"></i> PDF
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                    <div class="button-box">
+                        <a href="<?php echo 'http://tabnet2.datasus.gov.br/cgi/dhx3.py?idb2025/' . strtolower($codigo_indicador) . '.def'; ?>" class="btn-icon" target="_blank">
+                            <i class="fa-solid fa-table"></i> TABNET<sub>BD</sub>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
 <?php
 // Inclua o rodapé e outras partes do template conforme necessário

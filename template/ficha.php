@@ -273,7 +273,7 @@ function format_bullets($content)
                         $current_alias = $matches[1];
                     }
                     $tema = $temas[$current_alias] ?? 'Indefinido';
-                    $titulo = $data['titulo'] ?? 'Título não disponível';
+                    $titulo_ref = $data['prefixo'] . ' - ' . $data['titulo'];
                     $doi = isset($data['doi']) && !empty($data['doi']) ? $data['doi'] : 'DOI não disponível';
                     $site_url = site_url();
                     $url = '<a href="https://www.ripsa.org.br/fichasidb" target="_blank">https://www.ripsa.org.br/fichasidb</a>';
@@ -288,7 +288,7 @@ function format_bullets($content)
                         }
                     }
                     // Gera a citação
-                    $citacao = "Rede Interagencial de Informações para a Saúde. Comitê de Gestão de Indicadores $tema. $titulo. In: Ficha de Qualificação do Indicador. Brasília: Ripsa; 2025. Disponível em: $url. doi:$doi.";
+                    $citacao = "Rede Interagencial de Informações para a Saúde. Comitê de Gestão de Indicadores $tema. $titulo_ref. In: Ficha de Qualificação do Indicador. Brasília: Ripsa; 2025. Disponível em: $url. doi:$doi.";
                     ?>
                     <p><?php echo $citacao; ?></p>
                 </div>

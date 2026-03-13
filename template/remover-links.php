@@ -1,11 +1,14 @@
 <!-- Remover links Demografico-->
 <script>
+/*
   jQuery('a[href*="MGDI_MS_S6V"]').attr('href', '#!');
   jQuery('a[href*="MGDI_MS_1HU"]').attr('href', '#!');
-  jQuery('a[href*="MGDI_MS_NTX"]').attr('href', '#!');
+  jQuery('a[href*="MGDI_MS_NTX"]').attr('href', '#!'); 
+  */ 
 </script>
 <!-- Remover links Mortalidade-->
 <script>
+/*
   jQuery('a[href*="MGDI_MS_K5P"]').attr('href', '#!');
   jQuery('a[href*="MGDI_MS_M8Y"]').attr('href', '#!');
   jQuery('a[href*="MGDI_MS_O3O"]').attr('href', '#!');
@@ -28,9 +31,11 @@
   jQuery('a[href*="MGDI_MS_OOH"]').attr('href', '#!');
   jQuery('a[href*="MGDI_MS_4TT"]').attr('href', '#!');
   jQuery('a[href*="MGDI_MS_46W"]').attr('href', '#!');
+*/
 </script>
 <!-- Remover links Morbidade-->
 <script>
+/*
   jQuery('a[href*="RIPSA019MB"]').attr('href', '#!');
   jQuery('a[href*="RIPSA007MB"]').attr('href', '#!');
   jQuery('a[href*="RIPSA006MB"]').attr('href', '#!');
@@ -68,13 +73,17 @@
   jQuery('a[href*="MGDI_MS_NVN"]').attr('href', '#!');
   jQuery('a[href*="MGDI_MS_KM8"]').attr('href', '#!');
   jQuery('a[href*="MGDI_MS_QU3"]').attr('href', '#!');
+*/
 </script>
 <!-- Remover links Recursos-->
 <script>
+/*
   jQuery('a[href*="RIPSA016RC"]').attr('href', '#!');
+*/
 </script>
 <!-- Remover links Cobertura-->
 <script>
+/*
   jQuery('a[href*="MGDI_MS_95P"]').attr('href', '#!');
   jQuery('a[href*="MGDI_MS_4IU"]').attr('href', '#!');
   jQuery('a[href*="MGDI_MS_0BX"]').attr('href', '#!');
@@ -89,10 +98,12 @@
   jQuery('a[href*="RIPSA005CB"]').attr('href', '#!');
   jQuery('a[href*="MGDI_MS_TXL"]').attr('href', '#!');
   jQuery('a[href*="RIPSA001CB"]').attr('href', '#!');
-  jQuery('a[href*="MGDI_MS_5E8"]').attr('href', '#!');
+  jQuery('a[href*="MGDI_MS_5E8"]').attr('href', '#!');]
+*/
 </script>
 <!-- Remover links Fatores de Risco-->
 <script>
+/*
   jQuery('a[href*="MGDI_MS_MJN"]').attr('href', '#!');
   jQuery('a[href*="MGDI_MS_MZM"]').attr('href', '#!');
   jQuery('a[href*="MGDI_MS_MK7"]').attr('href', '#!');
@@ -109,4 +120,5 @@
   jQuery('a[href*="MGDI_MS_V5F"]').attr('href', '#!');
   jQuery('a[href*="MGDI_MS_16V"]').attr('href', '#!');
   jQuery('a[href*="MGDI_MS_EUQ"]').attr('href', '#!');
+*/
 </script>

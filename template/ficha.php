@@ -27,6 +27,8 @@ $pdf_base_url = $upload_dir['baseurl'] . $pdf_dir;
 $pdf_file_name = $codigo_indicador . '.pdf';
 $pdf_file_path = $pdf_base_path . $pdf_file_name;
 
+$show_citation_box = false;
+
 if (file_exists($pdf_file_path)) {
     $pdf_file_url = $pdf_base_url . $codigo_indicador . '.pdf';
 
@@ -256,6 +258,7 @@ function format_bullets($content)
                 <?php endif; ?>
 
                 <!-- Seção Como Citar -->
+                <?php if ($show_citation_box == true): ?>
                 <div class="data-box citation">
                     <h3>Como Citar</h3>
                     <?php
@@ -292,6 +295,7 @@ function format_bullets($content)
                     ?>
                     <p><?php echo $citacao; ?></p>
                 </div>
+                <?php endif; ?>
 
                 <!-- Seção Direitos Creative Commons -->
                 <div class="data-box">

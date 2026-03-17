@@ -14,7 +14,7 @@ $codigo_api = $_GET['code'];
 $plugin = new IDB_Plugin();
 $data = $plugin->fetch_api_indicador($codigo_api);
 
-$titulo = $data['titulo'];
+$titulo = $data['tituloCompleto'];
 $codigo_indicador = $data['prefixo'];
 
 // Diretório base para PDFs na pasta uploads
@@ -64,13 +64,13 @@ function format_bullets($content)
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?php echo home_url(); ?>">Home</a></li>
                 <li class="breadcrumb-item"><a href="<?php echo site_url($idb_plugin_slug); ?>">Fichas IDB</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><?php echo $data['titulo']; ?></li>
+                <li class="breadcrumb-item active" aria-current="page"><?php echo $titulo; ?></li>
             </ol>
         </nav>
     </div>
 </div>
 <div class="container">
-    <h2><b><?php echo $data['prefixo'] . ' - ' . $data['titulo']; ?></b></h2>
+    <h2><b><?php echo $codigo_indicador . ' - ' . $titulo; ?></b></h2>
 </div>
 <main class="container">
     <div class="row">
@@ -276,7 +276,7 @@ function format_bullets($content)
                         $current_alias = $matches[1];
                     }
                     $tema = $temas[$current_alias] ?? 'Indefinido';
-                    $titulo_ref = $data['prefixo'] . ' - ' . $data['titulo'];
+                    $titulo_ref = $codigo_indicador . ' - ' . $titulo;
                     $doi = isset($data['doi']) && !empty($data['doi']) ? $data['doi'] : 'DOI não disponível';
                     $site_url = site_url();
                     $url = '<a href="https://www.ripsa.org.br/fichasidb" target="_blank">https://www.ripsa.org.br/fichasidb</a>';

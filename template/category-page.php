@@ -34,7 +34,7 @@
                     <div class="accordion-content">
                         <?php foreach ($fichas as $indicador): ?>
                         <?php
-                            $titulo = $indicador['titulo'];
+                            $titulo = $indicador['tituloCompleto'];
                             $codigo_api = $indicador['codigo'];
                             $codigo_indicador = $indicador['prefixo'];
 

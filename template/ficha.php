@@ -20,7 +20,7 @@ $codigo_indicador = $data['prefixo'];
 // Diretório base para PDFs na pasta uploads
 $upload_dir = wp_upload_dir();
 $pdf_file_url = null;
-$pdf_dir = '/fichasidb/2024/';
+$pdf_dir = '/fichasidb/2025/';
 $pdf_base_path = $upload_dir['basedir'] . $pdf_dir;
 $pdf_base_url = $upload_dir['baseurl'] . $pdf_dir;
 

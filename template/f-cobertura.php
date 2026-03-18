@@ -11,11 +11,10 @@ if ($indicadores) {
 }
 $dimensoes = [
     'COB.1' => 'Consultas médicas e odontológicas',
-    'COB.2' => 'Vacinação',
-    'COB.3' => 'Internações hospitalares',
-    'COB.4' => 'Saúde da mulher',
-    'COB.5' => 'Assistência ao parto e saúde reprodutiva',
-    'COB.6' => 'Cobertura por planos de saúde'
+    'COB.2' => 'Internações Hospitalares',
+    'COB.3' => 'Saúde da mulher',
+    'COB.4' => 'Assistência ao parto e saúde reprodutiva',
+    'COB.5' => 'Cobertura por planos de saúde'
 ];
 
 $grupos = [];

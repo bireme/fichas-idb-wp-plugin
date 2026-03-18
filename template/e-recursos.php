@@ -13,10 +13,10 @@ if ($indicadores) {
 $dimensoes = [
     'REC.1' => 'Recursos humanos',
     'REC.2' => 'Capacidade instalada',
-    'REC.3' => 'Recursos Financeiros - assistência à saúde',
-    'REC.4' => 'Recursos Financeiros - despesas em saúde',
-    'REC.5' => 'Recursos Financeiros - gasto com saneamento',
-    'REC.6' => 'Recursos Financeiros - bens e serviços'
+    'REC.3' => 'Recursos financeiros - assistência à saúde',
+    'REC.4' => 'Recursos financeiros - despesas em saúde',
+    'REC.5' => 'Recursos financeiros - gasto com saneamento',
+    'REC.6' => 'Recursos financeiros - bens e serviços'
 ];
 
 $grupos = [];

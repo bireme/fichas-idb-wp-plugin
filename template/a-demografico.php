@@ -14,7 +14,7 @@ $dimensoes = [
     'DEM.1' => 'População',
     'DEM.2' => 'Fecundidade e natalidade',
     'DEM.3' => 'Mortalidade',
-    'DEM.4' => 'Cobertura dos sistemas de informaçoes de nascidos vivos (Sinasc) e de mortalidade (SIM) do Ministério da Saúde'
+    'DEM.4' => 'Cobertura dos sistemas de informações de nascidos vivos e de mortalidade do Ministério da Saúde'
 ];
 
 $grupos = [];

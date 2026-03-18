@@ -16,7 +16,7 @@ $dimensoes = [
     'MRT.3' => 'Mortalidade geral',
     'MRT.4' => 'Mortalidade por causas externas',
     'MRT.5' => 'Mortalidade por doenças crônicas não transmissíveis',
-    'MRT.6' => 'Mortalidade por doenças crônicas transmissíveis'
+    'MRT.6' => 'Mortalidade por doenças transmissíveis'
 ];
 
 $grupos = [];

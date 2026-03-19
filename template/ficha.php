@@ -332,7 +332,7 @@ function format_bullets($content)
                         </div>
                     <?php endif; ?>
                     <div class="button-box">
-                        <a href="<?php echo 'http://tabnet2.datasus.gov.br/cgi/dhx3.py?idb2025/' . strtolower($codigo_indicador) . '.def'; ?>" class="btn-icon" target="_blank">
+                        <a href="http://tabnetbd.saude.gov.br/cgi/idb2025/" class="btn-icon" target="_blank">
                             <i class="fa-solid fa-table"></i> TABNET<sub>BD</sub>
                         </a>
                     </div>

@@ -1004,3 +1004,13 @@ body{
      flex-direction: column;
    }
 }
+/*Ajustes*/
+.header-banner{
+   margin-top: 0px!important;
+}
+.breadcrumb{
+   margin-top: 20px;
+}
+.elementor-element-7f91193{
+   display: none;
+}

@@ -52,6 +52,7 @@ column-left/* @autor: BIREME | OPAS | OMS */
    background-color: #54AB31; /* Define a cor de fundo no hover */
    color: white; /* Altere a cor do texto para garantir contraste */
    border: 1px solid #54AB31; /* Ajusta a borda se necessário */
+   text-decoration: none;
 }
 
 .box-container {

@@ -322,12 +322,12 @@ function format_bullets($content)
                     <?php if (isset($data['doi']) && !empty($data['doi'])): ?>
                     <div class="data-box doi-box">
                         <h4><b>Serviços</b></h4>
-                        <div class="button-box">
+                    </div>
+                    <div class="button-box">
                         <a href="https://doi.org/<?php echo $data['doi']; ?>"
                             target="_blank" class="btn-icon">
                             <img src="<?php echo $plugin_path; ?>doi.svg" alt="doi" style="margin-right: 10px;"><?php echo $data['doi']; ?>
                         </a>
-                        </div>
                     </div>
                     <?php endif; ?>
 

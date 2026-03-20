@@ -45,7 +45,9 @@ column-left/* @autor: BIREME | OPAS | OMS */
    white-space: nowrap;
    max-width: 100%;
 }
-
+.button-box{
+   margin-bottom: 3px;
+}
 .button-box .btn-icon:hover {
    background-color: #54AB31; /* Define a cor de fundo no hover */
    color: white; /* Altere a cor do texto para garantir contraste */

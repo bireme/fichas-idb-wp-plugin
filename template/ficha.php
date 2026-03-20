@@ -10,6 +10,9 @@ crossorigin="anonymous">
 // Pega o parâmetro com identificador da ficha
 $codigo_api = $_GET['code'];
 
+//pasta imagem
+$plugin_path = plugin_dir_url(__FILE__) . 'images/icons/';
+
 // Instancie o plugin e obtenha os dados
 $plugin = new IDB_Plugin();
 $data = $plugin->fetch_api_indicador($codigo_api);
@@ -318,16 +321,21 @@ function format_bullets($content)
                     <!-- Adiciona a nova caixa -->
                     <?php if (isset($data['doi']) && !empty($data['doi'])): ?>
                     <div class="data-box doi-box">
-                        <h4><b>DOI</b></h4> <a href="https://doi.org/<?php echo $data['doi']; ?>"
-                            target="_blank"><?php echo $data['doi']; ?></a>
+                        <h4><b>Serviços</b></h4>
+                        <div class="button-box">
+                        <a href="https://doi.org/<?php echo $data['doi']; ?>"
+                            target="_blank" class="btn-icon">
+                            <img src="<?php echo $plugin_path; ?>doi.svg" alt="doi" style="margin-right: 10px;"><?php echo $data['doi']; ?>
+                        </a>
                         </div>
+                    </div>
                     <?php endif; ?>
 
                     <!-- Botão para baixar PDF -->
                     <?php if ($pdf_file_url): ?>
                         <div class="button-box">
                             <a href="<?php echo $pdf_file_url; ?>" class="btn-icon" target="_blank" download>
-                                <i class="fa-solid fa-file-pdf"></i> PDF
+                                <i class="fa-solid fa-file-pdf"></i> Ficha em PDF
                             </a>
                         </div>
                     <?php endif; ?>

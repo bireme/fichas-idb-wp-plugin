@@ -339,11 +339,6 @@ function format_bullets($content)
                             </a>
                         </div>
                     <?php endif; ?>
-                    <div class="button-box">
-                        <a href="http://tabnetbd.saude.gov.br/cgi/idb2025/" class="btn-icon" target="_blank">
-                            <i class="fa-solid fa-table"></i> TABNET<sub>BD</sub>
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>

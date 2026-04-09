@@ -162,4 +162,25 @@ register_sidebar(array(
     'after_title'  => '</h5>'
 ));
 
+
+if ( !function_exists('return_categoria_por_prefixo') ) {
+    function return_categoria_por_prefixo($prefixo){
+        $mapa = [
+        'DEM' => 'demografico',
+        'SOC' => 'socioeconomico',
+        'MRT' => 'mortalidade',
+        'MRB' => 'morbidade',
+        'FRP' => 'fatores-risco-protecao',
+        'COB' => 'cobertura',
+        'REC' => 'recursos',
+        ];
+        foreach ($mapa as $chave => $valor) {
+            if (str_contains($prefixo, $chave)) {
+                return $valor;
+            }
+        }
+    return null;
+    }
+}
+
 ?>

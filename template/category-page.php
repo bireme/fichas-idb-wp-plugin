@@ -37,6 +37,7 @@
                             $titulo = $indicador['tituloCompleto'];
                             $codigo_api = $indicador['codigo'];
                             $codigo_indicador = $indicador['prefixo'];
+                            $urlprefixo = return_categoria_por_prefixo($indicador['prefixo']);
 
                             // Obtenha o código diretamente da query string da URL
                             $param_code = isset($indicador['link']) ? explode('code=', $indicador['link'])[1] : '';
@@ -44,7 +45,7 @@
                             // Construa o link da página ou utilize o código padrão
                             $link = isset($indicador['link']) ? $indicador['link'] : '#';
                         ?>
-                        <a href="a-demografico/ficha?code=<?php echo $codigo_api; ?>" class="btn-indicator">
+                        <a href="<?=$urlprefixo;?>/ficha?code=<?php echo $codigo_api; ?>" class="btn-indicator">
                             <div class="indicator-code"><?php echo $codigo_indicador; ?></div>
                             <div class="indicator-name"><?php echo $titulo; ?></div>
                         </a>
@@ -55,7 +56,6 @@
         </div>
     </div>
 </div>
-
 <style>
 body { font-family: 'Inter', sans-serif; }
 .header-banner {

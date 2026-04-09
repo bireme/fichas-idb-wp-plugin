@@ -115,20 +115,20 @@ if(!class_exists('IDB_Plugin')) {
                         $template = IDB_PLUGIN_PATH . '/template/indicadores.php'; // Mude isso para a página inicial desejada
                     } elseif ($pagename == $this->plugin_slug . '/listas') {
                         $template = IDB_PLUGIN_PATH . '/template/listas.php';
-                    } elseif ($pagename == $this->plugin_slug . '/a-demografico') {
-                        $template = IDB_PLUGIN_PATH . '/template/a-demografico.php';
-                    } elseif ($pagename == $this->plugin_slug . '/b-socioeconomicos') {
-                        $template = IDB_PLUGIN_PATH . '/template/b-socioeconomicos.php';
-                    } elseif ($pagename == $this->plugin_slug . '/c-mortalidade') {
-                        $template = IDB_PLUGIN_PATH . '/template/c-mortalidade.php';
-                    } elseif ($pagename == $this->plugin_slug . '/d-morbidade') {
-                        $template = IDB_PLUGIN_PATH . '/template/d-morbidade.php';
-                    } elseif ($pagename == $this->plugin_slug . '/f-cobertura') {
-                        $template = IDB_PLUGIN_PATH . '/template/f-cobertura.php';
-                    } elseif ($pagename == $this->plugin_slug . '/e-recursos') {
-                        $template = IDB_PLUGIN_PATH . '/template/e-recursos.php';
-                    } elseif ($pagename == $this->plugin_slug . '/g-fatores-risco-protecao') {
-                        $template = IDB_PLUGIN_PATH . '/template/g-fatores-risco-protecao.php';
+                    } elseif ($pagename == $this->plugin_slug . '/demografico') {
+                        $template = IDB_PLUGIN_PATH . '/template/cat-demografico.php';
+                    } elseif ($pagename == $this->plugin_slug . '/socioeconomicos') {
+                        $template = IDB_PLUGIN_PATH . '/template/cat-socioeconomicos.php';
+                    } elseif ($pagename == $this->plugin_slug . '/mortalidade') {
+                        $template = IDB_PLUGIN_PATH . '/template/cat-mortalidade.php';
+                    } elseif ($pagename == $this->plugin_slug . '/morbidade') {
+                        $template = IDB_PLUGIN_PATH . '/template/cat-morbidade.php';
+                    } elseif ($pagename == $this->plugin_slug . '/cobertura') {
+                        $template = IDB_PLUGIN_PATH . '/template/cat-cobertura.php';
+                    } elseif ($pagename == $this->plugin_slug . '/recursos') {
+                        $template = IDB_PLUGIN_PATH . '/template/cat-recursos.php';
+                    } elseif ($pagename == $this->plugin_slug . '/fatores-risco-protecao') {
+                        $template = IDB_PLUGIN_PATH . '/template/cat-fatores-risco-protecao.php';
                     // Verifica se a pagina termina com a string 'ficha'
                     } elseif ( substr($pagename, -strlen('ficha')) === 'ficha') {
                         $template = IDB_PLUGIN_PATH . '/template/ficha.php';
@@ -316,6 +316,7 @@ if(!class_exists('IDB_Plugin')) {
             if ($data === false) {
                 // Se não houver dados no cache, faz a requisição à API
                 $api_url = $this->get_api_url() . 'tag-categoria/' . $this->ripsa_tag_code . '?ativo=true';
+                echo $api_url;
                 $response = wp_remote_get($api_url, array('timeout' => 20));
 
                 if (!is_wp_error($response)) {

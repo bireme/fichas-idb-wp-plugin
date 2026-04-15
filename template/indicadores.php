@@ -83,8 +83,8 @@ $indicadores = [
     }
 
     .indicator-icon-circle img {
-        width: 72px;
-        height: 72px;
+        width: 140px;
+        height: 140px;
         object-fit: contain;
     }
 

@@ -113,21 +113,21 @@ if(!class_exists('IDB_Plugin')) {
                 if ($this->startsWith($pagename, $this->plugin_slug)) {
                     if ($pagename == $this->plugin_slug) {
                         $template = IDB_PLUGIN_PATH . '/template/indicadores.php'; // Mude isso para a página inicial desejada
-                    } elseif ($pagename == $this->plugin_slug . '/listas') {
+                    } elseif ($pagename == $this->plugin_slug . '/indicadores-listas') {
                         $template = IDB_PLUGIN_PATH . '/template/listas.php';
-                    } elseif ($pagename == $this->plugin_slug . '/demografico') {
+                    } elseif ($pagename == $this->plugin_slug . '/indicadores-demografico') {
                         $template = IDB_PLUGIN_PATH . '/template/cat-demografico.php';
-                    } elseif ($pagename == $this->plugin_slug . '/socioeconomicos') {
+                    } elseif ($pagename == $this->plugin_slug . '/indicadores-socioeconomicos') {
                         $template = IDB_PLUGIN_PATH . '/template/cat-socioeconomicos.php';
-                    } elseif ($pagename == $this->plugin_slug . '/mortalidade') {
+                    } elseif ($pagename == $this->plugin_slug . '/indicadores-mortalidade') {
                         $template = IDB_PLUGIN_PATH . '/template/cat-mortalidade.php';
-                    } elseif ($pagename == $this->plugin_slug . '/morbidade') {
+                    } elseif ($pagename == $this->plugin_slug . '/indicadores-morbidade') {
                         $template = IDB_PLUGIN_PATH . '/template/cat-morbidade.php';
-                    } elseif ($pagename == $this->plugin_slug . '/cobertura') {
+                    } elseif ($pagename == $this->plugin_slug . '/indicadores-cobertura') {
                         $template = IDB_PLUGIN_PATH . '/template/cat-cobertura.php';
-                    } elseif ($pagename == $this->plugin_slug . '/recursos') {
+                    } elseif ($pagename == $this->plugin_slug . '/indicadores-recursos') {
                         $template = IDB_PLUGIN_PATH . '/template/cat-recursos.php';
-                    } elseif ($pagename == $this->plugin_slug . '/fatores-risco-protecao') {
+                    } elseif ($pagename == $this->plugin_slug . '/indicadores-fatores-risco-protecao') {
                         $template = IDB_PLUGIN_PATH . '/template/cat-fatores-risco-protecao.php';
                     // Verifica se a pagina termina com a string 'ficha'
                     } elseif ( substr($pagename, -strlen('ficha')) === 'ficha') {

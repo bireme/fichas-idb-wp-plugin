@@ -166,13 +166,13 @@ register_sidebar(array(
 if ( !function_exists('return_categoria_por_prefixo') ) {
     function return_categoria_por_prefixo($prefixo){
         $mapa = [
-        'DEM' => 'demografico',
-        'SOC' => 'socioeconomico',
-        'MRT' => 'mortalidade',
-        'MRB' => 'morbidade',
-        'FRP' => 'fatores-risco-protecao',
-        'COB' => 'cobertura',
-        'REC' => 'recursos',
+        'DEM' => 'indicadores-demografico',
+        'SOC' => 'indicadores-socioeconomico',
+        'MRT' => 'indicadores-mortalidade',
+        'MRB' => 'indicadores-morbidade',
+        'FRP' => 'indicadores-fatores-risco-protecao',
+        'COB' => 'indicadores-cobertura',
+        'REC' => 'indicadores-recursos',
         ];
         foreach ($mapa as $chave => $valor) {
             if (str_contains($prefixo, $chave)) {

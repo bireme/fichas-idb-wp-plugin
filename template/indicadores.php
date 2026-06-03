@@ -4,13 +4,13 @@ get_header();
 $plugin_path = plugin_dir_url(__FILE__) . 'images/icons/';
 
 $indicadores = [
-    ['letra' => 'DEM', 'icone' => 'demografico.png', 'nome' => 'Demográfico', 'link' => 'demografico'],
-    ['letra' => 'B', 'icone' => 'socioeconomico.png', 'nome' => 'Socioeconômico', 'link' => 'socioeconomicos'],
-    ['letra' => 'C', 'icone' => 'mortalidade.png', 'nome' => 'Mortalidade', 'link' => 'mortalidade'],
-    ['letra' => 'D', 'icone' => 'morbidade.png', 'nome' => 'Morbidade', 'link' => 'morbidade'],
-    ['letra' => 'G', 'icone' => 'fatores_de_risco.png', 'nome' => 'Fatores de Risco e Proteção', 'link' => 'fatores-risco-protecao'],
-    ['letra' => 'F', 'icone' => 'cobertura.png', 'nome' => 'Cobertura', 'link' => 'cobertura'],
-    ['letra' => 'E', 'icone' => 'recursos.png', 'nome' => 'Recursos', 'link' => 'recursos'],
+    ['letra' => 'DEM', 'icone' => 'demografico.png', 'nome' => 'Demográfico', 'link' => 'indicadores-demografico'],
+    ['letra' => 'B', 'icone' => 'socioeconomico.png', 'nome' => 'Socioeconômico', 'link' => 'indicadores-socioeconomicos'],
+    ['letra' => 'C', 'icone' => 'mortalidade.png', 'nome' => 'Mortalidade', 'link' => 'indicadores-mortalidade'],
+    ['letra' => 'D', 'icone' => 'morbidade.png', 'nome' => 'Morbidade', 'link' => 'indicadores-morbidade'],
+    ['letra' => 'G', 'icone' => 'fatores_de_risco.png', 'nome' => 'Fatores de Risco e Proteção', 'link' => 'indicadores-fatores-risco-protecao'],
+    ['letra' => 'F', 'icone' => 'cobertura.png', 'nome' => 'Cobertura', 'link' => 'indicadores-cobertura'],
+    ['letra' => 'E', 'icone' => 'recursos.png', 'nome' => 'Recursos', 'link' => 'indicadores-recursos'],
 ];
 ?>
 <!-- Estilos -->

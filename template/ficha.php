@@ -18,7 +18,7 @@ $plugin = new IDB_Plugin();
 $data = $plugin->fetch_api_indicador($codigo_api);
 
 $titulo = $data['tituloCompleto'];
-$codigo_indicador = $data['prefixo'];
+$codigo_indicador = trim($data['prefixo']);
 
 // Diretório base para PDFs na pasta uploads
 $upload_dir = wp_upload_dir();

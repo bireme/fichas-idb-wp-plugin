@@ -79,7 +79,7 @@ body { font-family: 'Inter', sans-serif; }
     margin: 0 auto;
 }
 .dem-icon {
-    width: 64px; height: 64px;
+    /*width: 64px; height: 64px;*/
 }
 .dem-label {
     background-color: #2e7d32; color: white; font-weight: bold;

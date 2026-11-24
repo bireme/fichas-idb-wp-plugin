@@ -1,4 +1,22 @@
 <?php
+// Pega o parâmetro com identificador da ficha (leitura pública, sem nonce).
+$codigo_api = isset( $_GET['code'] ) ? sanitize_text_field( wp_unslash( $_GET['code'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+// Só consulta a API se o código tiver formato válido.
+$data = false;
+if ( preg_match( '/^[A-Za-z0-9_\-]{1,40}$/', $codigo_api ) ) {
+    $plugin = new IDB_Plugin();
+    $data   = $plugin->fetch_api_indicador( $codigo_api );
+}
+
+// Código inválido, ausente ou ficha inexistente: 404 antes de qualquer saída.
+if ( ! is_array( $data ) || empty( $data['tituloCompleto'] ) ) {
+    status_header( 404 );
+    nocache_headers();
+    include __DIR__ . '/ficha-nao-encontrada.php';
+    return;
+}
+
 // Inclua o cabeçalho e outras partes do template conforme necessário
 get_header();
 ?>
@@ -7,15 +25,8 @@ integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcF
 crossorigin="anonymous">
 
 <?php
-// Pega o parâmetro com identificador da ficha
-$codigo_api = $_GET['code'];
-
 //pasta imagem
 $plugin_path = plugin_dir_url(__FILE__) . 'images/icons/';
-
-// Instancie o plugin e obtenha os dados
-$plugin = new IDB_Plugin();
-$data = $plugin->fetch_api_indicador($codigo_api);
 
 $titulo = $data['tituloCompleto'];
 $codigo_indicador = trim($data['prefixo']);
@@ -27,13 +38,13 @@ $pdf_dir = '/fichasidb/2025/';
 $pdf_base_path = $upload_dir['basedir'] . $pdf_dir;
 $pdf_base_url = $upload_dir['baseurl'] . $pdf_dir;
 
-$pdf_file_name = $codigo_indicador . '.pdf';
+$pdf_file_name = sanitize_file_name( $codigo_indicador . '.pdf' );
 $pdf_file_path = $pdf_base_path . $pdf_file_name;
 
 $show_citation_box = false;
 
 if (file_exists($pdf_file_path)) {
-    $pdf_file_url = $pdf_base_url . $codigo_indicador . '.pdf';
+    $pdf_file_url = $pdf_base_url . $pdf_file_name;
 
     // Extrai o DOI do nome do arquivo (parte após o "_")
     if (preg_match('/' . preg_quote($codigo_indicador, '/') . '_([\w]+)\.pdf$/', $pdf_file_name, $matches)) {
@@ -78,7 +89,6 @@ function format_bullets($content)
 <main class="container">
     <div class="row">
         <!-- Primeira coluna: Exibição dos dados -->
-        <?php if ($data): ?>
             <div class="column-left" id="content-to-print">
                 <div class="data-box">
                     <h3>Conceituação</h3>
@@ -309,9 +319,6 @@ function format_bullets($content)
                         style="width:80px; height:28px; margin-right: 8px;"><span style="font-size: 9px; line-height: 1.2;">Esta obra está sob a licença </br>Creative Commons Attribution – NonCommercial – ShareAlike – 4.0 International</span></a>
                     </span></p>
                 </div>
-                    <?php else: ?>
-                        <p>Não foi possível recuperar os dados.</p>
-                    <?php endif; ?>
                 </div>
             </div>
 

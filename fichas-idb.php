@@ -39,8 +39,6 @@ if(!class_exists('IDB_Plugin')) {
             add_filter( 'document_title_separator', array(&$this, 'title_tag_sep') );
             add_filter( 'document_title_parts', array(&$this, 'theme_slug_render_title'));
             add_filter( 'wp_title', array(&$this, 'theme_slug_render_wp_title'));
-            add_action( 'wp_ajax_centers_show_more_clusters', array($this, 'centers_show_more_clusters'));
-            add_action( 'wp_ajax_nopriv_centers_show_more_clusters', array($this, 'centers_show_more_clusters'));
 
         } // END public function __construct
 
@@ -265,11 +263,6 @@ if(!class_exists('IDB_Plugin')) {
 
 
             wp_enqueue_script('jquery');
-
-            wp_add_inline_script('jquery', 'const IDB_script_vars = ' . json_encode( array(
-                    'ajaxurl' => admin_url( 'admin-ajax.php' ),
-                    'ajaxnonce' => wp_create_nonce( 'ajax_post_validation' )
-            )), 'before');
         }
 
         function register_settings(){

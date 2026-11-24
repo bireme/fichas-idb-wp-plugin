@@ -20,9 +20,11 @@ get_header();
     </div>
 </div>
 <main class="container">
-    <h2><b>Ficha não encontrada</b></h2>
-    <p>A ficha de qualificação solicitada não existe ou não está disponível.</p>
-    <p><a href="<?php echo esc_url( site_url( $idb_plugin_slug ) ); ?>">Voltar às Fichas IDB</a></p>
+    <div>
+        <h2><b>Ficha não encontrada</b></h2>
+        <p>A ficha de qualificação solicitada não existe ou não está disponível.</p>
+        <p><a href="<?php echo esc_url( site_url( $idb_plugin_slug ) ); ?>">Voltar às Fichas IDB</a></p>
+    </div>
 </main>
 <?php
 get_footer();

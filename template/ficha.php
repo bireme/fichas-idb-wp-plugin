@@ -295,7 +295,7 @@ function format_bullets($content)
                     $titulo_ref = $codigo_indicador . ' - ' . $titulo;
                     $doi = isset($data['doi']) && !empty($data['doi']) ? $data['doi'] : 'DOI não disponível';
                     $site_url = site_url();
-                    $url = '<a href="https://www.ripsa.org.br/fichasidb" target="_blank">https://www.ripsa.org.br/fichasidb</a>';
+                    $url = '<a href="https://www.ripsa.org.br/fichasidb" target="_blank" rel="noopener noreferrer">https://www.ripsa.org.br/fichasidb</a>';
 
                     // Determina o número de páginas do PDF
                     $numero_paginas = 'não informado';
@@ -316,7 +316,7 @@ function format_bullets($content)
                 <!-- Seção Direitos Creative Commons -->
                 <div class="data-box">
                     <p><span style="display: flex; align-items: center; padding: 10px 0;">
-                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"
+                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer"
                         style="text-decoration: none; color: inherit; display: flex; align-items: center;">
                         <img src="<?php echo esc_url( plugins_url( 'images/by-nc-sa.png', __FILE__ ) ); ?>" alt="cc-by-4.0 icon"
                         style="width:80px; height:28px; margin-right: 8px;"><span style="font-size: 9px; line-height: 1.2;">Esta obra está sob a licença </br>Creative Commons Attribution – NonCommercial – ShareAlike – 4.0 International</span></a>
@@ -335,7 +335,7 @@ function format_bullets($content)
                     </div>
                     <div class="button-box">
                         <a href="<?php echo esc_url( 'https://doi.org/' . $data['doi'] ); ?>"
-                            target="_blank" class="btn-icon">
+                            target="_blank" rel="noopener noreferrer" class="btn-icon">
                             <img src="<?php echo esc_url( $plugin_path . 'doi.svg' ); ?>" alt="doi" style="margin-right: 10px;"><?php echo esc_html( $data['doi'] ); ?>
                         </a>
                     </div>
@@ -344,7 +344,7 @@ function format_bullets($content)
                     <!-- Botão para baixar PDF -->
                     <?php if ($pdf_file_url): ?>
                         <div class="button-box">
-                            <a href="<?php echo esc_url( $pdf_file_url ); ?>" class="btn-icon" target="_blank" download>
+                            <a href="<?php echo esc_url( $pdf_file_url ); ?>" class="btn-icon" target="_blank" rel="noopener noreferrer" download>
                                 <i class="fa-solid fa-file-pdf"></i> Ficha em PDF
                             </a>
                         </div>

@@ -141,7 +141,7 @@ $indicadores = [
     <div class="breadcrumb">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="<?php echo home_url(); ?>">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?php echo esc_url( home_url() ); ?>">Home</a></li>
                 <li class="breadcrumb-item active" aria-current="page"><a>Fichas IDB</a></li>
             </ol>
         </nav>
@@ -152,11 +152,11 @@ $indicadores = [
     <div class="indicators-row">
         <?php foreach (array_slice($indicadores, 0, 4) as $indicador): ?>
             <?php $is_active = $indicador['letra'] === $indicador_ativo; ?>
-            <a href="<?php echo site_url($idb_plugin_slug . '/' . $indicador['link']); ?>" class="indicator-card <?php echo $is_active ? 'active' : ''; ?>">
+            <a href="<?php echo esc_url( site_url( $idb_plugin_slug . '/' . $indicador['link'] ) ); ?>" class="indicator-card <?php echo esc_attr( $is_active ? 'active' : '' ); ?>">
                 <div class="indicator-icon-circle">
-                    <img src="<?php echo $plugin_path . $indicador['icone']; ?>" alt="<?php echo $indicador['nome']; ?>" />
+                    <img src="<?php echo esc_url( $plugin_path . $indicador['icone'] ); ?>" alt="<?php echo esc_attr( $indicador['nome'] ); ?>" />
                 </div>
-                <div class="indicator-label"><?php echo $indicador['nome']; ?></div>
+                <div class="indicator-label"><?php echo esc_html( $indicador['nome'] ); ?></div>
             </a>
         <?php endforeach; ?>
     </div>
@@ -167,11 +167,11 @@ $indicadores = [
                 $is_active = $indicador['letra'] === $indicador_ativo;
                 $is_last = $i === 2 ? 'last-indicator' : '';
             ?>
-            <a href="<?php echo site_url($idb_plugin_slug . '/' . $indicador['link']); ?>" class="indicator-card <?php echo $is_active ? 'active' : ''; ?> <?php echo $is_last; ?>">
+            <a href="<?php echo esc_url( site_url( $idb_plugin_slug . '/' . $indicador['link'] ) ); ?>" class="indicator-card <?php echo esc_attr( $is_active ? 'active' : '' ); ?> <?php echo esc_attr( $is_last ); ?>">
                 <div class="indicator-icon-circle">
-                    <img src="<?php echo $plugin_path . $indicador['icone']; ?>" alt="<?php echo $indicador['nome']; ?>" />
+                    <img src="<?php echo esc_url( $plugin_path . $indicador['icone'] ); ?>" alt="<?php echo esc_attr( $indicador['nome'] ); ?>" />
                 </div>
-                <div class="indicator-label"><?php echo $indicador['nome']; ?></div>
+                <div class="indicator-label"><?php echo esc_html( $indicador['nome'] ); ?></div>
             </a>
         <?php endforeach; ?>
     </div>

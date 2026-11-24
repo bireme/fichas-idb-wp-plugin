@@ -14,7 +14,7 @@ function idb_page_admin() {
 ?>
     <div class="wrap">
             <div id="icon-options-general" class="icon32"></div>
-            <h2><?php _e('IDB Settings', 'idb'); ?></h2>
+            <h2><?php esc_html_e( 'IDB Settings', 'idb' ); ?></h2>
 
             <form method="post" action="options.php">
 
@@ -23,16 +23,16 @@ function idb_page_admin() {
                 <table class="form-table">
                     <tbody>
                         <tr valign="top">
-                            <th scope="row"><?php _e('Plugin page', 'idb'); ?>:</th>
-                            <td><input type="text" name="idb_config[plugin_slug]" value="<?php echo $config['plugin_slug'] ?>" class="regular-text code"></td>
+                            <th scope="row"><?php esc_html_e( 'Plugin page', 'idb' ); ?>:</th>
+                            <td><input type="text" name="idb_config[plugin_slug]" value="<?php echo esc_attr( $config['plugin_slug'] ?? '' ); ?>" class="regular-text code"></td>
                         </tr>
                         <tr valign="top">
-                            <th scope="row"><?php _e('Google Analytics code', 'idb'); ?>:</th>
-                            <td><input type="text" name="idb_config[google_analytics_code]" value="<?php echo $config['google_analytics_code'] ?>" class="regular-text code"></td>
+                            <th scope="row"><?php esc_html_e( 'Google Analytics code', 'idb' ); ?>:</th>
+                            <td><input type="text" name="idb_config[google_analytics_code]" value="<?php echo esc_attr( $config['google_analytics_code'] ?? '' ); ?>" class="regular-text code"></td>
                         </tr>
                         <tr valign="top">
-                            <th scope="row"><?php _e('MGDI API URL', 'idb'); ?>:</th>
-                            <td><input type="text" name="idb_config[mgdi_api_url]" value="<?php echo $config['mgdi_api_url'] ?>" class="regular-text code"></td>
+                            <th scope="row"><?php esc_html_e( 'MGDI API URL', 'idb' ); ?>:</th>
+                            <td><input type="text" name="idb_config[mgdi_api_url]" value="<?php echo esc_attr( $config['mgdi_api_url'] ?? '' ); ?>" class="regular-text code"></td>
                         </tr>
 
 <?php
@@ -45,33 +45,33 @@ function idb_page_admin() {
                                 $home_url = 'home_url_' . $lang;
 
                                 echo '<tr valign="top">';
-                                echo '   <th scope="row">' . __("Page title", "idb") . ' (' . $available_languages_name[$count] . '):</th>';
-                                echo '   <td><input type="text" name="idb_config[' . $plugin_title . ']" value="' . $config[$plugin_title] . '" class="regular-text code"></td>';
+                                echo '   <th scope="row">' . esc_html__( 'Page title', 'idb' ) . ' (' . esc_html( $available_languages_name[ $count ] ?? $lang ) . '):</th>';
+                                echo '   <td><input type="text" name="idb_config[' . esc_attr( $plugin_title ) . ']" value="' . esc_attr( $config[ $plugin_title ] ?? '' ) . '" class="regular-text code"></td>';
                                 echo '</tr>';
 
                                 echo '<tr valign="top">';
-                                echo '    <th scope="row"> ' . __("Home URL", "idb") . ' (' . $available_languages_name[$count] . '):</th>';
-                                echo '    <td><input type="text" name="idb_config[' . $home_url . ']" value="' . $config[$home_url] . '" class="regular-text code"></td>';
+                                echo '    <th scope="row"> ' . esc_html__( 'Home URL', 'idb' ) . ' (' . esc_html( $available_languages_name[ $count ] ?? $lang ) . '):</th>';
+                                echo '    <td><input type="text" name="idb_config[' . esc_attr( $home_url ) . ']" value="' . esc_attr( $config[ $home_url ] ?? '' ) . '" class="regular-text code"></td>';
                                 echo '</tr>';
 
                                 $count++;
                             }
                         }else{
                             echo '<tr valign="top">';
-                            echo '   <th scope="row">' . __("Page title", "idb") . ':</th>';
-                            echo '   <td><input type="text" name="idb_config[plugin_title]" value="' . $config["plugin_title"] . '" class="regular-text code"></td>';
+                            echo '   <th scope="row">' . esc_html__( 'Page title', 'idb' ) . ':</th>';
+                            echo '   <td><input type="text" name="idb_config[plugin_title]" value="' . esc_attr( $config['plugin_title'] ?? '' ) . '" class="regular-text code"></td>';
                             echo '</tr>';
 
                             echo '<tr valign="top">';
-                            echo '    <th scope="row"> ' . __("Home URL", "idb") . ':</th>';
-                            echo '    <td><input type="text" name="idb_config[home_url]" value="' . $config['home_url'] . '" class="regular-text code"></td>';
+                            echo '    <th scope="row"> ' . esc_html__( 'Home URL', 'idb' ) . ':</th>';
+                            echo '    <td><input type="text" name="idb_config[home_url]" value="' . esc_attr( $config['home_url'] ?? '' ) . '" class="regular-text code"></td>';
                             echo '</tr>';
                         }
                         ?>
                     </tbody>
                 </table>
                 <p class="submit">
-                    <input type="submit" class="button-primary" value="<?php _e('Save changes') ?>" />
+                    <input type="submit" class="button-primary" value="<?php esc_attr_e( 'Save changes' ); // phpcs:ignore WordPress.WP.I18n.MissingArgDomain -- string do core. ?>" />
                 </p>
             </form>
         </div>

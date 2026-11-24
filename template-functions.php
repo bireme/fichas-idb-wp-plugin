@@ -165,6 +165,39 @@ register_sidebar(array(
 ));
 
 
+if ( ! function_exists( 'idb_kses_api_html' ) ) {
+    /**
+     * Filtra o HTML vindo da API MGDI com wp_kses_post(), preservando apenas
+     * imagens embutidas como data URI de tipos seguros (png, jpeg, gif, webp),
+     * que o wp_kses_post() removeria por não aceitar o protocolo "data:".
+     *
+     * @param string|null $html HTML da API.
+     * @return string HTML filtrado.
+     */
+    function idb_kses_api_html( $html ) {
+        $images = array();
+        $token  = 'idb-data-img-' . wp_generate_password( 12, false ) . '-';
+
+        $html = preg_replace_callback(
+            '#\bsrc=(["\'])\s*(data:image/(?:png|jpe?g|gif|webp);base64,[A-Za-z0-9+/=\s]+)\1#i',
+            function ( $m ) use ( &$images, $token ) {
+                $key            = $token . count( $images );
+                $images[ $key ] = preg_replace( '/\s+/', '', $m[2] );
+                return 'src="' . $key . '"';
+            },
+            (string) $html
+        );
+
+        $html = wp_kses_post( $html );
+
+        foreach ( $images as $key => $uri ) {
+            $html = str_replace( 'src="' . $key . '"', 'src="' . esc_attr( $uri ) . '"', $html );
+        }
+
+        return $html;
+    }
+}
+
 if ( !function_exists('return_categoria_por_prefixo') ) {
     function return_categoria_por_prefixo($prefixo){
         $mapa = [

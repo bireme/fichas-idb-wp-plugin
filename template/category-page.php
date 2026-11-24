@@ -1,15 +1,15 @@
 <?php defined( 'ABSPATH' ) || exit; ?>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 
-<div class="header-banner"><?php echo $category_name; ?></div>
+<div class="header-banner"><?php echo esc_html( $category_name ); ?></div>
 
 <div class="container-bread-indicadores">
     <div class="breadcrumb">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="<?php echo home_url(); ?>">Home</a></li>
-                <li class="breadcrumb-item"><a href="<?php echo site_url($idb_plugin_slug); ?>">Fichas IDB</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a><?php echo $category_name; ?></a></li>
+                <li class="breadcrumb-item"><a href="<?php echo esc_url( home_url() ); ?>">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?php echo esc_url( site_url( $idb_plugin_slug ) ); ?>">Fichas IDB</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a><?php echo esc_html( $category_name ); ?></a></li>
             </ol>
         </nav>
     </div>
@@ -18,9 +18,9 @@
 <div class="dem-container">
     <div class="left-column">
         <div class="indicator-circle">
-            <img src="<?php echo plugin_dir_url(__FILE__) . 'images/icons/' . $category_image; ?>" alt="<?php echo $category_name; ?>" class="dem-icon">
+            <img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . 'images/icons/' . $category_image ); ?>" alt="<?php echo esc_attr( $category_name ); ?>" class="dem-icon">
         </div>
-        <div class="dem-label"><?php echo $category_name; ?></div>
+        <div class="dem-label"><?php echo esc_html( $category_name ); ?></div>
         <div class="vertical-line"></div>
     </div>
     <div class="right-column">
@@ -30,7 +30,7 @@
                 <div class="accordion-item">
                     <button class="accordion-toggle">
                         <span class="circle">+</span>
-                        <strong>Dimensão <?php echo explode('.', $key)[1]; ?>:</strong> <?php echo $dimensoes[$key] ?? ''; ?>
+                        <strong>Dimensão <?php echo esc_html( explode( '.', $key )[1] ); ?>:</strong> <?php echo esc_html( $dimensoes[ $key ] ?? '' ); ?>
                     </button>
                     <div class="accordion-content">
                         <?php foreach ($fichas as $indicador): ?>
@@ -46,9 +46,9 @@
                             // Construa o link da página ou utilize o código padrão
                             $link = isset($indicador['link']) ? $indicador['link'] : '#';
                         ?>
-                        <a href="<?=$urlprefixo;?>/ficha?code=<?php echo $codigo_api; ?>" class="btn-indicator">
-                            <div class="indicator-code"><?php echo $codigo_indicador; ?></div>
-                            <div class="indicator-name"><?php echo $titulo; ?></div>
+                        <a href="<?php echo esc_url( add_query_arg( 'code', rawurlencode( $codigo_api ), site_url( $idb_plugin_slug . '/' . $urlprefixo . '/ficha' ) ) ); ?>" class="btn-indicator">
+                            <div class="indicator-code"><?php echo esc_html( $codigo_indicador ); ?></div>
+                            <div class="indicator-name"><?php echo esc_html( $titulo ); ?></div>
                         </a>
                         <?php endforeach; ?>
                     </div>

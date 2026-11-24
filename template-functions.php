@@ -178,17 +178,25 @@ if ( ! function_exists( 'idb_kses_api_html' ) ) {
         $images = array();
         $token  = 'idb-data-img-' . wp_generate_password( 12, false ) . '-';
 
-        $html = preg_replace_callback(
+        $html     = (string) $html;
+        $filtered = preg_replace_callback(
             '#\bsrc=(["\'])\s*(data:image/(?:png|jpe?g|gif|webp);base64,[A-Za-z0-9+/=\s]+)\1#i',
             function ( $m ) use ( &$images, $token ) {
                 $key            = $token . count( $images );
                 $images[ $key ] = preg_replace( '/\s+/', '', $m[2] );
                 return 'src="' . $key . '"';
             },
-            (string) $html
+            $html
         );
 
-        $html = wp_kses_post( $html );
+        // Se a regex falhar (ex.: limite de backtracking), segue sem preservar as imagens
+        // em vez de perder todo o conteúdo.
+        if ( null === $filtered ) {
+            $images   = array();
+            $filtered = $html;
+        }
+
+        $html = wp_kses_post( $filtered );
 
         foreach ( $images as $key => $uri ) {
             $html = str_replace( 'src="' . $key . '"', 'src="' . esc_attr( $uri ) . '"', $html );

@@ -268,7 +268,47 @@ if(!class_exists('IDB_Plugin')) {
         }
 
         function register_settings(){
-            register_setting('idb-settings-group', 'idb_config');
+            register_setting(
+                'idb-settings-group',
+                'idb_config',
+                array(
+                    'type'              => 'array',
+                    'sanitize_callback' => array( $this, 'sanitize_settings' ),
+                )
+            );
+        }
+
+        /**
+         * Sanitiza a opção idb_config: aceita apenas as chaves conhecidas e descarta o resto.
+         *
+         * @param mixed $input Valores enviados pelo formulário de configurações.
+         * @return array Configuração sanitizada.
+         */
+        public function sanitize_settings( $input ) {
+            if ( ! is_array( $input ) ) {
+                return array();
+            }
+
+            $output = array();
+
+            $slug                   = isset( $input['plugin_slug'] ) && is_scalar( $input['plugin_slug'] ) ? sanitize_title( $input['plugin_slug'] ) : '';
+            $output['plugin_slug']  = '' !== $slug ? $slug : 'fichas-idb';
+
+            $api_url                = isset( $input['mgdi_api_url'] ) && is_scalar( $input['mgdi_api_url'] ) ? trim( (string) $input['mgdi_api_url'] ) : '';
+            $output['mgdi_api_url'] = '' !== $api_url ? esc_url_raw( trailingslashit( $api_url ) ) : '';
+
+            foreach ( $input as $key => $value ) {
+                if ( ! is_string( $key ) || ! is_scalar( $value ) ) {
+                    continue;
+                }
+                if ( preg_match( '/^plugin_title(_[a-z]{2}(_[A-Za-z]{2})?)?$/', $key ) ) {
+                    $output[ $key ] = sanitize_text_field( $value );
+                } elseif ( preg_match( '/^home_url(_[a-z]{2}(_[A-Za-z]{2})?)?$/', $key ) ) {
+                    $output[ $key ] = esc_url_raw( $value );
+                }
+            }
+
+            return $output;
         }
 
         function settings_link($links) {

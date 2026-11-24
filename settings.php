@@ -6,7 +6,7 @@ function idb_page_admin() {
     if ( !is_array($config) ) {
         $config = array(
             'plugin_slug' => 'fichas-idb',
-            'google_analytics_code' => '',
+            'mgdi_api_url' => '',
             'plugin_title' => '',
             'home_url' => ''
         );
@@ -25,10 +25,6 @@ function idb_page_admin() {
                         <tr valign="top">
                             <th scope="row"><?php esc_html_e( 'Plugin page', 'idb' ); ?>:</th>
                             <td><input type="text" name="idb_config[plugin_slug]" value="<?php echo esc_attr( $config['plugin_slug'] ?? '' ); ?>" class="regular-text code"></td>
-                        </tr>
-                        <tr valign="top">
-                            <th scope="row"><?php esc_html_e( 'Google Analytics code', 'idb' ); ?>:</th>
-                            <td><input type="text" name="idb_config[google_analytics_code]" value="<?php echo esc_attr( $config['google_analytics_code'] ?? '' ); ?>" class="regular-text code"></td>
                         </tr>
                         <tr valign="top">
                             <th scope="row"><?php esc_html_e( 'MGDI API URL', 'idb' ); ?>:</th>

@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || exit;
+
 get_header();
 
 $plugin_path = plugin_dir_url(__FILE__) . 'images/icons/';

@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || exit;
+
 function idb_page_admin() {
     $config = get_option('idb_config');
     if ( !is_array($config) ) {

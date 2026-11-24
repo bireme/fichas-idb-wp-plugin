@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || exit;
+
 
 if ( !function_exists('print_lang_value') ) {
     function print_lang_value($value, $lang_code){

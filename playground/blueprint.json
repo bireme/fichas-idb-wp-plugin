@@ -1,0 +1,78 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Fichas IDB — ambiente de teste",
+		"author": "BIREME/OPAS/OMS",
+		"description": "Ativa o plugin fichas-idb com a API MGDI de teste, liga o log de depuração e instala Query Monitor e Plugin Check. Uso (na pasta do plugin): npx @wp-playground/cli@latest start --blueprint=playground/blueprint.json"
+	},
+	"landingPage": "/fichasidb/",
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"features": {
+		"networking": true
+	},
+	"login": true,
+	"steps": [
+		{
+			"step": "defineWpConfigConsts",
+			"consts": {
+				"WP_DEBUG": true,
+				"WP_DEBUG_LOG": true,
+				"WP_DEBUG_DISPLAY": false,
+				"SCRIPT_DEBUG": true
+			}
+		},
+		{
+			"step": "setSiteOptions",
+			"options": {
+				"permalink_structure": "/%year%/%monthnum%/%day%/%postname%/",
+				"idb_config": {
+					"plugin_slug": "fichasidb",
+					"google_analytics_code": "",
+					"mgdi_api_url": "https://mgdi-api.teste.bireme.org/api/",
+					"plugin_title": "",
+					"home_url": ""
+				}
+			}
+		},
+		{
+			"step": "activatePlugin",
+			"pluginPath": "fichas-idb/fichas-idb.php"
+		},
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "wordpress.org/plugins",
+				"slug": "query-monitor"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "wordpress.org/plugins",
+				"slug": "plugin-check"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "mkdir",
+			"path": "/wordpress/wp-content/uploads/fichasidb/2025"
+		},
+		{
+			"step": "writeFile",
+			"path": "/wordpress/wp-content/uploads/fichasidb/2025/COB.1.02.pdf",
+			"data": "%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj\n3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 595 842]/Contents 4 0 R/Resources<</Font<</F1 5 0 R>>>>>>endobj\n4 0 obj<</Length 58>>stream\nBT /F1 18 Tf 72 760 Td (PDF de teste - COB.1.02) Tj ET\nendstream endobj\n5 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF\n"
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require_once '/wordpress/wp-load.php'; flush_rewrite_rules();"
+		}
+	]
+}

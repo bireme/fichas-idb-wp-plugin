@@ -1,4 +1,24 @@
 <?php
+defined( 'ABSPATH' ) || exit;
+
+// Pega o parâmetro com identificador da ficha (leitura pública, sem nonce).
+$codigo_api = isset( $_GET['code'] ) ? sanitize_text_field( wp_unslash( $_GET['code'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+// Só consulta a API se o código tiver formato válido.
+$data = false;
+if ( preg_match( '/^[A-Za-z0-9_\-]{1,40}$/', $codigo_api ) ) {
+    $plugin = new IDB_Plugin();
+    $data   = $plugin->fetch_api_indicador( $codigo_api );
+}
+
+// Código inválido, ausente ou ficha inexistente: 404 antes de qualquer saída.
+if ( ! is_array( $data ) || empty( $data['tituloCompleto'] ) ) {
+    status_header( 404 );
+    nocache_headers();
+    include __DIR__ . '/ficha-nao-encontrada.php';
+    return;
+}
+
 // Inclua o cabeçalho e outras partes do template conforme necessário
 get_header();
 ?>
@@ -7,15 +27,8 @@ integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcF
 crossorigin="anonymous">
 
 <?php
-// Pega o parâmetro com identificador da ficha
-$codigo_api = $_GET['code'];
-
 //pasta imagem
 $plugin_path = plugin_dir_url(__FILE__) . 'images/icons/';
-
-// Instancie o plugin e obtenha os dados
-$plugin = new IDB_Plugin();
-$data = $plugin->fetch_api_indicador($codigo_api);
 
 $titulo = $data['tituloCompleto'];
 $codigo_indicador = trim($data['prefixo']);
@@ -27,13 +40,13 @@ $pdf_dir = '/fichasidb/2025/';
 $pdf_base_path = $upload_dir['basedir'] . $pdf_dir;
 $pdf_base_url = $upload_dir['baseurl'] . $pdf_dir;
 
-$pdf_file_name = $codigo_indicador . '.pdf';
+$pdf_file_name = sanitize_file_name( $codigo_indicador . '.pdf' );
 $pdf_file_path = $pdf_base_path . $pdf_file_name;
 
 $show_citation_box = false;
 
 if (file_exists($pdf_file_path)) {
-    $pdf_file_url = $pdf_base_url . $codigo_indicador . '.pdf';
+    $pdf_file_url = $pdf_base_url . $pdf_file_name;
 
     // Extrai o DOI do nome do arquivo (parte após o "_")
     if (preg_match('/' . preg_quote($codigo_indicador, '/') . '_([\w]+)\.pdf$/', $pdf_file_name, $matches)) {
@@ -65,40 +78,39 @@ function format_bullets($content)
     <div class="breadcrumb">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="<?php echo home_url(); ?>">Home</a></li>
-                <li class="breadcrumb-item"><a href="<?php echo site_url($idb_plugin_slug); ?>">Fichas IDB</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><?php echo $titulo; ?></li>
+                <li class="breadcrumb-item"><a href="<?php echo esc_url( home_url() ); ?>">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?php echo esc_url( site_url( $idb_plugin_slug ) ); ?>">Fichas IDB</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><?php echo esc_html( $titulo ); ?></li>
             </ol>
         </nav>
     </div>
 </div>
 <div class="container">
-    <h2><b><?php echo $codigo_indicador . ' - ' . $titulo; ?></b></h2>
+    <h2><b><?php echo esc_html( $codigo_indicador . ' - ' . $titulo ); ?></b></h2>
 </div>
 <main class="container">
     <div class="row">
         <!-- Primeira coluna: Exibição dos dados -->
-        <?php if ($data): ?>
             <div class="column-left" id="content-to-print">
                 <div class="data-box">
                     <h3>Conceituação</h3>
-                    <?php echo format_bullets($data['conceituacao']); ?>
+                    <?php echo idb_kses_api_html( format_bullets( $data['conceituacao'] ) ); ?>
                 </div>
 
                 <div class="data-box">
                     <h3>Interpretação</h3>
-                    <?php echo format_bullets($data['interpretacao']); ?>
+                    <?php echo idb_kses_api_html( format_bullets( $data['interpretacao'] ) ); ?>
                 </div>
 
                 <div class="data-box">
                     <h3>Usos</h3>
-                    <?php echo format_bullets($data['usos']); ?>
+                    <?php echo idb_kses_api_html( format_bullets( $data['usos'] ) ); ?>
                 </div>
 
                 <div class="data-box">
                     <h3>Limitações</h3>
                     <?php if (!empty($data['limitacoes'])): ?>
-                        <p><?php echo nl2br($data['limitacoes']); ?></p>
+                        <p><?php echo idb_kses_api_html( nl2br( $data['limitacoes'] ) ); ?></p>
                     <?php else: ?>
                         <p>Não informado</p>
                     <?php endif; ?>
@@ -106,7 +118,7 @@ function format_bullets($content)
 
                 <div class="data-box">
                     <h3>Fonte de Dados</h3>
-                    <?php echo format_bullets($data['fonte_dados']); ?>
+                    <?php echo idb_kses_api_html( format_bullets( $data['fonte_dados'] ) ); ?>
                 </div>
                 <div class="data-box">
                     <h3>Fórmula de Cálculo</h3>
@@ -125,7 +137,8 @@ function format_bullets($content)
                         $onde = isset($subparts[1]) ? trim($subparts[1]) : ''; // Parte "Onde", se existir
                         ?>
                         <!-- Exibe a fórmula -->
-                        <p class="formula-latex" id="formula"><?php echo $formula; ?></p>
+                        <?php // TODO(D5): formula_calculo vem da API como HTML pré-renderizado pelo KaTeX (spans + MathML); definir o escape em fase posterior. ?>
+                        <p class="formula-latex" id="formula"><?php echo $formula; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
                         <script>
                             document.addEventListener("DOMContentLoaded", function() {
                                 if (typeof katex !== 'undefined') {
@@ -140,12 +153,12 @@ function format_bullets($content)
 
                         <!-- Exibe a frase "Onde", se existir -->
                         <?php if (!empty($onde)): ?>
-                            <p class="onde-calc"><strong>Onde:</strong> <?php echo $onde; ?></p>
+                            <p class="onde-calc"><strong>Onde:</strong> <?php echo idb_kses_api_html( $onde ); ?></p>
                         <?php endif; ?>
 
                         <!-- Exibe a nota formatada, se existir -->
                         <?php if (!empty($nota)): ?>
-                            <p class="nota-calc"><strong>Nota:</strong> <?php echo $nota; ?></p>
+                            <p class="nota-calc"><strong>Nota:</strong> <?php echo idb_kses_api_html( $nota ); ?></p>
                         <?php endif; ?>
                     <?php } else { ?>
                         <p>Fórmula de cálculo não disponível.</p>
@@ -154,7 +167,7 @@ function format_bullets($content)
 
                 <div class="data-box">
                     <h3>Método de Cálculo</h3>
-                    <p><?php echo $data['metodo_calculo'] ?? 'Não informado'; ?></p>
+                    <p><?php echo idb_kses_api_html( $data['metodo_calculo'] ?? 'Não informado' ); ?></p>
                 </div>
                 <!-- Novas seções -->
                 <div class="data-box">
@@ -164,7 +177,7 @@ function format_bullets($content)
                         if (!empty($data['CategoriasAnalise'])):
                             echo '<ul>';
                             foreach ($data['CategoriasAnalise'] as $cat_analise){
-                                echo '<li>' . $cat_analise['titulo'] . '</li>';
+                                echo '<li>' . esc_html( $cat_analise['titulo'] ) . '</li>';
                             }
                             echo '<ul>';
                         else:
@@ -176,12 +189,12 @@ function format_bullets($content)
 
                 <div class="data-box">
                     <h3>Granularidade</h3>
-                    <p><?php echo !empty($data['Granularidade']['descricao']) ? $data['Granularidade']['descricao'] : 'Não informado'; ?></p>
+                    <p><?php echo esc_html( ! empty( $data['Granularidade']['descricao'] ) ? $data['Granularidade']['descricao'] : 'Não informado' ); ?></p>
                 </div>
 
                 <div class="data-box">
                     <h3>Periodicidade de Atualização</h3>
-                    <p><?php echo !empty($data['PeriodicidadeAtualizacao']['descricao']) ? $data['PeriodicidadeAtualizacao']['descricao'] : 'Não informado'; ?></p>
+                    <p><?php echo esc_html( ! empty( $data['PeriodicidadeAtualizacao']['descricao'] ) ? $data['PeriodicidadeAtualizacao']['descricao'] : 'Não informado' ); ?></p>
                 </div>
 
                 <div class="data-box">
@@ -194,7 +207,7 @@ function format_bullets($content)
                                 $nome = $responsavelGerencial['nome'] ?? 'Nome não informado';
                                 return "$sigla - $nome";
                             }, $data['ResponsavelGerencial']);
-                            echo implode(', ', $responsaveisGerenciais);
+                            echo esc_html( implode( ', ', $responsaveisGerenciais ) );
                         else:
                             echo 'Não informado';
                         endif;
@@ -206,7 +219,7 @@ function format_bullets($content)
                 <?php if (!empty($data['notas'])): ?>
                     <div class="data-box">
                         <h3>Notas</h3>
-                        <?php echo $data['notas']; ?>
+                        <?php echo idb_kses_api_html( $data['notas'] ); ?>
                     </div>
                 <?php endif; ?>
 
@@ -245,7 +258,7 @@ function format_bullets($content)
                         $analise = trim($analise);
 
                         // Exibe o conteúdo processado
-                        echo $analise;
+                        echo idb_kses_api_html( $analise );
                     } else {
                         echo '<p>Sem análise descritiva.</p>';
                     }
@@ -256,7 +269,7 @@ function format_bullets($content)
                 <?php if (!empty($data['referencia_bibliografica'])): ?>
                     <div class="data-box" id="data-box-ref">
                         <h3>Referências</h3>
-                        <?php echo $data['referencia_bibliografica']; ?>
+                        <?php echo idb_kses_api_html( $data['referencia_bibliografica'] ); ?>
                     </div>
                 <?php endif; ?>
 
@@ -282,7 +295,7 @@ function format_bullets($content)
                     $titulo_ref = $codigo_indicador . ' - ' . $titulo;
                     $doi = isset($data['doi']) && !empty($data['doi']) ? $data['doi'] : 'DOI não disponível';
                     $site_url = site_url();
-                    $url = '<a href="https://www.ripsa.org.br/fichasidb" target="_blank">https://www.ripsa.org.br/fichasidb</a>';
+                    $url = '<a href="https://www.ripsa.org.br/fichasidb" target="_blank" rel="noopener noreferrer">https://www.ripsa.org.br/fichasidb</a>';
 
                     // Determina o número de páginas do PDF
                     $numero_paginas = 'não informado';
@@ -296,22 +309,19 @@ function format_bullets($content)
                     // Gera a citação
                     $citacao = "Rede Interagencial de Informações para a Saúde. Comitê de Gestão de Indicadores $tema. $titulo_ref. In: Ficha de Qualificação do Indicador. Brasília: Ripsa; 2025. Disponível em: $url. doi:$doi.";
                     ?>
-                    <p><?php echo $citacao; ?></p>
+                    <p><?php echo idb_kses_api_html( $citacao ); ?></p>
                 </div>
                 <?php endif; ?>
 
                 <!-- Seção Direitos Creative Commons -->
                 <div class="data-box">
                     <p><span style="display: flex; align-items: center; padding: 10px 0;">
-                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"
+                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer"
                         style="text-decoration: none; color: inherit; display: flex; align-items: center;">
-                        <img src="<?php echo plugins_url('images/by-nc-sa.png', __FILE__); ?>" alt="cc-by-4.0 icon"
+                        <img src="<?php echo esc_url( plugins_url( 'images/by-nc-sa.png', __FILE__ ) ); ?>" alt="cc-by-4.0 icon"
                         style="width:80px; height:28px; margin-right: 8px;"><span style="font-size: 9px; line-height: 1.2;">Esta obra está sob a licença </br>Creative Commons Attribution – NonCommercial – ShareAlike – 4.0 International</span></a>
                     </span></p>
                 </div>
-                    <?php else: ?>
-                        <p>Não foi possível recuperar os dados.</p>
-                    <?php endif; ?>
                 </div>
             </div>
 
@@ -324,9 +334,9 @@ function format_bullets($content)
                         <h4><b>Serviços</b></h4>
                     </div>
                     <div class="button-box">
-                        <a href="https://doi.org/<?php echo $data['doi']; ?>"
-                            target="_blank" class="btn-icon">
-                            <img src="<?php echo $plugin_path; ?>doi.svg" alt="doi" style="margin-right: 10px;"><?php echo $data['doi']; ?>
+                        <a href="<?php echo esc_url( 'https://doi.org/' . $data['doi'] ); ?>"
+                            target="_blank" rel="noopener noreferrer" class="btn-icon">
+                            <img src="<?php echo esc_url( $plugin_path . 'doi.svg' ); ?>" alt="doi" style="margin-right: 10px;"><?php echo esc_html( $data['doi'] ); ?>
                         </a>
                     </div>
                     <?php endif; ?>
@@ -334,7 +344,7 @@ function format_bullets($content)
                     <!-- Botão para baixar PDF -->
                     <?php if ($pdf_file_url): ?>
                         <div class="button-box">
-                            <a href="<?php echo $pdf_file_url; ?>" class="btn-icon" target="_blank" download>
+                            <a href="<?php echo esc_url( $pdf_file_url ); ?>" class="btn-icon" target="_blank" rel="noopener noreferrer" download>
                                 <i class="fa-solid fa-file-pdf"></i> Ficha em PDF
                             </a>
                         </div>

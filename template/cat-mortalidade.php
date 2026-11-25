@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || exit;
+
 get_header();
 
 $plugin = new IDB_Plugin(); // Instancia o plugin

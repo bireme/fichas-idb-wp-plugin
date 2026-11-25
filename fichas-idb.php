@@ -7,6 +7,8 @@ Author: BIREME/OPAS/OMS
 Version: 2.0
 */
 
+defined( 'ABSPATH' ) || exit;
+
 define('IDB_VERSION', '2.0' );
 define('IDB_PLUGIN_PATH',  plugin_dir_path(__FILE__) );
 define('IDB_PLUGIN_URL',   plugin_dir_url(__FILE__) );
@@ -39,8 +41,6 @@ if(!class_exists('IDB_Plugin')) {
             add_filter( 'document_title_separator', array(&$this, 'title_tag_sep') );
             add_filter( 'document_title_parts', array(&$this, 'theme_slug_render_title'));
             add_filter( 'wp_title', array(&$this, 'theme_slug_render_wp_title'));
-            add_action( 'wp_ajax_centers_show_more_clusters', array($this, 'centers_show_more_clusters'));
-            add_action( 'wp_ajax_nopriv_centers_show_more_clusters', array($this, 'centers_show_more_clusters'));
 
         } // END public function __construct
 
@@ -265,15 +265,50 @@ if(!class_exists('IDB_Plugin')) {
 
 
             wp_enqueue_script('jquery');
-
-            wp_add_inline_script('jquery', 'const IDB_script_vars = ' . json_encode( array(
-                    'ajaxurl' => admin_url( 'admin-ajax.php' ),
-                    'ajaxnonce' => wp_create_nonce( 'ajax_post_validation' )
-            )), 'before');
         }
 
         function register_settings(){
-            register_setting('idb-settings-group', 'idb_config');
+            register_setting(
+                'idb-settings-group',
+                'idb_config',
+                array(
+                    'type'              => 'array',
+                    'sanitize_callback' => array( $this, 'sanitize_settings' ),
+                )
+            );
+        }
+
+        /**
+         * Sanitiza a opção idb_config: aceita apenas as chaves conhecidas e descarta o resto.
+         *
+         * @param mixed $input Valores enviados pelo formulário de configurações.
+         * @return array Configuração sanitizada.
+         */
+        public function sanitize_settings( $input ) {
+            if ( ! is_array( $input ) ) {
+                return array();
+            }
+
+            $output = array();
+
+            $slug                   = isset( $input['plugin_slug'] ) && is_scalar( $input['plugin_slug'] ) ? sanitize_title( $input['plugin_slug'] ) : '';
+            $output['plugin_slug']  = '' !== $slug ? $slug : 'fichas-idb';
+
+            $api_url                = isset( $input['mgdi_api_url'] ) && is_scalar( $input['mgdi_api_url'] ) ? trim( (string) $input['mgdi_api_url'] ) : '';
+            $output['mgdi_api_url'] = '' !== $api_url ? esc_url_raw( trailingslashit( $api_url ) ) : '';
+
+            foreach ( $input as $key => $value ) {
+                if ( ! is_string( $key ) || ! is_scalar( $value ) ) {
+                    continue;
+                }
+                if ( preg_match( '/^plugin_title(_[a-z]{2}(_[A-Za-z]{2})?)?$/', $key ) ) {
+                    $output[ $key ] = sanitize_text_field( $value );
+                } elseif ( preg_match( '/^home_url(_[a-z]{2}(_[A-Za-z]{2})?)?$/', $key ) ) {
+                    $output[ $key ] = esc_url_raw( $value );
+                }
+            }
+
+            return $output;
         }
 
         function settings_link($links) {
@@ -288,7 +323,7 @@ if(!class_exists('IDB_Plugin')) {
         }
 
         function fetch_api_indicador($indicator) {
-            $api_url = $this->get_api_url() . 'indicador/' . $indicator . '?format=html';
+            $api_url = $this->get_api_url() . 'indicador/' . rawurlencode( $indicator ) . '?format=html';
             $response = wp_remote_get($api_url, array('timeout' => 20));
 
             if (is_wp_error($response)) {
@@ -316,7 +351,6 @@ if(!class_exists('IDB_Plugin')) {
             if ($data === false) {
                 // Se não houver dados no cache, faz a requisição à API
                 $api_url = $this->get_api_url() . 'tag-categoria/' . $this->ripsa_tag_code . '?ativo=true';
-                echo $api_url;
                 $response = wp_remote_get($api_url, array('timeout' => 20));
 
                 if (!is_wp_error($response)) {

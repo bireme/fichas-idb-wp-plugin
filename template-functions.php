@@ -165,11 +165,135 @@ register_sidebar(array(
 ));
 
 
+if ( ! function_exists( 'idb_kses_allowed_html' ) ) {
+    /**
+     * Tags permitidas para o HTML da API: as de wp_kses_post() mais os
+     * elementos MathML que o KaTeX gera (fórmulas pré-renderizadas pela API).
+     * Sem eles o kses remove o <math> e deixa o TeX da <annotation> como texto.
+     *
+     * Só atributos de apresentação são liberados (nada de href/src/on*).
+     *
+     * @return array Lista no formato de wp_kses().
+     */
+    function idb_kses_allowed_html() {
+        static $allowed = null;
+        if ( null !== $allowed ) {
+            return $allowed;
+        }
+
+        $common = array(
+            'class'          => true,
+            'id'             => true,
+            'style'          => true,
+            'dir'            => true,
+            'displaystyle'   => true,
+            'scriptlevel'    => true,
+            'mathvariant'    => true,
+            'mathcolor'      => true,
+            'mathbackground' => true,
+            'mathsize'       => true,
+        );
+
+        $elements = array(
+            'math'          => array(
+                'xmlns'   => true,
+                'display' => true,
+                'alttext' => true,
+            ),
+            'semantics'     => array(),
+            'annotation'    => array( 'encoding' => true ),
+            'mrow'          => array(),
+            'mi'            => array(),
+            'mn'            => array(),
+            'ms'            => array(
+                'lquote' => true,
+                'rquote' => true,
+            ),
+            'mtext'         => array(),
+            'mspace'        => array(
+                'width'     => true,
+                'height'    => true,
+                'depth'     => true,
+                'linebreak' => true,
+            ),
+            'mo'            => array(
+                'fence'         => true,
+                'separator'     => true,
+                'stretchy'      => true,
+                'symmetric'     => true,
+                'largeop'       => true,
+                'movablelimits' => true,
+                'accent'        => true,
+                'form'          => true,
+                'lspace'        => true,
+                'rspace'        => true,
+                'minsize'       => true,
+                'maxsize'       => true,
+            ),
+            'msub'          => array(),
+            'msup'          => array(),
+            'msubsup'       => array(),
+            'munder'        => array( 'accentunder' => true ),
+            'mover'         => array( 'accent' => true ),
+            'munderover'    => array(
+                'accent'      => true,
+                'accentunder' => true,
+            ),
+            'mmultiscripts' => array(),
+            'mprescripts'   => array(),
+            'none'          => array(),
+            'mfrac'         => array( 'linethickness' => true ),
+            'msqrt'         => array(),
+            'mroot'         => array(),
+            'mstyle'        => array(),
+            'mpadded'       => array(
+                'width'   => true,
+                'height'  => true,
+                'depth'   => true,
+                'lspace'  => true,
+                'voffset' => true,
+            ),
+            'mphantom'      => array(),
+            'menclose'      => array( 'notation' => true ),
+            'merror'        => array(),
+            'mtable'        => array(
+                'rowspacing'    => true,
+                'columnspacing' => true,
+                'rowalign'      => true,
+                'columnalign'   => true,
+                'rowlines'      => true,
+                'columnlines'   => true,
+                'frame'         => true,
+                'width'         => true,
+            ),
+            'mtr'           => array(
+                'rowalign'    => true,
+                'columnalign' => true,
+            ),
+            'mtd'           => array(
+                'rowalign'    => true,
+                'columnalign' => true,
+                'rowspan'     => true,
+                'columnspan'  => true,
+            ),
+            'mlabeledtr'    => array(),
+        );
+
+        $allowed = wp_kses_allowed_html( 'post' );
+        foreach ( $elements as $tag => $attrs ) {
+            $allowed[ $tag ] = array_merge( $common, $attrs );
+        }
+
+        return $allowed;
+    }
+}
+
 if ( ! function_exists( 'idb_kses_api_html' ) ) {
     /**
-     * Filtra o HTML vindo da API MGDI com wp_kses_post(), preservando apenas
-     * imagens embutidas como data URI de tipos seguros (png, jpeg, gif, webp),
-     * que o wp_kses_post() removeria por não aceitar o protocolo "data:".
+     * Filtra o HTML vindo da API MGDI com wp_kses() + idb_kses_allowed_html()
+     * (wp_kses_post() mais MathML), preservando imagens embutidas como data URI
+     * de tipos seguros (png, jpeg, gif, webp), que o kses removeria por não
+     * aceitar o protocolo "data:".
      *
      * @param string|null $html HTML da API.
      * @return string HTML filtrado.
@@ -196,7 +320,7 @@ if ( ! function_exists( 'idb_kses_api_html' ) ) {
             $filtered = $html;
         }
 
-        $html = wp_kses_post( $filtered );
+        $html = wp_kses( $filtered, idb_kses_allowed_html() );
 
         foreach ( $images as $key => $uri ) {
             $html = str_replace( 'src="' . $key . '"', 'src="' . esc_attr( $uri ) . '"', $html );
